@@ -33,7 +33,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [language])
 
   const toggleLanguage = () => {
-    setLanguage(prev => prev === 'en' ? 'ar' : 'en')
+    setLanguage((prev: string) => prev === 'en' ? 'ar' : 'en')
   }
 
   return (
