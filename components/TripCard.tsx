@@ -17,7 +17,7 @@ const TripCard = ({ trip, onSelect }: TripCardProps) => {
             {trip.departureCity} → {trip.destinationCity}
           </h3>
           <p className="text-sm text-gray-500">
-            {translations.trips.tripCard.date}: {new Date(trip.departureTime).toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US')}
+            {translations.trips.tripCard.date}: {new Date(trip.departureTime).toLocaleDateString(language === 'ar' ? 'en-US' : 'en-US')}
           </p>
         </div>
         <span className="text-xl font-bold text-blue-600">
@@ -27,8 +27,8 @@ const TripCard = ({ trip, onSelect }: TripCardProps) => {
       
       <div className="flex justify-between items-center text-sm text-gray-600 mb-4">
         <div>
-          <p>{translations.trips.search.from}: {new Date(trip.departureTime).toLocaleTimeString(language === 'ar' ? 'ar-SA' : 'en-US')}</p>
-          <p>{translations.trips.search.to}: {new Date(trip.arrivalTime).toLocaleTimeString(language === 'ar' ? 'ar-SA' : 'en-US')}</p>
+          <p>{translations.trips.search.from}: {new Date(trip.departureTime).toLocaleTimeString(language === 'ar' ? 'en-US' : 'en-US')}</p>
+          <p>{translations.trips.search.to}: {new Date(trip.arrivalTime).toLocaleTimeString(language === 'ar' ? 'en-US' : 'en-US')}</p>
         </div>
         <div>
           <p>{trip.availableSeats} {translations.trips.tripCard.seats}</p>

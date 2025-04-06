@@ -3,6 +3,26 @@ export const en = {
     home: 'Home',
     trips : 'Trips',
     myBookings : 'My Bookings',    
+    bookSeat : 'Book Seat',
+  },
+  home: {
+    hero: {
+      title: "Am'r for Bus Travel",
+      subtitle: "Experience seamless journeys across cities with modern comfort and reliability",
+      imageAlt: "Modern bus travel",
+      exploreButton: "Explore Routes",
+      bookButton: "Book Now"
+    },
+    stats: {
+      cities: "Cities Connected",
+      customers: "Happy Customers",
+      support: "Customer Support"
+    },
+    cta: {
+      title: "Ready to Start Your Journey?",
+      description: "Join thousands of satisfied travelers who choose us for their journeys.",
+      button: "View Available Routes"
+    }
   },
   brand: 'PackYourBags',
   bookings: {
@@ -82,7 +102,7 @@ export const en = {
       search: 'search on trips'
     },
   },
-  home: {
+  bookSeat: {
     hero: {
       title: "Travel with Comfort",
       subtitle: "Book your bus tickets easily and start your journey today",

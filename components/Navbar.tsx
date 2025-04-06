@@ -22,7 +22,8 @@ const Navbar = () => {
   const navLinks = [
     { href: '/', label: String(translations.nav.home), icon: '🏠' },
     { href: '/trips', label: String(translations.nav.trips), icon: '🚌' },
-    { href: '/bookings', label: String(translations.nav.myBookings), icon: '📋' }
+    { href: '/bookings', label: String(translations.nav.myBookings), icon: '📋' },
+    { href: '/book-seat', label: String(translations.nav.bookSeat), icon: '📋' },
   ]
 
   return (
@@ -134,5 +135,4 @@ const Navbar = () => {
     </nav>
   )
 }
-
 export default Navbar

@@ -1,12 +1,57 @@
+import bookSeat from "@/app/book-seat/page";
+
 export const ar = {
   nav: {
     
     home: 'الرئيسية',
     trips : 'الرحلات',
     myBookings: 'الحجوزات',
-  
+    bookSeat : 'احجز مقعدك',
+  },
+  home: {
+    hero: {
+      title: "عمرو للسفر الرحلات",
+      subtitle: "استمتع بتجربة نقل مريحة وموثوقة بين المدن",
+      imageAlt: "السفر بالحافلات الحديثة",
+      exploreButton: "استكشف المسارات",
+      bookButton: "احجز الآن"
+    },
+    stats: {
+      cities: "المدن المتوفرة",
+      customers: "زبائن سعيدة",
+      support: "قسم دعم فني"
+    },
+    cta: {
+      title: "هل أنت مستعد لبدء رحلتك؟",
+      description: "انضم إلى آلاف المسافرين الراضين الذين اختارونا لرحلاتهم.",
+      button: "عرض المسارات المتاحة"
+    },
+    features: {
+      easyBooking: {
+        title: "حجز سهل",
+        description: "احجز تذاكرك في دقائق مع نظام الحجز البسيط لدينا"
+      },
+      comfortableTravel: {
+        title: "سفر مريح",
+        description: "حافلات حديثة مع مقاعد مريحة ووسائل راحة"
+      },
+      bestPrices: {
+        title: "أفضل الأسعار",
+        description: "أسعار تنافسية وخصومات منتظمة لعملائنا"
+      }
+    },
+    popularRoutes: {
+      title: "المسارات الشائعة"
+    }
   },
   brand: 'احزم حقائبك',
+  hero: {
+    title: "احجز مقعدك في دقائق",
+    subtitle: "احجز مقعدك في دقائق مع نظام الحجز البسيط لدينا",
+    imageAlt: "حافلات حديثة",
+    exploreButton: "استكشف المسارات",
+    bookButton: "احجز الآن"
+  },
   bookings: {
     title: 'الحجوزات الخاصة بي',
     status: {
@@ -14,6 +59,8 @@ export const ar = {
       completed: 'مكتمل',
       cancelled: 'ملغي'
     },
+
+    
     noBookings: {
       title: 'لا توجد حجوزات',
       description: 'لم تقم بأي حجوزات حتى الآن',
@@ -86,7 +133,7 @@ export const ar = {
       },
 
     },
-    home: {
+    bookSeat: {
       hero: {
         title: "سافر براحة",
         subtitle: "احجز تذاكر الحافلة بسهولة وابدأ رحلتك اليوم",
