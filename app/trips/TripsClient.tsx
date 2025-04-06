@@ -5,9 +5,27 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import TripCard from '@/components/TripCard'
 import FilterSort from '@/components/FilterSort'
 import { Trip } from '@/types'
+import { useLanguage } from '@/context/LanguageContext'
 // Mock trips data
 const mockTrips: Trip[] = [
-  // ... your mock data ...
+  {
+    id: '1',
+    departureCity: 'New York',
+    destinationCity: 'Los Angeles',
+    departureTime: '2024-02-10T08:00:00',
+    arrivalTime: '2024-02-10T16:00:00',
+    price: 150,
+    availableSeats: 45
+  },
+  {
+    id: '2',
+    departureCity: 'Chicago',
+    destinationCity: 'Houston',
+    departureTime: '2024-02-10T09:30:00',
+    arrivalTime: '2024-02-10T15:30:00',
+    price: 120,
+    availableSeats: 32
+  }
 ]
 
 export default function TripsClient(): ReactElement {
@@ -16,9 +34,94 @@ export default function TripsClient(): ReactElement {
   const [filteredTrips, setFilteredTrips] = useState(mockTrips)
   const [loading, setLoading] = useState(false)
   
+  const from = searchParams.get('from')
+  const to = searchParams.get('to')
+  const date = searchParams.get('date')
+  const { language, translations } = useLanguage()
+  const handleSort = (sortType: string) => {
+    const sorted = [...filteredTrips].sort((a, b) => {
+      switch (sortType) {
+        case 'price_asc':
+          return a.price - b.price
+        case 'price_desc':
+          return b.price - a.price
+        case 'time_asc':
+          return new Date(a.departureTime).getTime() - new Date(b.departureTime).getTime()
+        case 'time_desc':
+          return new Date(b.departureTime).getTime() - new Date(a.departureTime).getTime()
+        default:
+          return 0
+      }
+    })
+    setFilteredTrips(sorted)
+  }
+
+  const handlePriceRange = (min: number, max: number) => {
+    const filtered = mockTrips.filter(trip => 
+      (min ? trip.price >= min : true) && 
+      (max ? trip.price <= max : true)
+    )
+    setFilteredTrips(filtered)
+  }
+
+  const handleTimeRange = (timeRange: string) => {
+    const filtered = mockTrips.filter(trip => {
+      const hour = new Date(trip.departureTime).getHours()
+      switch (timeRange) {
+        case 'morning':
+          return hour >= 6 && hour < 12
+        case 'afternoon':
+          return hour >= 12 && hour < 18
+        case 'evening':
+          return hour >= 18
+        default:
+          return true
+      }
+    })
+    setFilteredTrips(filtered)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-24">
-      {/* ... your existing JSX ... */}
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="mb-8">
+          {/* <h1 className="text-3xl font-bold text-gray-900">Available Trips</h1> */}
+          <h1 className="text-3xl font-bold text-gray-900"> {translations.trips.filters.titlePage}</h1>
+          <p className="text-gray-600 mt-2">
+            {from} to {to} on {date}
+          </p>
+        </div>
+
+        <FilterSort
+          onSortChange={handleSort}
+          onPriceRangeChange={handlePriceRange}
+          onTimeRangeChange={handleTimeRange}
+        />
+
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600">Loading trips...</p>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredTrips.map((trip) => (
+                <TripCard
+                  key={trip.id}
+                  trip={trip}
+                  onSelect={(tripId) => router.push(`/trips/${tripId}/seats`)}
+                />
+              ))}
+            </div>
+
+            {filteredTrips.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-600">No trips found for your search criteria.</p>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }

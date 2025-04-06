@@ -9,13 +9,13 @@ interface PageParams {
 }
 
 interface SeatsPageProps {
-  params: Promise<PageParams>;
+  params: PageParams;  // Remove Promise
 }
 
-async function SeatsPage({ 
+export default function SeatsPage({ 
   params 
-}: SeatsPageProps): Promise<ReactElement> {
-  const { tripId } = await params
+}: SeatsPageProps): ReactElement {
+  const { tripId } = params  // Remove await
   const router = useRouter()
   const [selectedSeats, setSelectedSeats] = useState<string[]>([])
   
@@ -95,6 +95,3 @@ async function SeatsPage({
     </div>
   )
 }
-
-// Change the export to default
-export default SeatsPage

@@ -54,6 +54,7 @@ export const ar = {
       },
       filters: {
         title: 'التصفية',
+        titlePage: 'الرحلات المتوفرة',
         sortBy: 'ترتيب حسب',
         priceRange: 'نطاق السعر',
         min: 'الحد الأدنى',

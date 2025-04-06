@@ -43,6 +43,7 @@ export const en = {
   trips: {
     filters: {
       title: 'Filters',
+      titlePage: 'Avilable Trips',
       sortBy: 'Sort By',
       priceRange: 'Price Range',
       min: 'Min',
