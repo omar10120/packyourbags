@@ -16,7 +16,7 @@ export default function Seat({ number, isBooked, isSelected, onSelect }: SeatPro
           ? 'bg-gray-300 cursor-not-allowed' 
           : isSelected 
             ? 'bg-blue-500 text-white' 
-            : 'bg-white border border-gray-300 hover:border-blue-500'
+            : 'bg-white border border-gray-300 hover:border-blue-500 text-black'
         }
       `}
     >

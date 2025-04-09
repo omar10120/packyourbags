@@ -3,8 +3,9 @@
 import Image from "next/image"
 import SearchForm from "@/components/SearchForm"
 import { useLanguage } from "@/context/LanguageContext"
+import ProtectedRoute from "@/components/ProtectedRoute"
 
-export default function bookSeat() {
+export default function BookSeat() {
   const { language, translations } = useLanguage()
 
   const features = [
@@ -34,7 +35,7 @@ export default function bookSeat() {
     "المدينة → مكة"
   ]
 
-  return (
+  const Content = () => (
     <div className={`min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       {/* Hero Section */}
       <section className="relative h-[500px] flex items-center">
@@ -107,5 +108,11 @@ export default function bookSeat() {
         </div>
       </section>
     </div>
+  )
+
+  return (
+    <ProtectedRoute>
+      <Content />
+    </ProtectedRoute>
   )
 }

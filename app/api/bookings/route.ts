@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { Decimal } from '@prisma/client/runtime/library'
+import { headers } from 'next/headers'
 
 export async function POST(req: Request) {
   try {
     const { tripId, seatIds } = await req.json()
-    const userId = req.headers.get('userId')
+    const headersList = headers() // ✅ middleware-injected headers
+    const userId = headersList.get('userId') // ✅ access injected userId
 
     if (!userId) {
       return NextResponse.json(
@@ -76,11 +78,18 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
-    const userId = req.headers.get('userId')
-
+    const headersList = headers()
+    const userId = headersList.get('userId')
+    console.log("================")
+    console.log(headersList)
+    console.log("================++")
+    // console.log(userId)
+    // console.log("================+++")
+    // console.log("================")
+    
     if (!userId) {
       return NextResponse.json(
-        { error: 'Authentication required' },
+        { error: `Authentication required ${userId}` },
         { status: 401 }
       )
     }
