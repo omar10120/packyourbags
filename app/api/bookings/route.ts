@@ -80,12 +80,7 @@ export async function GET(req: Request) {
   try {
     const headersList = headers()
     const userId = headersList.get('userId')
-    console.log("================")
-    console.log(headersList)
-    console.log("================++")
-    // console.log(userId)
-    // console.log("================+++")
-    // console.log("================")
+
     
     if (!userId) {
       return NextResponse.json(

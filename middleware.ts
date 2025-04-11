@@ -3,12 +3,12 @@ import type { NextRequest } from 'next/server'
 import { jwtVerify } from 'jose'
 
 export async function middleware(request: NextRequest) {
-  console.log('Middleware triggered - URL:', request.url)
+ 
   const authHeader = request.headers.get('Authorization')
-  console.log('Auth header:', authHeader)
+
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    console.log('No auth header or invalid format')
+  
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
   }
 
@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
 
     const { payload } = await jwtVerify(token, secret)
     const userId = payload.userId as string
-    console.log('Decoded userId:', userId)
+   
 
     const requestHeaders = new Headers(request.headers)
     requestHeaders.set('userId', userId)
