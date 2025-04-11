@@ -43,8 +43,8 @@ export default function RegisterPage() {
         throw new Error(data.error || 'Registration failed')
       }
 
-      // Redirect to verification page
-      router.push(`/auth/verify?email=${formData.email}`)
+      // Redirect to verification code page instead of verify page
+      router.push(`/auth/verify-code?email=${formData.email}`)
     } catch (err: any) {
       setError(err.message)
     } finally {
