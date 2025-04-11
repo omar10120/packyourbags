@@ -57,7 +57,8 @@ export const ar = {
     status: {
       confirmed: 'تأكيد',
       completed: 'مكتمل',
-      cancelled: 'ملغي'
+      cancelled: 'ملغي',
+      pending: 'قيد الانتظار'
     },
 
     

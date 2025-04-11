@@ -2,84 +2,166 @@
 
 import { useState, useEffect, ReactElement } from 'react'
 import { useLanguage } from '@/context/LanguageContext'
-import BookingModal from '@/components/BookingModal'
-import ConfirmDialog from '@/components/ConfirmDialog'
 import { useSearchParams, useRouter } from 'next/navigation'
+import toast, { Toaster } from 'react-hot-toast' // Add this import
 
-// Define CustomerFormData interface
-interface CustomerFormData {
-  name: string;
-  email: string;
-  phone: string;
+interface TripDetails {
+  id: string
+  route: {
+    departureCity: {
+      name: string
+      nameAr: string
+    }
+    arrivalCity: {
+      name: string
+      nameAr: string
+    }
+  }
+  departureTime: string
+  arrivalTime: string
+  price: string
+  seats: {
+    id: string
+    seatNumber: string
+    status: string
+  }[]
 }
 
 interface PageParams {
-  tripId: string;
+  tripId: string
 }
 
 interface BookingPageProps {
-  params: Promise<PageParams>;
+  params: PageParams
 }
 
-async function BookingPage({ 
-  params 
-}: BookingPageProps): Promise<ReactElement> {
-  const { tripId } = await params
+export default function BookingPage({ params }: BookingPageProps): ReactElement {
+  const { tripId } = params
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
-  const selectedSeats = searchParams.get('seats')?.split(',') || []
+  const [error, setError] = useState('')
+  const [tripDetails, setTripDetails] = useState<TripDetails | null>(null)
+  const selectedSeatNumbers = searchParams.get('seats')?.split(',') || []
 
-  // Mock trip data - will be replaced with API call
-  const tripDetails = {
-    id: tripId, // Fixed: using awaited tripId
-    departureCity: 'New York',
-    destinationCity: 'Los Angeles',
-    departureTime: '2024-02-10T08:00:00',
-    arrivalTime: '2024-02-10T16:00:00',
-    price: 150
+  useEffect(() => {
+    fetchTripDetails()
+  }, [tripId])
+
+  const fetchTripDetails = async () => {
+    try {
+      const response = await fetch(`/api/trips/${tripId}`)
+      if (!response.ok) throw new Error('Failed to fetch trip details')
+      const data = await response.json()
+      setTripDetails(data)
+    } catch (err) {
+      setError('Failed to load trip details')
+      console.error(err)
+    }
   }
 
-  const handleBooking = async (customerData: CustomerFormData) => {
+  const handleBooking = async () => {
     setIsLoading(true)
+    setError('')
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      const bookingRef = Math.random().toString(36).substring(2, 10).toUpperCase()
-      router.push(`/bookings/${bookingRef}?success=true`)
-    } catch (error) {
-      console.error('Booking failed:', error)
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('Please login to continue')
+      }
+
+      const seatIds = tripDetails?.seats
+        .filter(seat => selectedSeatNumbers.includes(seat.seatNumber))
+        .map(seat => seat.id)
+
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          tripId,
+          seatIds
+        })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Booking failed')
+      }
+
+      // Show success message
+      toast.success(
+        <div className="flex flex-col gap-1">
+          <span className="font-semibold">Booking Successful!</span>
+          <span className="text-sm">Redirecting to your bookings...</span>
+        </div>,
+        {
+          duration: 3000,
+          position: 'top-center',
+          className: 'bg-white text-green-800'
+        }
+      )
+
+      // Wait for toast to be visible before redirecting
+      setTimeout(() => {
+        router.push('/bookings')
+      }, 2000)
+
+    } catch (err: any) {
+      setError(err.message || 'Failed to create booking')
+      console.error('Booking error:', err)
     } finally {
       setIsLoading(false)
     }
   }
 
+  if (!tripDetails) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
+      <Toaster />
       <div className="max-w-3xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Complete Your Booking</h1>
 
+        {error && (
+          <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+            <p className="text-red-700">{error}</p>
+          </div>
+        )}
+
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Trip Details</h2>
+          <h2 className="text-xl font-semibold mb-4 text-black">Trip Details</h2>
           <div className="space-y-2 text-gray-600">
-            <p>From: {tripDetails.departureCity}</p>
-            <p>To: {tripDetails.destinationCity}</p>
-            <p>Departure: {new Date(tripDetails.departureTime).toLocaleString()}</p>
-            <p>Arrival: {new Date(tripDetails.arrivalTime).toLocaleString()}</p>
-            <p>Selected Seats: {selectedSeats.join(', ')}</p>
+            <p>From: {tripDetails?.route.departureCity.name}</p>
+            <p>To: {tripDetails?.route.arrivalCity.name}</p>
+            <p>Departure: {new Date(tripDetails?.departureTime).toLocaleString()}</p>
+            <p>Arrival: {new Date(tripDetails?.arrivalTime).toLocaleString()}</p>
+            <p>Selected Seats: {selectedSeatNumbers.join(', ')}</p>
             <p className="text-lg font-semibold text-gray-900">
-              Total Price: ${tripDetails.price * selectedSeats.length}
+              Total Price: ${Number(tripDetails?.price) * selectedSeatNumbers.length}
             </p>
           </div>
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-4">Passenger Information</h2>
-          {/* Temporarily using div until CustomerForm component is created */}
-          <div>Customer Form Component will go here</div>
-        </div>
+          <button
+            onClick={handleBooking}
+            disabled={isLoading}
+            className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            {isLoading ? 'Processing...' : 'Confirm Booking'}
+          </button>
+        </div>  
       </div>
     </div>
   )
 }
-
-export default BookingPage

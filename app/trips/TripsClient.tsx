@@ -1,43 +1,78 @@
 'use client'
 
-import { useState, type ReactElement } from 'react'
+import { useState, useEffect, type ReactElement } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import TripCard from '@/components/TripCard'
 import FilterSort from '@/components/FilterSort'
 import { Trip } from '@/types'
 import { useLanguage } from '@/context/LanguageContext'
-// Mock trips data
-const mockTrips: Trip[] = [
-  {
-    id: '1',
-    departureCity: 'New York',
-    destinationCity: 'Los Angeles',
-    departureTime: '2024-02-10T08:00:00',
-    arrivalTime: '2024-02-10T16:00:00',
-    price: 150,
-    availableSeats: 45
-  },
-  {
-    id: '2',
-    departureCity: 'Chicago',
-    destinationCity: 'Houston',
-    departureTime: '2024-02-10T09:30:00',
-    arrivalTime: '2024-02-10T15:30:00',
-    price: 120,
-    availableSeats: 32
+
+interface ApiTrip {
+  id: string
+  price: string
+  departureTime: string
+  arrivalTime: string
+  route: {
+    departureCity: {
+      name: string
+      nameAr: string
+    }
+    arrivalCity: {
+      name: string
+      nameAr: string
+    }
   }
-]
+  seats: {
+    status: 'available' | 'booked'
+  }[]
+}
 
 export default function TripsClient(): ReactElement {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const [filteredTrips, setFilteredTrips] = useState(mockTrips)
-  const [loading, setLoading] = useState(false)
+  const [trips, setTrips] = useState<Trip[]>([])
+  const [filteredTrips, setFilteredTrips] = useState<Trip[]>([])
+  const [loading, setLoading] = useState(true)
   
   const from = searchParams.get('from')
   const to = searchParams.get('to')
   const date = searchParams.get('date')
   const { language, translations } = useLanguage()
+
+  useEffect(() => {
+    fetchTrips()
+  }, [from, to, date])
+
+  const fetchTrips = async () => {
+    setLoading(true)
+    try {
+      const queryParams = new URLSearchParams()
+      if (from) queryParams.append('from', from)
+      if (to) queryParams.append('to', to)
+      if (date) queryParams.append('date', date)
+
+      const response = await fetch(`/api/trips?${queryParams.toString()}`)
+      const data: ApiTrip[] = await response.json()
+
+      const formattedTrips: Trip[] = data.map(trip => ({
+        id: trip.id,
+        departureCity: language === 'ar' ? trip.route.departureCity.nameAr : trip.route.departureCity.name,
+        destinationCity: language === 'ar' ? trip.route.arrivalCity.nameAr : trip.route.arrivalCity.name,
+        departureTime: trip.departureTime,
+        arrivalTime: trip.arrivalTime,
+        price: Number(trip.price),
+        availableSeats: trip.seats.filter(seat => seat.status === 'available').length
+      }))
+
+      setTrips(formattedTrips)
+      setFilteredTrips(formattedTrips)
+    } catch (error) {
+      console.error('Failed to fetch trips:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleSort = (sortType: string) => {
     const sorted = [...filteredTrips].sort((a, b) => {
       switch (sortType) {
@@ -57,7 +92,7 @@ export default function TripsClient(): ReactElement {
   }
 
   const handlePriceRange = (min: number, max: number) => {
-    const filtered = mockTrips.filter(trip => 
+    const filtered = trips.filter(trip => 
       (min ? trip.price >= min : true) && 
       (max ? trip.price <= max : true)
     )
@@ -65,7 +100,7 @@ export default function TripsClient(): ReactElement {
   }
 
   const handleTimeRange = (timeRange: string) => {
-    const filtered = mockTrips.filter(trip => {
+    const filtered = trips.filter(trip => {
       const hour = new Date(trip.departureTime).getHours()
       switch (timeRange) {
         case 'morning':
@@ -73,7 +108,7 @@ export default function TripsClient(): ReactElement {
         case 'afternoon':
           return hour >= 12 && hour < 18
         case 'evening':
-          return hour >= 18
+          return hour >= 18 || hour < 6
         default:
           return true
       }
@@ -82,7 +117,7 @@ export default function TripsClient(): ReactElement {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-24">
+    <div className={`min-h-screen bg-gray-50 py-12 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="mb-8">
           {/* <h1 className="text-3xl font-bold text-gray-900">Available Trips</h1> */}

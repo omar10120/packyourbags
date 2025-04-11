@@ -30,7 +30,9 @@ export const en = {
     status: {
       confirmed: 'Confirmed',
       completed: 'Completed',
-      cancelled: 'Cancelled'
+      cancelled: 'Cancelled',
+      pending: 'Pending',
+
     },
     noBookings: {
       title: 'No Bookings Found',
@@ -55,7 +57,7 @@ export const en = {
     },
     confirmCancel: {
       title: 'Cancel Booking',
-      message: 'Are you sure you want to cancel booking {id}? This action cannot be undone.',
+      message: 'Are you sure you want to cancel booking ? This action cannot be undone.',
       confirm: 'Confirm',
       cancel: 'Cancel'
     }

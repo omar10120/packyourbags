@@ -4,26 +4,53 @@ import { useState, useEffect, ReactElement } from 'react'
 import { useRouter } from 'next/navigation'
 import Seat from '@/components/Seat'
 
+interface SeatData {
+  id: string
+  seatNumber: string
+  status: 'available' | 'booked'
+}
+
+interface TripData {
+  id: string
+  price: string
+  seats: SeatData[]
+}
+
 interface PageParams {
   tripId: string;
 }
 
 interface SeatsPageProps {
-  params: PageParams;  // Remove Promise
+  params: PageParams;
 }
 
-export default function SeatsPage({ 
-  params 
-}: SeatsPageProps): ReactElement {
-  const { tripId } = params  // Remove await
+export default function SeatsPage({ params }: SeatsPageProps): ReactElement {
+  const { tripId } = params
   const router = useRouter()
   const [selectedSeats, setSelectedSeats] = useState<string[]>([])
-  
-  // Mock seat data - will be replaced with API call
-  const seats = Array.from({ length: 40 }, (_, i) => ({
-    number: (i + 1).toString(),
-    isBooked: Math.random() > 0.7
-  }))
+  const [tripData, setTripData] = useState<TripData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    fetchTripSeats()
+  }, [tripId])
+
+  const fetchTripSeats = async () => {
+    try {
+      const response = await fetch(`/api/trips/${tripId}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch trip data')
+      }
+      const data = await response.json()
+      setTripData(data)
+    } catch (err) {
+      setError('Failed to load seats. Please try again.')
+      console.error('Error fetching seats:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSeatSelect = (seatNumber: string) => {
     setSelectedSeats(prev => 
@@ -33,11 +60,26 @@ export default function SeatsPage({
     )
   }
 
-  const handleContinue = async () => {
+  const handleContinue = () => {
     if (selectedSeats.length > 0) {
-      const { tripId } = await params
       router.push(`/trips/${tripId}/booking?seats=${selectedSeats.join(',')}`)
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    )
+  }
+
+  if (error || !tripData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-red-600">{error || 'Failed to load seats'}</div>
+      </div>
+    )
   }
 
   return (
@@ -64,12 +106,12 @@ export default function SeatsPage({
           </div>
 
           <div className="grid grid-cols-4 gap-2 mb-8">
-            {seats.map((seat) => (
+            {tripData.seats.map((seat) => (
               <Seat
-                key={seat.number}
-                number={seat.number}
-                isBooked={seat.isBooked}
-                isSelected={selectedSeats.includes(seat.number)}
+                key={seat.id}
+                number={seat.seatNumber}
+                isBooked={seat.status === 'booked'}
+                isSelected={selectedSeats.includes(seat.seatNumber)}
                 onSelect={handleSeatSelect}
               />
             ))}
@@ -79,7 +121,7 @@ export default function SeatsPage({
             <div className="flex justify-between items-center mb-4">
               <div>
                 <p className="text-gray-600">Selected Seats: {selectedSeats.join(', ')}</p>
-                <p className="text-gray-600">Total Price: ${selectedSeats.length * 50}</p>
+                <p className="text-gray-600">Total Price: ${selectedSeats.length * Number(tripData.price)}</p>
               </div>
               <button
                 onClick={handleContinue}

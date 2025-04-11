@@ -51,6 +51,7 @@ export interface Translations {
       confirmed: string
       completed: string
       cancelled: string
+      pending: string
     }
     noBookings: {
       title: string

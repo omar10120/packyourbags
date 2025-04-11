@@ -8,15 +8,15 @@ interface Booking {
   to: string
   date: string
   seats: string[]
-  status: 'confirmed' | 'completed' | 'cancelled'
   price: number
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled'  // Updated to match page's interface
 }
 
 interface BookingModalProps {
   booking: Booking | null
   isOpen: boolean
   onClose: () => void
-  onCancelBooking: (bookingId: string) => void
+  onCancelBooking: (id: string) => void
 }
 const BookingModal = ({ booking, isOpen, onClose, onCancelBooking }: BookingModalProps) => {
   const { language, translations } = useLanguage()
@@ -24,7 +24,7 @@ const BookingModal = ({ booking, isOpen, onClose, onCancelBooking }: BookingModa
   if (!isOpen || !booking) return null  
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in text-black">
       <div className={`bg-white rounded-2xl w-full max-w-2xl mx-4 overflow-hidden shadow-xl transform transition-all animate-slide-up ${language === 'ar' ? 'rtl' : 'ltr'}`}>
         <div className="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
           <h3 className="text-xl font-semibold">{translations.bookings.modal.title}</h3>
@@ -57,11 +57,11 @@ const BookingModal = ({ booking, isOpen, onClose, onCancelBooking }: BookingModa
           <div className="mt-6 grid grid-cols-2 gap-6">
             <div>
               <h4 className="text-sm font-medium text-gray-500">{translations.bookings.modal.travelDate}</h4>
-              <p className="text-lg">{new Date(booking.date).toLocaleDateString()}</p>
+              <p className="text-lg">{new Date(booking.date).toLocaleString()}</p>
             </div>
             <div>
               <h4 className="text-sm font-medium text-gray-500">{translations.bookings.bookingCard.price}</h4>
-              <p className="text-lg">${booking.price}</p>
+              <p className="text-lg ">${booking.price}</p>
             </div>
           </div>
 

@@ -29,7 +29,7 @@ const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message }: ConfirmDi
           </div>
           <h3 className="text-lg font-semibold text-center mb-2">{translations.bookings.confirmCancel.title}</h3>
           <p className="text-gray-600 text-center mb-6">
-            {translations.bookings.confirmCancel.message.replace('{id}', title)}
+            {translations.bookings.confirmCancel.message}
           </p>
           <div className={`flex justify-end gap-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
             <button

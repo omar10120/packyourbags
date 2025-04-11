@@ -14,7 +14,34 @@ interface Booking {
   date: string
   seats: string[]
   price: number
-  status: 'confirmed' | 'completed' | 'cancelled'
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled'  // Added 'pending' status
+}
+
+interface ApiBooking {
+  id: string
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  bookingDate: string
+  totalPrice: string
+  trip: {
+    departureTime: string
+    arrivalTime: string
+    route: {
+      departureCity: {
+        name: string
+        nameAr: string
+      }
+      arrivalCity: {
+        name: string
+        nameAr: string
+      }
+    }
+  }
+  details: {
+    seat: {
+      seatNumber: string
+      status: string
+    }
+  }[]
 }
 
 export default function BookingsPage() {
@@ -38,20 +65,37 @@ export default function BookingsPage() {
 
   const fetchBookings = async () => {
     try {
-      // Mock data - replace with actual API call
-      const mockBookings: Booking[] = [
-        {
-          id: 'BK001',
-          from: 'New York',
-          to: 'Los Angeles',
-          date: '2024-02-15T10:00:00',
-          seats: ['A1', 'A2'],
-          price: 300,
-          status: 'confirmed'
-        },
-        // Add more mock bookings as needed
-      ]
-      setBookings(mockBookings)
+      setLoading(true)
+      const token = localStorage.getItem('token')
+      
+      if (!token) {
+        router.push('/auth/login')
+        return
+      }
+
+      const response = await fetch('/api/bookings', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch bookings')
+      }
+
+      const apiBookings: ApiBooking[] = await response.json()
+
+      const formattedBookings: Booking[] = apiBookings.map(booking => ({
+        id: booking.id,
+        from: language === 'ar' ? booking.trip.route.departureCity.nameAr : booking.trip.route.departureCity.name,
+        to: language === 'ar' ? booking.trip.route.arrivalCity.nameAr : booking.trip.route.arrivalCity.name,
+        date: booking.trip.departureTime,
+        seats: booking.details.map(detail => detail.seat.seatNumber),
+        price: Number(booking.totalPrice),
+        status: booking.status
+      }))
+
+      setBookings(formattedBookings)
     } catch (error) {
       console.error('Failed to fetch bookings:', error)
     } finally {
@@ -61,15 +105,29 @@ export default function BookingsPage() {
 
   const handleCancelBooking = async (bookingId: string) => {
     try {
-      // Mock API call - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      setBookings(prevBookings =>
-        prevBookings.map(booking =>
-          booking.id === bookingId
-            ? { ...booking, status: 'cancelled' }
-            : booking
-        )
-      )
+      const token = localStorage.getItem('token')
+      if (!token) {
+        router.push('/auth/login')
+        return
+      }
+
+      const response = await fetch(`/api/bookings/${bookingId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          status: 'cancelled'
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to cancel booking')
+      }
+
+      // Refresh bookings after cancellation
+      await fetchBookings()
       setIsConfirmDialogOpen(false)
     } catch (error) {
       console.error('Failed to cancel booking:', error)
@@ -107,21 +165,22 @@ export default function BookingsPage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-black">
             {bookings.map(booking => (
               <div
                 key={booking.id}
                 className="bg-white rounded-lg shadow-md p-6"
               >
                 <div className="flex justify-between items-start mb-4">
-                  <div>
+                  {/* <div>
                     <p className="text-sm text-gray-500">
                       {translations.bookings.bookingCard.bookingId}
                     </p>
                     <p className="font-mono font-bold">{booking.id}</p>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                  </div> */}
+                  
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium  ${
+                    booking.status === 'pending' || booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
                     booking.status === 'cancelled' ? 'bg-red-100 text-red-800' :
                     'bg-gray-100 text-gray-800'
                   }`}>
@@ -132,7 +191,7 @@ export default function BookingsPage() {
                 <div className="space-y-2 mb-4">
                   <p className="text-gray-600">{booking.from} → {booking.to}</p>
                   <p className="text-gray-600">
-                    {new Date(booking.date).toLocaleDateString()}
+                    {new Date(booking.date).toLocaleString()}
                   </p>
                 </div>
 
@@ -146,7 +205,7 @@ export default function BookingsPage() {
                   >
                     {translations.bookings.bookingCard.viewDetails}
                   </button>
-                  {booking.status === 'confirmed' && (
+                  {(booking.status === 'confirmed' || booking.status === 'pending') && (
                     <button
                       onClick={() => {
                         setSelectedBooking(booking)

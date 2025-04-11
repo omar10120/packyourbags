@@ -19,14 +19,22 @@ export default function TripsPage() {
   }, [isAuthenticated, router])
 
   if (isLoading || !isAuthenticated) {
-    return null // or return a loading spinner if you prefer
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    )
   }
 
   return (
-      <ProtectedRoute>
-        <Suspense fallback={<div>Loading...</div>}>
-          <TripsClient />
-        </Suspense>
-      </ProtectedRoute>
+    <ProtectedRoute>
+      <Suspense fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      }>
+        <TripsClient />
+      </Suspense>
+    </ProtectedRoute>
   )
 }
