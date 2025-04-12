@@ -136,6 +136,101 @@ export const en = {
     contact: "Contact Us",
     followUs: "Follow Us",
     rights: "All rights reserved."
+  },
+  
+  auth: {
+    login: {
+      title: 'Welcome back',
+      subtitle: 'Sign in to your account to continue',
+      email: {
+        label: 'Email address',
+        placeholder: 'Enter your email'
+      },
+      password: {
+        label: 'Password',
+        placeholder: 'Enter your password'
+      },
+      button: {
+        signin: 'Sign in',
+        loading: 'Signing in...',
+        success: 'Success!'
+      },
+      noAccount: "Don't have an account? Register",
+      forgotPassword: 'Forgot password?',
+      successMessage: 'Login successful! Redirecting...'
+    },
+    forgotPassword: {
+      title: 'Forgot Password',
+      subtitle: 'Enter your email address and we\'ll send you a link to reset your password',
+      email: {
+        label: 'Email address',
+        placeholder: 'example@example.com'
+      },
+      button: {
+        send: 'Send Reset Link',
+        sending: 'Sending...',
+        sent: 'Email Sent!'
+      },
+      success: 'Reset link sent! Please check your email.',
+      backToLogin: 'Back to Login'
+    },
+    resetPassword: {
+      title: 'Reset Password',
+      subtitle: 'Enter the verification code sent to your email',
+      code: {
+        label: 'Verification Code',
+        placeholder: 'Enter code from email'
+      },
+      newPassword: {
+        label: 'New Password',
+        placeholder: 'Enter new password'
+      },
+      confirmPassword: {
+        label: 'Confirm New Password',
+        placeholder: 'Confirm new password'
+      },
+      button: {
+        reset: 'Reset Password',
+        resetting: 'Resetting...',
+        success: 'Success!'
+      },
+      errors: {
+        passwordMismatch: 'Passwords do not match',
+        resetFailed: 'Password reset failed'
+      },
+      success: 'Password reset successful! Redirecting to login...'
+    },
+    register: {
+      title: 'Create your account',
+      fullName: {
+        label: 'Full Name',
+        placeholder: 'Enter your full name'
+      },
+      email: {
+        label: 'Email address',
+        placeholder: 'Enter your email'
+      },
+      password: {
+        label: 'Password',
+        placeholder: 'Enter password'
+      },
+      confirmPassword: {
+        label: 'Confirm Password',
+        placeholder: 'Confirm your password'
+      },
+      phone: {
+        label: 'Phone',
+        placeholder: 'Phone (optional)'
+      },
+      button: {
+        signup: 'Sign up',
+        creating: 'Creating account...'
+      },
+      haveAccount: 'Already have an account? Sign in',
+      errors: {
+        passwordMismatch: 'Passwords do not match',
+        passwordLength: 'Password must be at least 6 characters long'
+      }
+    }
   }
-
 }

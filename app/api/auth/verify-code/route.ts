@@ -12,20 +12,22 @@ export async function POST(req: Request) {
       )
     }
 
+    // ✅ Decode email (especially for "+" symbols)
+    const decodedEmail = decodeURIComponent(email)
+
     const user = await prisma.user.findUnique({
-      where: { email }
+      where: { email: decodedEmail }
     })
 
     if (!user || !user.verificationToken) {
       return NextResponse.json(
-        { error: 'Invalid verification attempt' },
+        { error: `Invalid verification attempt: ${decodedEmail}` },
         { status: 400 }
       )
     }
 
-    // Check if the first 6 characters of the token match the code
     const storedCode = user.verificationToken.substring(0, 6).toUpperCase()
-    
+
     if (code.toUpperCase() !== storedCode) {
       return NextResponse.json(
         { error: 'Invalid verification code' },
@@ -33,7 +35,6 @@ export async function POST(req: Request) {
       )
     }
 
-    // Update user verification status
     await prisma.user.update({
       where: { id: user.id },
       data: {
@@ -42,9 +43,7 @@ export async function POST(req: Request) {
       }
     })
 
-    return NextResponse.json({
-      message: 'Email verified successfully'
-    })
+    return NextResponse.json({ message: 'Email verified successfully' })
   } catch (error) {
     console.error('Verification error:', error)
     return NextResponse.json(

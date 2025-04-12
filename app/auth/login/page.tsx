@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -17,6 +18,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const { language, translations } = useLanguage()
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -61,14 +63,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className={`min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Welcome back
+            {translations.auth.login.title}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Sign in to your account to continue
+            {translations.auth.login.subtitle}
           </p>
         </div>
         <form className="mt-8 space-y-6 text-black" onSubmit={handleSubmit}>
@@ -103,13 +105,13 @@ export default function LoginPage() {
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
+                {translations.auth.login.email.label}
               </label>
               <input
                 id="email"
                 type="email"
                 required
-                placeholder="Enter your email"
+                placeholder={translations.auth.login.email.placeholder}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -117,14 +119,14 @@ export default function LoginPage() {
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
+                {translations.auth.login.password.label}
               </label>
               <div className="mt-1 relative">
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  placeholder="Enter your password"
+                  placeholder={translations.auth.login.password.placeholder}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm pr-10"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -156,7 +158,9 @@ export default function LoginPage() {
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
               ) : null}
-              {loading ? 'Signing in...' : success ? 'Success!' : 'Sign in'}
+              {loading ? translations.auth.login.button.loading : 
+               success ? translations.auth.login.button.success : 
+               translations.auth.login.button.signin}
             </button>
           </div>
 
@@ -165,13 +169,13 @@ export default function LoginPage() {
               href="/auth/register" 
               className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200 hover:underline"
             >
-              Don't have an account? Register
+              {translations.auth.login.noAccount}
             </Link>
             <Link 
               href="/auth/forgot-password" 
               className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200 hover:underline"
             >
-              Forgot password?
+              {translations.auth.login.forgotPassword}
             </Link>
           </div>
         </form>

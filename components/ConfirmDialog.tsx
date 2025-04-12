@@ -27,7 +27,7 @@ const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message }: ConfirmDi
               </svg>
             </div>
           </div>
-          <h3 className="text-lg font-semibold text-center mb-2">{translations.bookings.confirmCancel.title}</h3>
+          <h3 className="text-lg font-semibold text-center mb-2 text-black">{translations.bookings.confirmCancel.title}</h3>
           <p className="text-gray-600 text-center mb-6">
             {translations.bookings.confirmCancel.message}
           </p>

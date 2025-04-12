@@ -2,12 +2,14 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
+import { useLanguage } from '@/context/LanguageContext'
 import AuthLoader from '../components/AuthLoader'
 
 function ResetPasswordForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { isAuthenticated } = useAuth()
+  const { language, translations } = useLanguage()
   const [formData, setFormData] = useState({
     code: '',
     newPassword: '',
@@ -33,7 +35,7 @@ function ResetPasswordForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (formData.newPassword !== formData.confirmPassword) {
-      setError('Passwords do not match')
+      setError(translations.auth.resetPassword.errors.passwordMismatch)
       return
     }
 
@@ -67,14 +69,14 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className={`min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Reset Password
+            {translations.auth.resetPassword.title}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Enter the verification code sent to your email
+            {translations.auth.resetPassword.subtitle}
           </p>
         </div>
 
@@ -104,13 +106,13 @@ function ResetPasswordForm() {
           <div className="space-y-4 text-black">
             <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700">
-                Verification Code
+                {translations.auth.resetPassword.code.label}
               </label>
               <input
                 id="code"
                 type="text"
                 required
-                placeholder="Enter code from email"
+                placeholder={translations.auth.resetPassword.code.placeholder}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={formData.code}
                 onChange={(e) => setFormData({ ...formData, code: e.target.value })}
@@ -118,13 +120,13 @@ function ResetPasswordForm() {
             </div>
             <div>
               <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
-                New Password
+                {translations.auth.resetPassword.newPassword.label}
               </label>
               <input    
                 id="newPassword"
                 type="password"
                 required
-                placeholder="Enter new password"
+                placeholder={translations.auth.resetPassword.newPassword.placeholder}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={formData.newPassword}
                 onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
@@ -132,13 +134,13 @@ function ResetPasswordForm() {
             </div>
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm New Password
+                {translations.auth.resetPassword.confirmPassword.label}
               </label>
               <input
                 id="confirmPassword"
                 type="password"
                 required
-                placeholder="Confirm new password"
+                placeholder={translations.auth.resetPassword.confirmPassword.placeholder}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
@@ -153,7 +155,9 @@ function ResetPasswordForm() {
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors duration-200"
             >
               {loading && <AuthLoader />}
-              {loading ? 'Resetting...' : success ? 'Success!' : 'Reset Password'}
+              {loading ? translations.auth.resetPassword.button.resetting : 
+               success ? translations.auth.resetPassword.button.success : 
+               translations.auth.resetPassword.button.reset}
             </button>
           </div>
         </form>

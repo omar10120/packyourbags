@@ -85,7 +85,7 @@ export const ar = {
     },
     confirmCancel: {
       title: 'إلغاء الحجز',
-      message: 'هل أنت متأكد من إلغاء الحجز {id}؟ لا يمكن التراجع عن هذا الإجراء',
+      message: 'هل أنت متأكد من إلغاء الحجز ؟ لا يمكن التراجع عن هذا الإجراء',
       confirm: 'تأكيد',
       cancel: 'إلغاء'
     },
@@ -166,6 +166,102 @@ export const ar = {
       contact: "اتصل بنا",
       followUs: "تابعنا",
       rights: "جميع الحقوق محفوظة."
-    }
+    },
+    auth: {
+      login: {
+        title: 'مرحباً بعودتك',
+        subtitle: 'سجل دخول إلى حسابك للمتابعة',
+        email: {
+          label: 'البريد الإلكتروني',
+          placeholder: 'أدخل بريدك الإلكتروني'
+        },
+        password: {
+          label: 'كلمة المرور',
+          placeholder: 'أدخل كلمة المرور'
+        },
+        button: {
+          signin: 'تسجيل الدخول',
+          loading: 'جاري تسجيل الدخول...',
+          success: 'تم بنجاح!'
+        },
+        noAccount: 'ليس لديك حساب؟ سجل الآن',
+        forgotPassword: 'نسيت كلمة المرور؟',
+        successMessage: 'تم تسجيل الدخول بنجاح! جاري التحويل...'
+      },
+      forgotPassword: {
+        title: 'نسيت كلمة المرور',
+        subtitle: 'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور',
+        email: {
+          label: 'البريد الإلكتروني',
+          placeholder: 'example@example.com'
+        },
+        button: {
+          send: 'إرسال رابط إعادة التعيين',
+          sending: 'جاري الإرسال...',
+          sent: 'تم الإرسال!'
+        },
+        success: 'تم إرسال رابط إعادة التعيين! يرجى التحقق من بريدك الإلكتروني.',
+        backToLogin: 'العودة لتسجيل الدخول'
+      },
+      resetPassword: {
+        title: 'إعادة تعيين كلمة المرور',
+        subtitle: 'أدخل رمز التحقق المرسل إلى بريدك الإلكتروني',
+        code: {
+          label: 'رمز التحقق',
+          placeholder: 'أدخل الرمز من البريد الإلكتروني'
+        },
+        newPassword: {
+          label: 'كلمة المرور الجديدة',
+          placeholder: 'أدخل كلمة المرور الجديدة'
+        },
+        confirmPassword: {
+          label: 'تأكيد كلمة المرور الجديدة',
+          placeholder: 'تأكيد كلمة المرور الجديدة'
+        },
+        button: {
+          reset: 'إعادة تعيين كلمة المرور',
+          resetting: 'جاري إعادة التعيين...',
+          success: 'تم بنجاح!'
+        },
+        errors: {
+          passwordMismatch: 'كلمات المرور غير متطابقة',
+          resetFailed: 'فشلت إعادة تعيين كلمة المرور'
+        },
+        success: 'تم إعادة تعيين كلمة المرور بنجاح! جاري التحويل إلى صفحة تسجيل الدخول...'
+      },
+      register: {
+        title: 'إنشاء حساب جديد',
+        fullName: {
+          label: 'الاسم الكامل',
+          placeholder: 'أدخل اسمك الكامل'
+        },
+        email: {
+          label: 'البريد الإلكتروني',
+          placeholder: 'أدخل بريدك الإلكتروني'
+        },
+        password: {
+          label: 'كلمة المرور',
+          placeholder: 'أدخل كلمة المرور'
+        },
+        confirmPassword: {
+          label: 'تأكيد كلمة المرور',
+          placeholder: 'تأكيد كلمة المرور'
+        },
+        phone: {
+          label: 'رقم الهاتف',
+          placeholder: 'رقم الهاتف (اختياري)'
+        },
+        button: {
+          signup: 'إنشاء حساب',
+          creating: 'جاري إنشاء الحساب...'
+        },
+        haveAccount: 'لديك حساب بالفعل؟ تسجيل الدخول',
+        errors: {
+          passwordMismatch: 'كلمات المرور غير متطابقة',
+          passwordLength: 'يجب أن تكون كلمة المرور 6 أحرف على الأقل'
+        }
+      }
+    },
+ 
 }
 

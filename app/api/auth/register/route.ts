@@ -70,7 +70,7 @@ export async function POST(req: Request) {
         name,
         phone: phone || null,
         emailVerified: false,
-        verificationToken: verificationToken  // Make sure this matches the schema
+        verificationToken: verificationToken 
       }
     })
 
