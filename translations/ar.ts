@@ -132,7 +132,22 @@ export const ar = {
         title: 'لا توجد رحلات',
         description: 'حاول تعديل معايير البحث'
       },
-
+      seats: {
+        title: 'اختر مقاعدك',
+        legend: {
+          available: 'متاح',
+          selected: 'تم اختياره',
+          booked: 'محجوز'
+        },
+        selectedSeats: 'المقاعد المختارة',
+        totalPrice: 'السعر الإجمالي',
+        button: {
+          continue: 'متابعة'
+        },
+        errors: {
+          loadFailed: 'فشل تحميل المقاعد'
+        }
+      }
     },
     bookSeat: {
       hero: {

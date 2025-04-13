@@ -103,6 +103,22 @@ export const en = {
       date: 'date',
       search: 'search on trips'
     },
+    seats: {
+      title: 'Select Your Seats',
+      legend: {
+        available: 'Available',
+        selected: 'Selected',
+        booked: 'Booked'
+      },
+      selectedSeats: 'Selected Seats',
+      totalPrice: 'Total Price',
+      button: {
+        continue: 'Continue'
+      },
+      errors: {
+        loadFailed: 'Failed to load seats'
+      }
+    }
   },
   bookSeat: {
     hero: {

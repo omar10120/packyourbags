@@ -17,7 +17,7 @@ const TripCard = ({ trip, onSelect }: TripCardProps) => {
             {trip.departureCity} → {trip.destinationCity}
           </h3>
           <p className="text-sm text-gray-500">
-            {translations.trips.tripCard.date}: {new Date(trip.departureTime).toLocaleDateString(language === 'ar' ? 'en-US' : 'en-US')}
+            {translations.trips.tripCard.date}: {new Date(trip.departureTime).toLocaleString(language === 'ar' ? 'en-US' : 'en-US')}
           </p>
         </div>
         <span className="text-xl font-bold text-blue-600">
