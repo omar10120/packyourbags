@@ -11,6 +11,7 @@ export async function GET(req: Request) {
 
     const trips = await prisma.trip.findMany({
       where: {
+        status :'scheduled',
         AND: [
           {
             route: {

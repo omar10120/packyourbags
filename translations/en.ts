@@ -109,7 +109,8 @@ export const en = {
       legend: {
         available: 'Available',
         selected: 'Selected',
-        booked: 'Booked'
+        booked: 'Booked',
+        blocked: 'Blocked'
       },
       selectedSeats: 'Selected Seats',
       totalPrice: 'Total Price',

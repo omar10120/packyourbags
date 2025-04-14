@@ -93,6 +93,43 @@ export async function PUT(
       )
     }
 
+    // If status is being updated to completed, update in transaction with bus
+    if (status === 'completed') {
+      const updatedTrip = await prisma.$transaction(async (tx) => {
+        const trip = await tx.trip.update({
+          where: { id: params.id },
+          data: {
+            routeId,
+            busId,
+            departureTime: new Date(departureTime),
+            arrivalTime: new Date(arrivalTime),
+            price,
+            status
+          },
+          include: {
+            route: {
+              include: {
+                departureCity: true,
+                arrivalCity: true
+              }
+            },
+            bus: true
+          }
+        })
+
+        // Update bus status to active
+        await tx.bus.update({
+          where: { id: busId },
+          data: { status: 'active' }
+        })
+
+        return trip
+      })
+
+      return NextResponse.json(updatedTrip)
+    }
+
+    // Regular update for other status changes
     const updatedTrip = await prisma.trip.update({
       where: { id: params.id },
       data: {

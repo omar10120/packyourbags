@@ -9,6 +9,7 @@ import {
   MagnifyingGlassIcon 
 } from '@heroicons/react/24/outline'
 import ConfirmDialogAdmin from '@/components/ConfirmDialogAdmin'
+import EditDialog from '@/components/admin/EditRouteDialog'
 
 interface Route {
   id: string
@@ -96,6 +97,17 @@ export default function RoutesPage() {
     route.arrivalCity.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
+  // Add state for edit dialog
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [selectedRoute, setSelectedRoute] = useState<Route | null>(null)
+  
+  // Add handleEditClick function
+  const handleEditClick = (route: Route) => {
+    setSelectedRoute(route)
+    setIsEditDialogOpen(true)
+  }
+  
+  // Update the JSX to include EditDialog and modify the edit button
   return (
     <div>
       <Toaster />
@@ -108,8 +120,15 @@ export default function RoutesPage() {
         confirmText="Delete"
         cancelText="Cancel"
       />
+      <EditDialog
+        isOpen={isEditDialogOpen}
+        onClose={() => setIsEditDialogOpen(false)}
+        route={selectedRoute}
+        onUpdate={fetchRoutes}
+      />
 
       <div className="flex justify-between items-center mb-6 text-black">
+        
         <h1 className="text-2xl font-semibold text-gray-800">Route Management</h1>
         <div className="flex items-center space-x-4">
           <div className="relative">
@@ -170,7 +189,7 @@ export default function RoutesPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button
-                    onClick={() => router.push(`/admin/routes/${route.id}/edit`)}
+                    onClick={() => handleEditClick(route)}
                     className="text-indigo-600 hover:text-indigo-900"
                   >
                     <PencilIcon className="h-5 w-5" />
@@ -186,6 +205,7 @@ export default function RoutesPage() {
             ))}
           </tbody>
         </table>
+
       </div>
     </div>
   )

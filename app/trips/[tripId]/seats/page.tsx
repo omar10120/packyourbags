@@ -9,7 +9,7 @@ import { useLanguage } from '@/context/LanguageContext'
 interface SeatData {
   id: string
   seatNumber: string
-  status: 'available' | 'booked'
+  status: 'available' | 'booked' | 'blocked'
 }
 
 interface TripData {
@@ -129,6 +129,10 @@ return (
                 <div className="w-6 h-6 bg-gray-300 rounded mr-2"></div>
                 <span className='px-4'>{translations.trips.seats.legend.booked}</span>
               </div>
+              <div className="flex items-center">
+                <div className="w-6 h-6 bg-red-300 rounded mr-2"></div>
+                <span className='px-4'>{translations.trips.seats.legend.blocked}</span>
+              </div>
             </div>
           </div>
 
@@ -137,7 +141,8 @@ return (
               <Seat
                 key={seat.id}
                 number={seat.seatNumber}
-                isBooked={seat.status === 'booked'}
+                isBooked={seat.status === 'booked' }
+                isBlocked={seat.status === 'blocked'}
                 isSelected={selectedSeats.includes(seat.seatNumber)}
                 onSelect={handleSeatSelect}
               />

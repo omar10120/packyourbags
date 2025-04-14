@@ -12,7 +12,7 @@ export default function TripsPage() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.replace('/')
+      router.replace('/auth/login')
     } else {
       setIsLoading(false)
     }

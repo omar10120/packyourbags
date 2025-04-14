@@ -176,6 +176,12 @@ export default function BookingsPage() {
       <div className="flex justify-between items-center mb-6 text-black">
         <h1 className="text-2xl font-semibold text-gray-800">Bookings Management</h1>
         <div className="flex items-center space-x-4">
+          <button
+            onClick={() => router.push('/admin/bookings/block')}
+            className="flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            <span>Block Seats</span>
+          </button>
           <div className="relative">
             <input
               type="text"

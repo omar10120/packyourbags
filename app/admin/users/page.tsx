@@ -5,6 +5,8 @@ import {
   TrashIcon, 
   MagnifyingGlassIcon 
 } from '@heroicons/react/24/outline'
+import toast, { Toaster } from 'react-hot-toast'
+import ConfirmDialogAdmin from '@/components/ConfirmDialogAdmin'
 
 interface User {
   id: string
@@ -20,6 +22,8 @@ export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [userToDelete, setUserToDelete] = useState<string | null>(null)
 
   useEffect(() => {
     fetchUsers()
@@ -44,12 +48,17 @@ export default function UsersPage() {
     }
   }
 
-  const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Are you sure you want to delete this user?')) return
+  const handleDeleteClick = (userId: string) => {
+    setUserToDelete(userId)
+    setIsDeleteDialogOpen(true)
+  }
+
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return
 
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/users/${userId}`, {
+      const response = await fetch(`/api/admin/users/${userToDelete}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -57,14 +66,18 @@ export default function UsersPage() {
       })
 
       if (response.ok) {
-        setUsers(users.filter(user => user.id !== userId))
+        setUsers(users.filter(user => user.id !== userToDelete))
+        toast.success('User deleted successfully')
       } else {
         const error = await response.json()
-        alert(error.message || 'Failed to delete user')
+        toast.error(error.message || 'Failed to delete user')
       }
     } catch (error) {
       console.error('Error deleting user:', error)
-      alert('Failed to delete user')
+      toast.error('Failed to delete user')
+    } finally {
+      setUserToDelete(null)
+      setIsDeleteDialogOpen(false)
     }
   }
 
@@ -159,7 +172,7 @@ export default function UsersPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button
-                    onClick={() => handleDeleteUser(user.id)}
+                    onClick={() => handleDeleteClick(user.id)}
                     className="text-red-600 hover:text-red-900 ml-4"
                   >
                     <TrashIcon className="h-5 w-5" />
@@ -170,6 +183,16 @@ export default function UsersPage() {
           </tbody>
         </table>
       </div>
+      <Toaster />
+      <ConfirmDialogAdmin
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={handleDeleteUser}
+        title="Delete User"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
     </div>
   )
 }

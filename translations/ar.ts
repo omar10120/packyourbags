@@ -138,7 +138,8 @@ export const ar = {
         legend: {
           available: 'متاح',
           selected: 'تم اختياره',
-          booked: 'محجوز'
+          booked: 'محجوز',
+          blocked: 'مقفل'
         },
         selectedSeats: 'المقاعد المختارة',
         totalPrice: 'السعر الإجمالي',

@@ -23,7 +23,7 @@ interface ApiTrip {
     }
   }
   seats: {
-    status: 'available' | 'booked'
+    status: 'available' | 'booked' | 'blocked'
   }[]
 }
 
