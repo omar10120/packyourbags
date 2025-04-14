@@ -7,6 +7,7 @@ export const ar = {
     trips : 'الرحلات',
     myBookings: 'الحجوزات',
     bookSeat : 'احجز مقعدك',
+    dashboard : 'لوحة التحكم',
   },
   home: {
     hero: {

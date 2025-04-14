@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
@@ -7,6 +7,7 @@ import { useLanguage } from '@/context/LanguageContext'
 
 export default function RegisterPage() {
   const router = useRouter()
+  const { login } = useAuth()
   const { language, translations } = useLanguage()
   const [formData, setFormData] = useState({
     fullName: '',
@@ -44,39 +45,40 @@ export default function RegisterPage() {
           name: formData.fullName,
           email: formData.email,
           password: formData.password,
-          phone: formData.phone || undefined
+          phone: formData.phone || undefined,
+
         })
       })
 
       const data = await response.json()
 
-      // if (!response.ok) {
-      //   throw new Error(data.error || 'Registration failed')
-      // }
-
-      // router.push('/auth/verify')
-      if (formData.email.includes('+'))
-
-      // router.push(`/auth/verify-code?email=${formData.email}`)
+      if (data.error != null) {
+        setError(data.error);
+        throw new Error(data.error || 'Registration failed')
+      }
+     
+      setError(data.error);
+    
+      
+      // If registration is successful, redirect to verification page
       router.push(`/auth/verify-code?email=${encodeURIComponent(formData.email)}`)
-
       
     } catch (err: any) {
-      setError(err.message)
+      setError(err.message || 'Registration failed. Please try again.')
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <div className={`min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8  ${language === 'ar' ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 text-black  ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <div className="max-w-md w-full space-y-8  ">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             {translations.auth.register.title}
           </h2>
         </div>
-        
+
         {error && (
           <div className="bg-red-50 border-l-4 border-red-400 p-4">
             <p className="text-red-700">{error}</p>

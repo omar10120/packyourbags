@@ -6,6 +6,7 @@ CREATE TABLE `users` (
     `name` VARCHAR(191) NOT NULL,
     `phone` VARCHAR(191) NULL,
     `emailVerified` BOOLEAN NOT NULL DEFAULT false,
+    `role` ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
     `verificationToken` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
@@ -42,7 +43,7 @@ CREATE TABLE `buses` (
     `plate_number` VARCHAR(20) NOT NULL,
     `capacity` INTEGER NOT NULL,
     `model` VARCHAR(100) NULL,
-    `status` ENUM('active', 'maintenance', 'inactive') NULL DEFAULT 'active',
+    `status` ENUM('active', 'maintenance', 'inactive', 'passenger_filling', 'in_trip') NULL DEFAULT 'active',
 
     UNIQUE INDEX `plate_number`(`plate_number`),
     PRIMARY KEY (`id`)

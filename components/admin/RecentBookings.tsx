@@ -1,24 +1,21 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { format } from 'date-fns'
-import Link from 'next/link'
-import { 
-  CheckCircleIcon, 
-  XCircleIcon, 
-  ClockIcon 
-} from '@heroicons/react/24/outline'
 
 interface Booking {
   id: string
-  userId: string
-  userName: string
-  tripId: string
-  from: string
-  to: string
-  date: string
-  seats: number
-  status: 'confirmed' | 'pending' | 'cancelled'
-  totalAmount: number
+  user: {
+    name: string
+    email: string
+  }
+  trip: {
+    route: {
+      departureCity: { name: string }
+      arrivalCity: { name: string }
+    }
+    departureTime: string
+  }
+  totalPrice: number
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
 }
 
 export default function RecentBookings() {
@@ -31,9 +28,9 @@ export default function RecentBookings() {
 
   const fetchRecentBookings = async () => {
     try {
-      const response = await fetch('/api/admin/bookings/recent')
+      const response = await fetch('/api/admin/stats')
       const data = await response.json()
-      setBookings(data)
+      setBookings(data.recentBookings)
     } catch (error) {
       console.error('Error fetching recent bookings:', error)
     } finally {
@@ -41,108 +38,70 @@ export default function RecentBookings() {
     }
   }
 
-  const getStatusIcon = (status: string) => {
+  const getStatusColor = (status: Booking['status']) => {
     switch (status) {
-      case 'confirmed':
-        return <CheckCircleIcon className="h-5 w-5 text-green-500" />
-      case 'cancelled':
-        return <XCircleIcon className="h-5 w-5 text-red-500" />
-      default:
-        return <ClockIcon className="h-5 w-5 text-yellow-500" />
+      case 'confirmed': return 'bg-green-100 text-green-800'
+      case 'cancelled': return 'bg-red-100 text-red-800'
+      case 'completed': return 'bg-blue-100 text-blue-800'
+      default: return 'bg-yellow-100 text-yellow-800'
     }
   }
 
   if (loading) {
-    return (
-      <div className="animate-pulse">
-        <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
-        <div className="space-y-4">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-16 bg-gray-200 rounded"></div>
-          ))}
-        </div>
-      </div>
-    )
+    return <div>Loading...</div>
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white rounded-lg shadow">
+      <div className="px-6 py-4 border-b border-gray-200">
         <h2 className="text-xl font-semibold text-gray-800">Recent Bookings</h2>
-        <Link 
-          href="/admin/bookings"
-          className="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
-        >
-          View all bookings
-        </Link>
       </div>
-
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  User
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Trip Details
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Seats
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Amount
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
-                </th>
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Customer
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Route
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Date
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Amount
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {bookings.map((booking) => (
+              <tr key={booking.id}>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-medium text-gray-900">{booking.user.name}</div>
+                  <div className="text-sm text-gray-500">{booking.user.email}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {booking.trip.route.departureCity.name} → {booking.trip.route.arrivalCity.name}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {new Date(booking.trip.departureTime).toLocaleDateString()}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  ${booking.totalPrice}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(booking.status)}`}>
+                    {booking.status}
+                  </span>
+                </td>
               </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {bookings.map((booking) => (
-                <tr key={booking.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {booking.userName}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
-                      {booking.from} → {booking.to}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {booking.seats}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
-                      ${booking.totalAmount}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      {getStatusIcon(booking.status)}
-                      <span className={`ml-2 text-sm ${
-                        booking.status === 'confirmed' ? 'text-green-800' :
-                        booking.status === 'cancelled' ? 'text-red-800' :
-                        'text-yellow-800'
-                      }`}>
-                        {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {format(new Date(booking.date), 'MMM dd, yyyy')}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

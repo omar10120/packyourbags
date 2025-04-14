@@ -139,6 +139,8 @@ enum BusStatus {
   active
   maintenance
   inactive
+  passenger_filling
+  in_trip
 }
 
 enum TripStatus {
@@ -152,6 +154,7 @@ enum SeatStatus {
   available
   booked
   reserved
+
 }
 
 enum BookingStatus {

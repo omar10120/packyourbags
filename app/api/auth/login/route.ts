@@ -80,7 +80,8 @@ export async function POST(req: Request) {
         id: user.id,
         email: user.email,
         name: user.name,
-        phone: user.phone
+        phone: user.phone,
+        role: user.role
       }
     })
   } catch (error) {

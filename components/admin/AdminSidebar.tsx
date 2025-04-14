@@ -7,14 +7,25 @@ import {
   TicketIcon,
   CalendarIcon,
   CogIcon,
-  ChartBarIcon
+  ChartBarIcon,
+  TruckIcon,
+  MapIcon,
+  
 } from '@heroicons/react/24/outline'
+import BusesPage from '@/app/admin/buses/page'
+
+// Add to imports
+
+
 
 const menuItems = [
   { href: '/admin', icon: HomeIcon, label: 'Dashboard' },
   { href: '/admin/users', icon: UsersIcon, label: 'Users' },
   { href: '/admin/bookings', icon: TicketIcon, label: 'Bookings' },
   { href: '/admin/trips', icon: CalendarIcon, label: 'Trips' },
+  { href: '/admin/buses', icon: TruckIcon, label: 'Buses' },  
+  { href: '/admin/routes', icon: MapIcon, label: 'Routes' }, 
+  { href: '/admin/cities', icon: MapIcon, label: 'Cities' }, 
   { href: '/admin/reports', icon: ChartBarIcon, label: 'Reports' },
   { href: '/admin/settings', icon: CogIcon, label: 'Settings' }
 ]

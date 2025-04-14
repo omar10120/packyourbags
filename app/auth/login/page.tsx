@@ -42,7 +42,7 @@ export default function LoginPage() {
 
       if (!response.ok) {
         if (data.isVerificationError) {
-          router.push(`/auth/verify?email=${formData.email}`)
+          router.push(`/auth/verify-code?email=${formData.email}`)
           return
         }
         throw new Error(data.error || 'Login failed')

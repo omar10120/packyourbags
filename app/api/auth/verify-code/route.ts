@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
     if (!user || !user.verificationToken) {
       return NextResponse.json(
-        { error: `Invalid verification attempt: ${decodedEmail}` },
+        { error: `Invalid verification attempt` },
         { status: 400 }
       )
     }

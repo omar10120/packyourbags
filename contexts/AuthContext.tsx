@@ -2,12 +2,30 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-export const AuthContext = createContext<any>(null)
+interface User {
+  id: string
+  name: string
+  email: string
+  role: 'USER' | 'ADMIN'
+  emailVerified: boolean
+  phone?: string | null
+}
+
+interface AuthContextType {
+  isAuthenticated: boolean
+  user: User | null
+  login: (userData: User, token: string, refreshToken: string) => Promise<void>
+  logout: () => void
+  checkAuth: () => boolean
+  loading: boolean
+}
+
+export const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -15,25 +33,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const checkAuth = () => {
-    const token = localStorage.getItem('token')
-    const userData = localStorage.getItem('user')
-    
-    if (token && userData) {
-      setIsAuthenticated(true)
-      setUser(JSON.parse(userData))
-      setLoading(false)
-      return true
+    try {
+      const token = localStorage.getItem('token')
+      const userData = localStorage.getItem('user')
+      
+      if (token && userData) {
+        const parsedUser = JSON.parse(userData) as User
+        setIsAuthenticated(true)
+        setUser(parsedUser)
+        setLoading(false)
+        return true
+      }
+    } catch (error) {
+      console.error('Error checking auth:', error)
+      logout()
     }
     setLoading(false)
     return false
   }
 
-  const login = async (userData: any, token: string, refreshToken: string) => {
-    localStorage.setItem('token', token)
-    localStorage.setItem('refreshToken', refreshToken)
-    localStorage.setItem('user', JSON.stringify(userData))
-    setUser(userData)
-    setIsAuthenticated(true)
+  const login = async (userData: User, token: string, refreshToken: string) => {
+    try {
+      localStorage.setItem('token', token)
+      localStorage.setItem('refreshToken', refreshToken)
+      localStorage.setItem('user', JSON.stringify(userData))
+      setUser(userData)
+      setIsAuthenticated(true)
+    } catch (error) {
+      console.error('Error during login:', error)
+      logout()
+    }
   }
 
   const logout = () => {
@@ -46,10 +75,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, checkAuth, loading }}>
+    <AuthContext.Provider value={{ 
+      isAuthenticated, 
+      user, 
+      login, 
+      logout, 
+      checkAuth, 
+      loading 
+    }}>
       {children}
     </AuthContext.Provider>
   )
 }
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+  return context
+}

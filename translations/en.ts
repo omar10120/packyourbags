@@ -4,6 +4,7 @@ export const en = {
     trips : 'Trips',
     myBookings : 'My Bookings',    
     bookSeat : 'Book Seat',
+    dashboard : 'Dashboard',
   },
   home: {
     hero: {

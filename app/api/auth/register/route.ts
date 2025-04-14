@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
 import { sendVerificationEmail } from '@/utils/emailService'
+import { ok } from 'assert'
 
 // Password validation function
 const isValidPassword = (password: string): boolean => {
@@ -77,13 +78,14 @@ export async function POST(req: Request) {
     // Send verification email
     await sendVerificationEmail(email, verificationToken)
 
-    return NextResponse.json({
+    return NextResponse.json({  
       message: 'Registration successful. Please check your email to verify your account.',
       user: {
         id: user.id,
         email: user.email,
         name: user.name,
         phone: user.phone,
+
         
       }
     })
@@ -91,7 +93,8 @@ export async function POST(req: Request) {
     console.error('Registration error:', error)
     return NextResponse.json(
       { error: 'Failed to register user' },
-      { status: 500 }
+      { status: 500 },
     )
   }
 }
+
