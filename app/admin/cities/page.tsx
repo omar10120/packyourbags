@@ -26,21 +26,46 @@ export default function CitiesPage() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [cityToDelete, setCityToDelete] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetchCities()
-  }, [])
-
   const fetchCities = async () => {
     try {
-      const response = await fetch('/api/admin/cities')
+      const token = localStorage.getItem('token')
+      const response = await fetch('/api/admin/cities', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const data = await response.json()
-      setCities(data)
+      
+      if (Array.isArray(data)) {
+        setCities(data)
+      } else {
+        console.error('Invalid cities response:', data)
+        setCities([])
+      }
     } catch (error) {
       console.error('Error fetching cities:', error)
+      toast.error('Failed to fetch cities')
+      setCities([])
     } finally {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    let isSubscribed = true;
+
+    const initializeFetch = async () => {
+      if (isSubscribed) {
+        await fetchCities()
+      }
+    }
+
+    initializeFetch()
+
+    return () => {
+      isSubscribed = false
+    }
+  }, [])
 
   const handleDeleteClick = (cityId: string) => {
     setCityToDelete(cityId)
@@ -51,8 +76,12 @@ export default function CitiesPage() {
     if (!cityToDelete) return
 
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/cities/${cityToDelete}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       })
 
       const data = await response.json()

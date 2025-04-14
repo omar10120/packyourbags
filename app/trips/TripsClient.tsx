@@ -50,8 +50,13 @@ export default function TripsClient(): ReactElement {
       if (from) queryParams.append('from', from)
       if (to) queryParams.append('to', to)
       if (date) queryParams.append('date', date)
-
-      const response = await fetch(`/api/trips?${queryParams.toString()}`)
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/trips?${queryParams.toString()}`,{
+        headers: {
+          'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
+        }
+      })
       const data: ApiTrip[] = await response.json()
 
       const formattedTrips: Trip[] = data.map(trip => ({

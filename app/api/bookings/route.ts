@@ -80,11 +80,13 @@ export async function GET(req: Request) {
   try {
     const headersList = headers()
     const userId = headersList.get('userId')
+    
 
+    
     
     if (!userId) {
       return NextResponse.json(
-        { error: `Authentication required ${userId}` },
+        { error: `Authentication required ${userId} ` },
         { status: 401 }
       )
     }

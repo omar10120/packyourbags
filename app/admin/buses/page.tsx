@@ -35,6 +35,8 @@ export default function BusesPage() {
       default: return 'bg-gray-100 text-gray-800'
     }
   }
+  if (!Array.isArray(buses)) return null
+
   const filteredBuses = buses.filter(bus => 
     bus.plateNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
     bus.model.toLowerCase().includes(searchTerm.toLowerCase())
@@ -46,15 +48,33 @@ export default function BusesPage() {
 
   const fetchBuses = async () => {
     try {
-      const response = await fetch('/api/admin/buses')
+      const token = localStorage.getItem('token')
+
+      
+      const response = await fetch(`/api/admin/buses`, {
+
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
       const data = await response.json()
-      setBuses(data)
+  
+      // Ensure data is an array
+      if (Array.isArray(data)) {
+        setBuses(data)
+      } else {
+        console.error('Invalid response format for buses:', data)
+        setBuses([]) // fallback
+      }
     } catch (error) {
       console.error('Error fetching buses:', error)
+      setBuses([]) // fallback on error
     } finally {
       setLoading(false)
     }
   }
+  
 
   const handleDeleteClick = (busId: string) => {
     setBusToDelete(busId)
@@ -65,8 +85,12 @@ export default function BusesPage() {
     if (!busToDelete) return
 
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/buses/${busToDelete}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers:{
+          'Authorization': `Bearer ${token}`
+        }
       })
 
       const data = await response.json()

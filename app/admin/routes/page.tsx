@@ -43,7 +43,12 @@ export default function RoutesPage() {
 
   const fetchRoutes = async () => {
     try {
-      const response = await fetch('/api/admin/routes')
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/admin/routes`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const data = await response.json()
       setRoutes(data)
     } catch (error) {
@@ -62,8 +67,12 @@ export default function RoutesPage() {
     if (!routeToDelete) return
 
     try {
-      const response = await fetch(`/api/admin/routes/${routeToDelete}`, {
-        method: 'DELETE'
+      const token = localStorage.getItem('token')
+        const response = await fetch(`/api/admin/routes/${routeToDelete}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       })
 
       const data = await response.json()

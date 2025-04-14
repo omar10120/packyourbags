@@ -54,7 +54,9 @@ export default function BookingsPage() {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   const [loading, setLoading] = useState(true)
 
-  
+  const [value1 , setvalue1 ] = useState('')
+  const [value2 , setvalue2 ] = useState('')
+  const [valueint2 , setvalueint2 ] = useState('')
   useEffect(() => {
     if (!checkAuth()) {
       router.push('/auth/login')
@@ -72,7 +74,9 @@ export default function BookingsPage() {
         router.push('/auth/login')
         return
       }
+    
 
+      
       const response = await fetch('/api/bookings', {
         headers: {
           'Authorization': `Bearer ${token}`

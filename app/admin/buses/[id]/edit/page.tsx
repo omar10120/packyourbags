@@ -28,7 +28,13 @@ export default function EditBusPage({ params }: EditBusPageProps) {
 
   const fetchBusDetails = async () => {
     try {
-      const response = await fetch(`/api/admin/buses/${params.id}`)
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/admin/buses/${params.id}`,{
+        headers: {
+          'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
+        },
+      })
       if (!response.ok) throw new Error('Failed to fetch bus details')
       
       const data = await response.json()
@@ -50,10 +56,12 @@ export default function EditBusPage({ params }: EditBusPageProps) {
     setLoading(true)
 
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/buses/${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           ...formData,

@@ -37,7 +37,12 @@ export default function NewTripPage() {
 
   const fetchRoutes = async () => {
     try {
-      const response = await fetch('/api/admin/routes')
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/admin/routes`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const data = await response.json()
       setRoutes(data)
     } catch (error) {
@@ -47,7 +52,13 @@ export default function NewTripPage() {
 
   const fetchBuses = async () => {
     try {
-      const response = await fetch('/api/admin/buses')
+      const token = localStorage.getItem('token')
+
+      const response = await fetch(`/api/admin/buses`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const data = await response.json()
       // Filter to only show active buses
       const activeBuses = data.filter((bus: Bus) => bus.status === 'active')
@@ -63,10 +74,12 @@ export default function NewTripPage() {
     setLoading(true)
 
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch('/api/admin/trips', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           ...formData,

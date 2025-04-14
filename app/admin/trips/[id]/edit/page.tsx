@@ -44,7 +44,12 @@ export default function EditTripPage({ params }: PageProps) {
 
   const fetchTripDetails = async () => {
     try {
-      const response = await fetch(`/api/admin/trips/${params.id}`)
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/admin/trips/${params.id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       if (!response.ok) throw new Error('Failed to fetch trip details')
       
       const data = await response.json()
@@ -64,7 +69,14 @@ export default function EditTripPage({ params }: PageProps) {
 
   const fetchRoutes = async () => {
     try {
-      const response = await fetch('/api/admin/routes')
+      const token = localStorage.getItem('token')
+
+      const response = await fetch(`/api/admin/routes`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
       const data = await response.json()
       setRoutes(data)
     } catch (error) {
@@ -74,7 +86,14 @@ export default function EditTripPage({ params }: PageProps) {
 
   const fetchBuses = async () => {
     try {
-      const response = await fetch('/api/admin/buses')
+      
+      const token = localStorage.getItem('token')
+
+      const response = await fetch(`/api/admin/buses`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const data = await response.json()
       setBuses(data)
     } catch (error) {
@@ -88,10 +107,13 @@ export default function EditTripPage({ params }: PageProps) {
     setLoading(true)
 
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/trips/${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+          
         },
         body: JSON.stringify({
           ...formData,

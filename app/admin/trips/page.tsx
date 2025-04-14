@@ -37,7 +37,12 @@ export default function TripsPage() {
 
   const fetchTrips = async () => {
     try {
-      const response = await fetch('/api/admin/trips')
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/admin/trips`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const data = await response.json()
       setTrips(data)
     } catch (error) {
@@ -51,8 +56,12 @@ export default function TripsPage() {
     if (!confirm('Are you sure you want to delete this trip?')) return
 
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/trips/${tripId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       })
 
       if (response.ok) {

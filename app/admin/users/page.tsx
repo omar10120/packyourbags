@@ -27,7 +27,14 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/admin/users')
+      const token = localStorage.getItem('token')
+      
+      const response = await fetch(`/api/admin/users`, {
+        headers: {
+          'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
+        },
+      })
       const data = await response.json()
       setUsers(data)
     } catch (error) {
@@ -41,8 +48,12 @@ export default function UsersPage() {
     if (!confirm('Are you sure you want to delete this user?')) return
 
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/users/${userId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       })
 
       if (response.ok) {

@@ -52,13 +52,13 @@ export async function POST(req: Request) {
     })
 
     const token = jwt.sign(
-      { userId: user.id },
+      { userId: user.id , role: user.role },
       process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '1h' }
     )
 
     const refreshToken = jwt.sign(
-      { userId: user.id },
+      { userId: user.id , refresh: true,},
       process.env.JWT_REFRESH_SECRET || 'your-refresh-secret',
       { expiresIn: '7d' }
     )

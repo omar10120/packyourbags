@@ -41,7 +41,13 @@ export default function SeatsPage({ params }: SeatsPageProps): ReactElement {
 
   const fetchTripSeats = async () => {
     try {
-      const response = await fetch(`/api/trips/${tripId}`)
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/trips/${tripId}`,{
+        headers: {
+          'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
+        }
+      })
       if (!response.ok) {
         throw new Error('Failed to fetch trip data')
       }

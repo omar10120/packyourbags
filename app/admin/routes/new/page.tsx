@@ -24,7 +24,13 @@ export default function NewRoutePage() {
 
   const fetchCities = async () => {
     try {
-      const response = await fetch('/api/admin/cities')
+      const token = localStorage.getItem('token')
+
+      const response = await fetch(`/api/admin/cities`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const data = await response.json()
       setCities(data)
     } catch (error) {
@@ -38,10 +44,12 @@ export default function NewRoutePage() {
     setLoading(true)
 
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch('/api/admin/routes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           ...formData,

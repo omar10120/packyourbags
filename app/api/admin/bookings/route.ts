@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { headers } from 'next/headers'
 
 export async function GET() {
+
   try {
+    
     const bookings = await prisma.booking.findMany({
       orderBy: {
         bookingDate: 'desc'

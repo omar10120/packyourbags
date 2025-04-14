@@ -23,7 +23,14 @@ export default function EditCityPage({ params }: PageProps) {
 
   const fetchCity = async () => {
     try {
-      const response = await fetch(`/api/admin/cities/${params.id}`)
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/admin/cities/${params.id}`,{
+        headers:{
+          'Authorization': `Bearer ${token}`
+        }
+      })
+    
+
       if (!response.ok) throw new Error('Failed to fetch city')
       
       const data = await response.json()
@@ -42,10 +49,13 @@ export default function EditCityPage({ params }: PageProps) {
     setLoading(true)
 
     try {
+      
+      const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/cities/${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       })

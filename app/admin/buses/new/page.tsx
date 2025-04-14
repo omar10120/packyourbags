@@ -19,11 +19,14 @@ export default function NewBusPage() {
     setError('')
     setLoading(true)
 
+
     try {
+        const token = localStorage.getItem('token')
       const response = await fetch('/api/admin/buses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           ...formData,

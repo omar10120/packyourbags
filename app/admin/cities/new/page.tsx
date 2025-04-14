@@ -16,10 +16,12 @@ export default function NewCityPage() {
     setLoading(true)
 
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch('/api/admin/cities', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       })

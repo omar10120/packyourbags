@@ -11,13 +11,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     if (!loading) {
-      if (!isAuthenticated || user?.role !== 'ADMIN') {
+      if (!isAuthenticated) {
+        router.push('/auth/login')
+        return
+      }
+      
+      if (user?.role !== 'ADMIN') {
         router.push('/')
+        return
       }
 
       setIsChecking(false)
     }
-  }, [isAuthenticated, loading])
+  }, [isAuthenticated, loading, user, router])
 
   if (loading || isChecking) {
     return (
@@ -27,25 +33,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     )
   }
 
-  if (isAuthenticated && user?.role !== 'ADMIN') {
+  // Only render the admin layout if authenticated and admin
+  if (isAuthenticated && user?.role === 'ADMIN') {
     return (
-      <div className="flex h-screen items-center justify-center bg-gray-100">
-        <div className="text-center p-8 bg-white rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
-          <p className="text-gray-600"> You don't have permission to access this area.</p>
-        </div>
+      <div className="flex h-screen bg-gray-100">
+        <AdminSidebar />
+        <main className="flex-1 overflow-x-hidden overflow-y-auto">
+          <div className="container mx-auto px-6 py-8">
+            {children}
+          </div>
+        </main>
       </div>
     )
   }
 
+  // Show loading while redirecting
   return (
-    <div className="flex h-screen bg-gray-100">
-      <AdminSidebar />
-      <main className="flex-1 overflow-x-hidden overflow-y-auto">
-        <div className="container mx-auto px-6 py-8">
-          {children}
-        </div>
-      </main>
+    <div className="flex h-screen items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
     </div>
   )
 }

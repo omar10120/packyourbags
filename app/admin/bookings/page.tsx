@@ -7,8 +7,10 @@ import {
   TrashIcon,
   MagnifyingGlassIcon,
   CheckCircleIcon,
-  XCircleIcon 
+  XCircleIcon,
+  InformationCircleIcon 
 } from '@heroicons/react/24/outline'
+import BookingDetailsDialog from '@/components/admin/BookingDetailsDialog'
 
 interface Booking {
   id: string
@@ -16,6 +18,11 @@ interface Booking {
   status: 'pending' | 'confirmed' | 'cancelled'
   totalPrice: number
   createdAt: string
+  user: {
+    name: string
+    email: string
+    phone: string
+  }
   trip: {
     departureTime: string
     arrivalTime: string
@@ -38,6 +45,8 @@ export default function BookingsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [bookingToDelete, setBookingToDelete] = useState<string | null>(null)
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
   const getStatusColor = (status: Booking['status']) => {
     switch (status) {
@@ -47,28 +56,48 @@ export default function BookingsPage() {
     }
   }
 
-  useEffect(() => {
-    fetchBookings()
-  }, [])
-
   const fetchBookings = async () => {
     try {
-      const response = await fetch('/api/admin/bookings')
+      const token = localStorage.getItem('token')
+      const response = await fetch('/api/admin/bookings', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const data = await response.json()
-      setBookings(data)
+      setBookings(data || [])
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching bookings:', error)
       toast.error('Failed to fetch bookings')
-    } finally {
+      setBookings([])
       setLoading(false)
     }
   }
 
+  useEffect(() => {
+    let isSubscribed = true;
+
+    const initializeFetch = async () => {
+      if (isSubscribed) {
+        await fetchBookings()
+      }
+    }
+
+    initializeFetch()
+
+    return () => {
+      isSubscribed = false
+    }
+  }, [])
+
   const handleStatusUpdate = async (bookingId: string, newStatus: 'confirmed' | 'cancelled') => {
     try {
+      const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/bookings/${bookingId}`, {
         method: 'PUT',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ status: newStatus })
@@ -79,7 +108,7 @@ export default function BookingsPage() {
       }
 
       toast.success('Booking status updated successfully')
-      fetchBookings() // Refresh the list
+      await fetchBookings() // Now this will work
     } catch (error) {
       toast.error('Failed to update booking status')
     }
@@ -118,7 +147,11 @@ export default function BookingsPage() {
   )
 
   if (loading) {
-    return <div>Loading...</div>
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      </div>
+    )
   }
 
   return (
@@ -132,6 +165,12 @@ export default function BookingsPage() {
         message="Are you sure you want to delete this booking? This action cannot be undone."
         confirmText="Delete"
         cancelText="Cancel"
+      />
+      
+      <BookingDetailsDialog
+        isOpen={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+        booking={selectedBooking}
       />
 
       <div className="flex justify-between items-center mb-6 text-black">
@@ -195,6 +234,15 @@ export default function BookingsPage() {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button
+                    onClick={() => {
+                      setSelectedBooking(booking)
+                      setIsDetailsOpen(true)
+                    }}
+                    className="text-indigo-600 hover:text-indigo-900 mr-4"
+                  >
+                    <InformationCircleIcon className="h-5 w-5" />
+                  </button>
                   {booking.status === 'pending' && (
                     <>
                       <button
