@@ -44,32 +44,36 @@ export default function Navbar() {
                 <span>{translations.nav.dashboard}</span>
               </Link>
             )}
+
             <Link href="/" className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all">
               <HomeIcon className="h-5 w-5" />
               <span>{translations.nav.home}</span>
             </Link>
-          
-            <Link 
-              href={isAuthenticated ? "/book-seat" : "/auth/login"}
-              className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
-            >
-              <TicketIcon className="h-5 w-5" />
-              <span>{translations.nav.bookSeat}</span>
-            </Link>
-            <Link 
-              href={isAuthenticated ? "/trips" : "/auth/login"}
-              className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
-            >
-              <MapIcon className="h-5 w-5" />
-              <span>{translations.nav.trips}</span>
-            </Link>
-            <Link 
-              href={isAuthenticated ? "/bookings" : "/auth/login"}
-              className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
-            >
-              <BookmarkIcon className="h-5 w-5" />
-              <span>{translations.nav.myBookings}</span>
-            </Link>
+           {isAuthenticated && (
+            <>
+              <Link 
+                href={isAuthenticated ? "/book-seat" : "/auth/login"}
+                className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+              >
+                <TicketIcon className="h-5 w-5" />
+                <span>{translations.nav.bookSeat}</span>
+              </Link>
+              <Link 
+                href={isAuthenticated ? "/trips" : "/auth/login"}
+                className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+              >
+                <MapIcon className="h-5 w-5" />
+                <span>{translations.nav.trips}</span>
+              </Link>
+              <Link 
+                href={isAuthenticated ? "/bookings" : "/auth/login"}
+                className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+              >
+                <BookmarkIcon className="h-5 w-5" />
+                <span>{translations.nav.myBookings}</span>
+              </Link>
+            </>
+            )}
           </div>
 
           {/* Desktop Auth Buttons */}
@@ -141,6 +145,8 @@ export default function Navbar() {
               <span>{translations.nav.dashboard}</span>
             </Link>
           )}
+          {isAuthenticated && (
+          <> 
             <Link
               href="/"
               className="flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50"
@@ -173,7 +179,9 @@ export default function Navbar() {
               <BookmarkIcon className="h-5 w-5" />
               <span>{translations.nav.myBookings}</span>
             </Link>
-
+            
+          </>
+          )}
             {/* Mobile Language Toggle */}
             <button
               onClick={() => {
