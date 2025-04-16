@@ -203,7 +203,7 @@ export const ar = {
         },
         noAccount: 'ليس لديك حساب؟ سجل الآن',
         forgotPassword: 'نسيت كلمة المرور؟',
-        successMessage: 'تم تسجيل الدخول بنجاح! جاري التحويل...'
+        successMessage: 'تم تسجيل الدخول بنجاح! ...'
       },
       forgotPassword: {
         title: 'نسيت كلمة المرور',

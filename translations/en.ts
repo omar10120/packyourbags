@@ -173,9 +173,10 @@ export const en = {
         loading: 'Signing in...',
         success: 'Success!'
       },
+
       noAccount: "Don't have an account? Register",
       forgotPassword: 'Forgot password?',
-      successMessage: 'Login successful! Redirecting...'
+      successMessage: 'Login successful!...'
     },
     forgotPassword: {
       title: 'Forgot Password',
