@@ -70,7 +70,7 @@ export default function EditRouteDialog({ isOpen, onClose, route, onUpdate }: Pr
       const data = await response.json()
       setCities(data)
     } catch (error) {
-      toast.error('Failed to fetch cities')
+      toast.error('Internal server error cities')
     }
   }
 

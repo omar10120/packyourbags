@@ -72,7 +72,7 @@ export default function TripsClient(): ReactElement {
       setTrips(formattedTrips)
       setFilteredTrips(formattedTrips)
     } catch (error) {
-      console.error('Failed to fetch trips:', error)
+      console.error('Internal server error trips:', error)
     } finally {
       setLoading(false)
     }

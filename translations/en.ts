@@ -219,6 +219,32 @@ export const en = {
       },
       success: 'Password reset successful! Redirecting to login...'
     },
+    verify: {
+      title: 'Email Verification',
+      status: {
+        pending: 'Verifying your email...',
+        success: 'Email verified successfully! Redirecting to login...',
+        error: 'Verification failed'
+      },
+      errors: {
+        emailRequired: 'Email is required for verification'
+      }
+    },
+    verifyCode: {
+      title: 'Verify Your Email',
+      subtitle: 'Please enter the verification code sent to your email',
+      placeholder: 'Enter verification code',
+      buttons: {
+        verify: 'Verify Email',
+        verifying: 'Verifying...',
+        verified: 'Verified!'
+      },
+      errors: {
+        verificationFailed: 'Verification failed',
+        generic: 'An error occurred during verification'
+      },
+      success: 'Email verified successfully! Redirecting to login...'
+    },
     register: {
       title: 'Create your account',
       fullName: {

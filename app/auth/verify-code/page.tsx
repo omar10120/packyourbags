@@ -2,12 +2,15 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
+import { useLanguage } from '@/context/LanguageContext'
 import AuthLoader from '../components/AuthLoader'
 
 function VerifyCodeForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { isAuthenticated } = useAuth()
+  const { language, translations } = useLanguage()
+  const t = translations.auth.verifyCode
   const [verificationCode, setVerificationCode] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -44,13 +47,13 @@ function VerifyCodeForm() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Verification failed')
+        throw new Error(data.error || t.errors.verificationFailed)
       }
 
       setSuccess(true)
       setTimeout(() => router.push('/auth/login'), 2000)
     } catch (err: any) {
-      setError(err.message)
+      setError(err.message || t.errors.generic)
     } finally {
       setLoading(false)
     }
@@ -58,13 +61,13 @@ function VerifyCodeForm() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
+      <div className={`max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg ${language === 'ar' ? 'rtl' : 'ltr'}`}>
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Verify Your Email
+            {t.title}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Please enter the verification code sent to your email
+            {t.subtitle}
           </p>
         </div>
 
@@ -77,24 +80,23 @@ function VerifyCodeForm() {
 
           {success && (
             <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded">
-              <p className="text-sm text-green-700">
-                Email verified successfully! Redirecting to login...
-              </p>
+              <p className="text-sm text-green-700">{t.success}</p>
             </div>
           )}
 
           <div>
             <label htmlFor="code" className="sr-only">
-              Verification Code
+              {t.placeholder}
             </label>
             <input
               id="code"
               type="text"
               required
               className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Enter verification code"
+              placeholder={t.placeholder}
               value={verificationCode}
               onChange={(e) => setVerificationCode(e.target.value)}
+              dir="ltr"
             />
           </div>
 
@@ -107,12 +109,12 @@ function VerifyCodeForm() {
               {loading ? (
                 <>
                   <AuthLoader />
-                  <span className="ml-2">Verifying...</span>
+                  <span className={`${language === 'ar' ? 'mr-2' : 'ml-2'}`}>{t.buttons.verifying}</span>
                 </>
               ) : success ? (
-                'Verified!'
+                t.buttons.verified
               ) : (
-                'Verify Email'
+                t.buttons.verify
               )}
             </button>
           </div>
