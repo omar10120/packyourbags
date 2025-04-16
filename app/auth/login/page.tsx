@@ -97,7 +97,8 @@ export default function LoginPage() {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-green-700">Login successful! Redirecting...</p>
+                  <p className="text-sm text-green-700">{translations.auth.login.successMessage}</p>
+                  
                 </div>
               </div>
             </div>
