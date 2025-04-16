@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useLanguage } from '@/context/LanguageContext'
+import toast, { Toaster } from 'react-hot-toast'
 
 interface Route {
   id: string
@@ -17,6 +19,8 @@ interface Bus {
 
 export default function NewTripPage() {
   const router = useRouter()
+  const { language, translations } = useLanguage()
+  const t = translations.dashboard.trips.form
   const [routes, setRoutes] = useState<Route[]>([])
   const [buses, setBuses] = useState<Bus[]>([])
   const [loading, setLoading] = useState(false)
@@ -79,7 +83,7 @@ export default function NewTripPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-           'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           ...formData,
@@ -90,20 +94,23 @@ export default function NewTripPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to create trip')
+        throw new Error(data.error || t.errors.createFailed)
       }
 
+      toast.success(t.success.created)
       router.push('/admin/trips')
     } catch (err: any) {
       setError(err.message)
+      toast.error(t.errors.createFailed)
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="max-w-2xl mx-auto text-black">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">Create New Trip</h1>
+    <div className={`max-w-2xl mx-auto text-black ${language === 'ar' ? 'rtl' : 'ltr'}`}>
+      <Toaster />
+      <h1 className="text-2xl font-semibold text-gray-800 mb-6">{t.title.new}</h1>
 
       {error && (
         <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
@@ -114,7 +121,7 @@ export default function NewTripPage() {
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Route
+            {t.labels.route}
           </label>
           <select
             required
@@ -122,7 +129,7 @@ export default function NewTripPage() {
             onChange={(e) => setFormData({ ...formData, routeId: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           >
-            <option value="">Select a route</option>
+            <option value="">{t.placeholders.selectRoute}</option>
             {routes.map((route) => (
               <option key={route.id} value={route.id}>
                 {route.departureCity.name} → {route.arrivalCity.name}
@@ -133,7 +140,7 @@ export default function NewTripPage() {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Bus
+            {t.labels.bus}
           </label>
           <select
             required
@@ -141,10 +148,10 @@ export default function NewTripPage() {
             onChange={(e) => setFormData({ ...formData, busId: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           >
-            <option value="">Select a bus</option>
+            <option value="">{t.placeholders.selectBus}</option>
             {buses.map((bus) => (
               <option key={bus.id} value={bus.id}>
-                {bus.plateNumber} (Capacity: {bus.capacity})
+                {bus.plateNumber} ({t.placeholders.busCapacity}: {bus.capacity})
               </option>
             ))}
           </select>
@@ -152,7 +159,7 @@ export default function NewTripPage() {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Departure Time
+            {t.labels.departureTime}
           </label>
           <input
             type="datetime-local"
@@ -165,7 +172,7 @@ export default function NewTripPage() {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Arrival Time
+            {t.labels.arrivalTime}
           </label>
           <input
             type="datetime-local"
@@ -178,7 +185,7 @@ export default function NewTripPage() {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Price
+            {t.labels.price}
           </label>
           <input
             type="number"
@@ -197,14 +204,14 @@ export default function NewTripPage() {
             onClick={() => router.back()}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           >
-            Cancel
+            {t.buttons.cancel}
           </button>
           <button
             type="submit"
             disabled={loading}
             className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
           >
-            {loading ? 'Creating...' : 'Create Trip'}
+            {loading ? t.buttons.creating : t.buttons.create}
           </button>
         </div>
       </form>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import toast, { Toaster } from 'react-hot-toast'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface PageParams {
   id: string
@@ -13,8 +14,9 @@ interface EditBusPageProps {
 
 export default function EditBusPage({ params }: EditBusPageProps) {
   const router = useRouter()
+  const { language, translations } = useLanguage()
+  const t = translations.dashboard.buses.form
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     plateNumber: '',
     capacity: '',
@@ -22,20 +24,15 @@ export default function EditBusPage({ params }: EditBusPageProps) {
     status: 'active'
   })
 
-  useEffect(() => {
-    fetchBusDetails()
-  }, [])
-
   const fetchBusDetails = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/admin/buses/${params.id}`,{
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/admin/buses/${params.id}`, {
         headers: {
-          'Content-Type': 'application/json',
-           'Authorization': `Bearer ${token}`
-        },
+          'Authorization': `Bearer ${token}`
+        }
       })
-      if (!response.ok) throw new Error('Failed to fetch bus details')
+      if (!response.ok) throw new Error(t.errors.loadFailed)
       
       const data = await response.json()
       setFormData({
@@ -45,14 +42,13 @@ export default function EditBusPage({ params }: EditBusPageProps) {
         status: data.status
       })
     } catch (err: any) {
-      toast.error('Failed to load bus details')
+      toast.error(t.errors.loadFailed)
       console.error(err)
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError('')
     setLoading(true)
 
     try {
@@ -61,7 +57,7 @@ export default function EditBusPage({ params }: EditBusPageProps) {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-           'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           ...formData,
@@ -72,43 +68,34 @@ export default function EditBusPage({ params }: EditBusPageProps) {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to update bus')
+        throw new Error(data.error || t.errors.updateFailed)
       }
 
-      toast.success('Bus updated successfully', {
-        duration: 3000,
-        position: 'top-center'
-      })
-
+      toast.success(t.success.updated)
       setTimeout(() => {
         router.push('/admin/buses')
       }, 2000)
 
     } catch (err: any) {
-      toast.error(err.message || 'Failed to update bus', {
-        duration: 3000,
-        position: 'top-center'
-      })
+      toast.error(err.message || t.errors.updateFailed)
     } finally {
       setLoading(false)
     }
   }
 
-  return (
-    <div className="max-w-2xl mx-auto text-black">
-      <Toaster />
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">Edit Bus</h1>
+  useEffect(() => {
+    fetchBusDetails()
+  }, [])
 
-      {error && (
-        <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
-          <p className="text-red-700">{error}</p>
-        </div>
-      )}
+  return (
+    <div className={`max-w-2xl mx-auto text-black ${language === 'ar' ? 'rtl' : 'ltr'}`}>
+      <Toaster />
+      <h1 className="text-2xl font-semibold text-gray-800 mb-6">{t.title.edit}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Plate Number
+            {t.labels.plateNumber}
           </label>
           <input
             type="text"
@@ -116,13 +103,14 @@ export default function EditBusPage({ params }: EditBusPageProps) {
             value={formData.plateNumber}
             onChange={(e) => setFormData({ ...formData, plateNumber: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="ABC 123"
+            placeholder={t.placeholders.plateNumber}
+            dir="ltr"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Model
+            {t.labels.model}
           </label>
           <input
             type="text"
@@ -130,13 +118,14 @@ export default function EditBusPage({ params }: EditBusPageProps) {
             value={formData.model}
             onChange={(e) => setFormData({ ...formData, model: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="Mercedes-Benz"
+            placeholder={t.placeholders.model}
+            dir="ltr"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Capacity
+            {t.labels.capacity}
           </label>
           <input
             type="number"
@@ -145,23 +134,25 @@ export default function EditBusPage({ params }: EditBusPageProps) {
             value={formData.capacity}
             onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="50"
+            placeholder={t.placeholders.capacity}
+            dir="ltr"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Status
+            {t.labels.status}
           </label>
           <select
             required
             value={formData.status}
             onChange={(e) => setFormData({ ...formData, status: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            dir="ltr"
           >
-            <option value="active">Active</option>
-            <option value="maintenance">Maintenance</option>
-            <option value="retired">Retired</option>
+            {Object.entries(t.status).map(([key, value]) => (
+              <option key={key} value={key}>{value}</option>
+            ))}
           </select>
         </div>
 
@@ -171,14 +162,14 @@ export default function EditBusPage({ params }: EditBusPageProps) {
             onClick={() => router.back()}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           >
-            Cancel
+            {t.buttons.cancel}
           </button>
           <button
             type="submit"
             disabled={loading}
             className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
           >
-            {loading ? 'Updating...' : 'Update Bus'}
+            {loading ? t.buttons.updating : t.buttons.update}
           </button>
         </div>
       </form>

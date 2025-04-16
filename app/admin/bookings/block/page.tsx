@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import toast, { Toaster } from 'react-hot-toast'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface Trip {
   id: string
@@ -21,21 +22,13 @@ interface Seat {
 
 export default function AdminBlockSeats() {
   const router = useRouter()
+  const { language, translations } = useLanguage()
+  const t = translations.dashboard.bookings.blockSeats
   const [trips, setTrips] = useState<Trip[]>([])
   const [selectedTrip, setSelectedTrip] = useState<string>('')
   const [seats, setSeats] = useState<Seat[]>([])
   const [selectedSeats, setSelectedSeats] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetchTrips()
-  }, [])
-
-  useEffect(() => {
-    if (selectedTrip) {
-      fetchSeats(selectedTrip)
-    }
-  }, [selectedTrip])
 
   const fetchTrips = async () => {
     try {
@@ -48,7 +41,7 @@ export default function AdminBlockSeats() {
       const data = await response.json()
       setTrips(data)
     } catch (error) {
-      toast.error('Failed to fetch trips')
+      toast.error(t.errors.fetchTrips)
     } finally {
       setLoading(false)
     }
@@ -65,21 +58,13 @@ export default function AdminBlockSeats() {
       const data = await response.json()
       setSeats(data)
     } catch (error) {
-      toast.error('Failed to fetch seats')
+      toast.error(t.errors.fetchSeats)
     }
-  }
-
-  const handleSeatClick = (seatId: string) => {
-    setSelectedSeats(prev => 
-      prev.includes(seatId) 
-        ? prev.filter(id => id !== seatId)
-        : [...prev, seatId]
-    )
   }
 
   const handleBlockSeats = async () => {
     if (!selectedSeats.length) {
-      toast.error('Please select seats to block')
+      toast.error(t.errors.noSeatsSelected)
       return
     }
 
@@ -94,14 +79,32 @@ export default function AdminBlockSeats() {
         body: JSON.stringify({ seatIds: selectedSeats })
       })
 
-      if (!response.ok) throw new Error('Failed to block seats')
+      if (!response.ok) throw new Error(t.errors.blockSeats)
 
-      toast.success('Seats blocked successfully')
+      toast.success(t.success.seatsBlocked)
       fetchSeats(selectedTrip)
       setSelectedSeats([])
     } catch (error) {
-      toast.error('Failed to block seats')
+      toast.error(t.errors.blockSeats)
     }
+  }
+
+  useEffect(() => {
+    fetchTrips()
+  }, [])
+
+  useEffect(() => {
+    if (selectedTrip) {
+      fetchSeats(selectedTrip)
+    }
+  }, [selectedTrip])
+
+  const handleSeatClick = (seatId: string) => {
+    setSelectedSeats(prev => 
+      prev.includes(seatId) 
+        ? prev.filter(id => id !== seatId)
+        : [...prev, seatId]
+    )
   }
 
   const getSeatColor = (seat: Seat) => {
@@ -114,23 +117,24 @@ export default function AdminBlockSeats() {
   }
 
   return (
-    <div className="p-6 text-black">
+    <div className={`p-6 text-black ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <Toaster />
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">Block Seats</h1>
+      <h1 className="text-2xl font-semibold text-gray-800 mb-6">{t.title}</h1>
 
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Select Trip
+          {t.selectTrip}
         </label>
         <select
           value={selectedTrip}
           onChange={(e) => setSelectedTrip(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+          dir="ltr"
         >
-          <option value="">Select a trip...</option>
+          <option value="">{t.tripPlaceholder}</option>
           {trips.map((trip) => (
             <option key={trip.id} value={trip.id}>
-              {trip.route.departureCity.name} → {trip.route.arrivalCity.name} ({new Date(trip.departureTime).toLocaleString()})
+              {trip.route.departureCity.name} → {trip.route.arrivalCity.name} ({new Date(trip.departureTime).toLocaleString(language === 'ar' ? 'ar-SA' : 'en-US')})
             </option>
           ))}
         </select>
@@ -155,19 +159,19 @@ export default function AdminBlockSeats() {
             <div className="flex gap-4">
               <div className="flex items-center">
                 <div className="w-4 h-4 bg-white border rounded mr-2"></div>
-                <span className="text-sm">Available</span>
+                <span className="text-sm">{t.seatStatus.available}</span>
               </div>
               <div className="flex items-center">
                 <div className="w-4 h-4 bg-blue-500 rounded mr-2"></div>
-                <span className="text-sm">Selected</span>
+                <span className="text-sm">{t.seatStatus.selected}</span>
               </div>
               <div className="flex items-center">
                 <div className="w-4 h-4 bg-red-500 rounded mr-2"></div>
-                <span className="text-sm">Blocked</span>
+                <span className="text-sm">{t.seatStatus.blocked}</span>
               </div>
               <div className="flex items-center">
                 <div className="w-4 h-4 bg-gray-300 rounded mr-2"></div>
-                <span className="text-sm">Booked</span>
+                <span className="text-sm">{t.seatStatus.booked}</span>
               </div>
             </div>
 
@@ -176,7 +180,7 @@ export default function AdminBlockSeats() {
               disabled={!selectedSeats.length}
               className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Block Selected Seats
+              {t.buttons.blockSelected}
             </button>
           </div>
         </>

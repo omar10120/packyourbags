@@ -7,6 +7,7 @@ import {
   PlusIcon,
   MagnifyingGlassIcon 
 } from '@heroicons/react/24/outline'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface Trip {
   id: string
@@ -27,10 +28,13 @@ interface Trip {
 }
 
 export default function TripsPage() {
+  const { language, translations } = useLanguage()
+  const t = translations.dashboard.trips
   const [trips, setTrips] = useState<Trip[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')  
-  const router = useRouter();
+  const router = useRouter()
+
   useEffect(() => {
     fetchTrips()
   }, [])
@@ -53,7 +57,7 @@ export default function TripsPage() {
   }
 
   const handleDeleteTrip = async (tripId: string) => {
-    if (!confirm('Are you sure you want to delete this trip?')) return
+    if (!confirm(t.delete.confirm)) return
 
     try {
       const token = localStorage.getItem('token')
@@ -66,13 +70,14 @@ export default function TripsPage() {
 
       if (response.ok) {
         setTrips(trips.filter(trip => trip.id !== tripId))
+        alert(t.delete.success)
       } else {
         const error = await response.json()
-        alert(error.message || 'Failed to delete trip')
+        alert(error.message || t.delete.error)
       }
     } catch (error) {
       console.error('Error deleting trip:', error)
-      alert('Failed to delete trip')
+      alert(t.delete.error)
     }
   }
 
@@ -106,14 +111,14 @@ export default function TripsPage() {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6 text-black text-black">
-        <h1 className="text-2xl font-semibold text-gray-800">Trips Management</h1>
+    <div className={language === 'ar' ? 'rtl' : 'ltr'}>
+      <div className="flex justify-between items-center mb-6 text-black">
+        <h1 className="text-2xl font-semibold text-gray-800">{t.title}</h1>
         <div className="flex items-center space-x-4">
           <div className="relative">
             <input
               type="text"
-              placeholder="Search trips..."
+              placeholder={t.search.placeholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
@@ -125,32 +130,32 @@ export default function TripsPage() {
             className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
           >
             <PlusIcon className="h-5 w-5" />
-            <span>Add Trip</span>
+            <span>{t.addButton}</span>
           </button>
         </div>
       </div>
 
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-gray-200" dir="ltr">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Route
+                {t.columns.route}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Bus
+                {t.columns.bus}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Schedule
+                {t.columns.schedule}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Price
+                {t.columns.price}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
+                {t.columns.status}
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
+                {t.columns.actions}
               </th>
             </tr>
           </thead>
@@ -164,14 +169,14 @@ export default function TripsPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{trip.bus.plateNumber}</div>
-                  <div className="text-sm text-gray-500">Capacity: {trip.bus.capacity}</div>
+                  <div className="text-sm text-gray-500">{t.columns.capacity}: {trip.bus.capacity}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">
-                    {new Date(trip.departureTime).toLocaleString()}
+                    {new Date(trip.departureTime).toLocaleString(language === 'ar' ? 'ar-SA' : 'en-US')}
                   </div>
                   <div className="text-sm text-gray-500">
-                    to {new Date(trip.arrivalTime).toLocaleString()}
+                    to {new Date(trip.arrivalTime).toLocaleString(language === 'ar' ? 'ar-SA' : 'en-US')}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -179,7 +184,7 @@ export default function TripsPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(trip.status)}`}>
-                    {trip.status}
+                    {t.status[trip.status]}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

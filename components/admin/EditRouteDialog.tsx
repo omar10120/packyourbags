@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface City {
   id: string
@@ -34,6 +35,8 @@ interface Props {
 }
 
 export default function EditRouteDialog({ isOpen, onClose, route, onUpdate }: Props) {
+  const { language, translations } = useLanguage()
+  const t = translations.dashboard.editRoute
   const [cities, setCities] = useState<City[]>([])
   const [formData, setFormData] = useState({
     departureCityId: '',
@@ -92,14 +95,14 @@ export default function EditRouteDialog({ isOpen, onClose, route, onUpdate }: Pr
 
       const data = await response.json()
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to update route')
+        throw new Error(data.error || t.errors.updateRoute)
       }
 
-      toast.success('Route updated successfully')
+      toast.success(t.success.updated)
       onUpdate()
       onClose()
     } catch (err: any) {
-      toast.error(err.message || 'Failed to update route')
+      toast.error(err.message || t.errors.updateRoute)
     } finally {
       setLoading(false)
     }
@@ -109,20 +112,21 @@ export default function EditRouteDialog({ isOpen, onClose, route, onUpdate }: Pr
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center text-black">
-      <div className="bg-white rounded-xl w-full max-w-md mx-4 p-6">
-        <h2 className="text-lg font-semibold mb-4">Edit Route</h2>
+      <div className={`bg-white rounded-xl w-full max-w-md mx-4 p-6 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
+        <h2 className="text-lg font-semibold mb-4">{t.title}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Departure City
+              {t.labels.departureCity}
             </label>
             <select
               value={formData.departureCityId}
               onChange={(e) => setFormData({ ...formData, departureCityId: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               required
+              dir="ltr"
             >
-              <option value="">Select departure city</option>
+              <option value="">{t.placeholders.selectDeparture}</option>
               {cities.map((city) => (
                 <option key={city.id} value={city.id}>
                   {city.name}
@@ -133,15 +137,16 @@ export default function EditRouteDialog({ isOpen, onClose, route, onUpdate }: Pr
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Arrival City
+              {t.labels.arrivalCity}
             </label>
             <select
               value={formData.arrivalCityId}
               onChange={(e) => setFormData({ ...formData, arrivalCityId: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               required
+              dir="ltr"
             >
-              <option value="">Select arrival city</option>
+              <option value="">{t.placeholders.selectArrival}</option>
               {cities.map((city) => (
                 <option key={city.id} value={city.id}>
                   {city.name}
@@ -152,7 +157,7 @@ export default function EditRouteDialog({ isOpen, onClose, route, onUpdate }: Pr
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Distance (km)
+              {t.labels.distance}
             </label>
             <input
               type="number"
@@ -162,23 +167,24 @@ export default function EditRouteDialog({ isOpen, onClose, route, onUpdate }: Pr
               required
               min="0"
               step="0.01"
+              dir="ltr"
             />
           </div>
 
-          <div className="flex justify-end space-x-3 mt-6">
+          <div className={`flex ${language === 'ar' ? 'space-x-reverse' : 'space-x-3'} justify-end mt-6`}>
             <button
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-md"
             >
-              Cancel
+              {t.buttons.cancel}
             </button>
             <button
               type="submit"
               disabled={loading}
               className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md disabled:opacity-50"
             >
-              {loading ? 'Updating...' : 'Update Route'}
+              {loading ? t.buttons.updating : t.buttons.update}
             </button>
           </div>
         </form>

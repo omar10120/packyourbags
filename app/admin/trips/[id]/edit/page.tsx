@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import toast, { Toaster } from 'react-hot-toast'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface Route {
   id: string
@@ -23,6 +24,8 @@ interface PageProps {
 
 export default function EditTripPage({ params }: PageProps) {
   const router = useRouter()
+  const { language, translations } = useLanguage()
+  const t = translations.dashboard.trips.form
   const [routes, setRoutes] = useState<Route[]>([])
   const [buses, setBuses] = useState<Bus[]>([])
   const [loading, setLoading] = useState(false)
@@ -50,7 +53,7 @@ export default function EditTripPage({ params }: PageProps) {
           'Authorization': `Bearer ${token}`
         }
       })
-      if (!response.ok) throw new Error('Failed to fetch trip details')
+      if (!response.ok) throw new Error(t.errors.loadFailed)
       
       const data = await response.json()
       setFormData({
@@ -62,7 +65,7 @@ export default function EditTripPage({ params }: PageProps) {
         status: data.status
       })
     } catch (err: any) {
-      toast.error('Failed to load trip details')
+      toast.error(t.errors.loadFailed)
       console.error(err)
     }
   }
@@ -113,7 +116,6 @@ export default function EditTripPage({ params }: PageProps) {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
-          
         },
         body: JSON.stringify({
           ...formData,
@@ -124,30 +126,30 @@ export default function EditTripPage({ params }: PageProps) {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to update trip')
+        throw new Error(data.error || t.errors.updateFailed)
       }
 
-      toast.success('Trip updated successfully')
+      toast.success(t.success.updated)
       setTimeout(() => {
         router.push('/admin/trips')
       }, 2000)
 
     } catch (err: any) {
-      toast.error(err.message || 'Failed to update trip')
+      toast.error(err.message || t.errors.updateFailed)
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="max-w-2xl mx-auto text-black">
+    <div className={`max-w-2xl mx-auto text-black ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <Toaster />
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">Edit Trip</h1>
+      <h1 className="text-2xl font-semibold text-gray-800 mb-6">{t.title.edit}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Route
+            {t.labels.route}
           </label>
           <select
             required
@@ -155,10 +157,10 @@ export default function EditTripPage({ params }: PageProps) {
             onChange={(e) => setFormData({ ...formData, routeId: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           >
-            <option value="">Select route</option>
+            <option value="">{t.placeholders.selectRoute}</option>
             {routes.map((route) => (
               <option key={route.id} value={route.id}>
-                {route.departureCity.name} to {route.arrivalCity.name}
+                {route.departureCity.name} → {route.arrivalCity.name}
               </option>
             ))}
           </select>
@@ -166,7 +168,7 @@ export default function EditTripPage({ params }: PageProps) {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Bus
+            {t.labels.bus}
           </label>
           <select
             required
@@ -174,10 +176,10 @@ export default function EditTripPage({ params }: PageProps) {
             onChange={(e) => setFormData({ ...formData, busId: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           >
-            <option value="">Select bus</option>
+            <option value="">{t.placeholders.selectBus}</option>
             {buses.map((bus) => (
               <option key={bus.id} value={bus.id}>
-                {bus.plateNumber} ({bus.capacity} seats)
+                {bus.plateNumber} ({t.placeholders.busCapacity}: {bus.capacity})
               </option>
             ))}
           </select>
@@ -185,7 +187,7 @@ export default function EditTripPage({ params }: PageProps) {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Departure Time
+            {t.labels.departureTime}
           </label>
           <input
             type="datetime-local"
@@ -198,7 +200,7 @@ export default function EditTripPage({ params }: PageProps) {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Arrival Time
+            {t.labels.arrivalTime}
           </label>
           <input
             type="datetime-local"
@@ -211,7 +213,7 @@ export default function EditTripPage({ params }: PageProps) {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Price
+            {t.labels.price}
           </label>
           <input
             type="number"
@@ -226,7 +228,7 @@ export default function EditTripPage({ params }: PageProps) {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Status
+            {t.labels.status}
           </label>
           <select
             required
@@ -234,10 +236,9 @@ export default function EditTripPage({ params }: PageProps) {
             onChange={(e) => setFormData({ ...formData, status: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           >
-            <option value="scheduled">Scheduled</option>
-            <option value="in-progress">In Progress</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
+            {Object.entries(t.status).map(([key, value]) => (
+              <option key={key} value={key}>{value}</option>
+            ))}
           </select>
         </div>
 
@@ -247,14 +248,14 @@ export default function EditTripPage({ params }: PageProps) {
             onClick={() => router.back()}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           >
-            Cancel
+            {t.buttons.cancel}
           </button>
           <button
             type="submit"
             disabled={loading}
             className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
           >
-            {loading ? 'Updating...' : 'Update Trip'}
+            {loading ? t.buttons.updating : t.buttons.update}
           </button>
         </div>
       </form>

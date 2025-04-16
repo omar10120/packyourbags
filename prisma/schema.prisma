@@ -135,6 +135,7 @@ model RefreshToken {
   @@map("refresh_tokens")
 }
 
+
 enum BusStatus {
   active
   maintenance

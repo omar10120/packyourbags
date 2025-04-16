@@ -69,7 +69,7 @@ CREATE TABLE `seats` (
     `id` VARCHAR(36) NOT NULL,
     `trip_id` VARCHAR(36) NOT NULL,
     `seat_number` VARCHAR(10) NOT NULL,
-    `status` ENUM('available', 'booked', 'reserved') NULL DEFAULT 'available',
+    `status` ENUM('available', 'booked', 'reserved', 'blocked') NULL DEFAULT 'available',
 
     INDEX `trip_id`(`trip_id`),
     PRIMARY KEY (`id`)

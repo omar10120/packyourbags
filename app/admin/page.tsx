@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import StatsCard from '../../components/admin/StatsCard'
 import RecentBookings from '../../components/admin/RecentBookings'
+import { useLanguage } from '@/context/LanguageContext'
 
 
 
@@ -13,6 +14,8 @@ import {
 } from '@heroicons/react/24/outline'
 
 export default function AdminDashboard() {
+const { language, translations } = useLanguage()
+
 const [stats, setStats] = useState({
   totalUsers: 0,
     totalBookings: 0,
@@ -46,29 +49,30 @@ const [stats, setStats] = useState({
 
     
     <div>
-      <h1 className="text-3xl font-semibold text-gray-800 mb-6">Dashboard Overview</h1>
+      <h1 className="text-3xl font-semibold text-gray-800 mb-6">{translations.dashboard.home.title}</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8  `} dir='ltr'>
         <StatsCard 
-          title="Total Users"
+          
+          title={translations.dashboard.home.summary.totalCustomers}
           value={stats.totalUsers} 
-          icon={<UsersIcon className="h-6 w-6" />}
+          icon={<UsersIcon className="h-6 w-6 " />}
           color="bg-blue-500"
         />
         <StatsCard 
-          title="Total Bookings"
+          title={translations.dashboard.home.summary.totalBookings}
           value={stats.totalBookings}
           icon={<TicketIcon className="h-6 w-6" />}
           color="bg-green-500"
         />
         <StatsCard 
-          title="Total Revenue"
+          title={translations.dashboard.home.summary.totalRevenue}
           value={`$${stats.totalRevenue}`}
           icon={<CurrencyDollarIcon className="h-6 w-6" />}
           color="bg-yellow-500"
         />
         <StatsCard 
-          title="Active Trips"
+          title={translations.dashboard.home.summary.activeTrips}
           value={stats.activeTrips}
           icon={<CalendarIcon className="h-6 w-6" />}
           color="bg-purple-500"

@@ -2,13 +2,14 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import toast, { Toaster } from 'react-hot-toast'
-import ConfirmDialogAdmin from '@/components/ConfirmDialogAdmin'
 import { 
   PencilIcon, 
   TrashIcon, 
   PlusIcon,
   MagnifyingGlassIcon 
 } from '@heroicons/react/24/outline'
+import ConfirmDialogAdmin from '@/components/ConfirmDialogAdmin'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface Bus {
   id: string
@@ -18,9 +19,10 @@ interface Bus {
   status: 'active' | 'maintenance' | 'retired' | 'passenger_filling' | 'in_trip'
 }
 
-
 export default function BusesPage() {
   const router = useRouter()
+  const { language, translations } = useLanguage()
+  const t = translations.dashboard.buses
   const [buses, setBuses] = useState<Bus[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -32,6 +34,8 @@ export default function BusesPage() {
       case 'active': return 'bg-green-100 text-green-800'
       case 'maintenance': return 'bg-yellow-100 text-yellow-800'
       case 'retired': return 'bg-red-100 text-red-800'
+      case 'passenger_filling': return 'bg-blue-100 text-blue-800'
+      case 'in_trip': return 'bg-purple-100 text-purple-800'
       default: return 'bg-gray-100 text-gray-800'
     }
   }
@@ -88,7 +92,7 @@ export default function BusesPage() {
       const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/buses/${busToDelete}`, {
         method: 'DELETE',
-        headers:{
+        headers: {
           'Authorization': `Bearer ${token}`
         }
       })
@@ -97,42 +101,38 @@ export default function BusesPage() {
 
       if (response.ok) {
         setBuses(buses.filter(bus => bus.id !== busToDelete))
-        toast.success('Bus deleted successfully', {
-          duration: 3000,
-          position: 'top-center'
-        })
+        toast.success(t.delete.success)
       } else {
-        throw new Error(data.error || 'Failed to delete bus')
+        throw new Error(data.error || t.delete.error)
       }
     } catch (error: any) {
-      toast.error(error.message || 'Failed to delete bus', {
-        duration: 3000,
-        position: 'top-center'
-      })
+      toast.error(error.message || t.delete.error)
     } finally {
       setBusToDelete(null)
+      setIsDeleteDialogOpen(false)
     }
   }
 
   return (
-    <div>
+    <div className={language === 'ar' ? 'rtl' : 'ltr'}>
       <Toaster />
       <ConfirmDialogAdmin
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleDeleteBus}
-        title="Delete Bus"
-        message="Are you sure you want to delete this bus? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t.delete.title}
+        message={t.delete.message}
+        confirmText={t.delete.confirm}
+        cancelText={t.delete.cancel}
       />
+
       <div className="flex justify-between items-center mb-6 text-black">
-        <h1 className="text-2xl font-semibold text-gray-800">Bus Management</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">{t.title}</h1>
         <div className="flex items-center space-x-4">
           <div className="relative">
             <input
               type="text"
-              placeholder="Search buses..."
+              placeholder={t.search.placeholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
@@ -144,29 +144,29 @@ export default function BusesPage() {
             className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
           >
             <PlusIcon className="h-5 w-5" />
-            <span>Add Bus</span>
+            <span>{t.addButton}</span>
           </button>
         </div>
       </div>
 
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-gray-200" dir="ltr">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Plate Number
+                {t.columns.plateNumber}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Model
+                {t.columns.model}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Capacity
+                {t.columns.capacity}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
+                {t.columns.status}
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
+                {t.columns.actions}
               </th>
             </tr>
           </thead>
@@ -184,7 +184,7 @@ export default function BusesPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(bus.status)}`}>
-                    {bus.status}
+                    {t.status[bus.status]}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

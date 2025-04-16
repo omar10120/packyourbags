@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
-
+import { useLanguage } from '@/context/LanguageContext'
+// import { transcode } from 'buffer'
 interface Booking {
   id: string
   user: {
@@ -20,6 +21,8 @@ interface Booking {
 
 export default function RecentBookings() {
   const [bookings, setBookings] = useState<Booking[]>([])
+  const { language, translations } = useLanguage()
+
 
   useEffect(() => {
     const fetchRecentBookings = async () => {
@@ -50,26 +53,26 @@ export default function RecentBookings() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Bookings</h2>
+    <div className="bg-white rounded-lg shadow-md p-6" >
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">{translations.dashboard.home.recentBookings.title}</h2>
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y divide-gray-200" dir='ltr'>
+          <thead className="bg-gray-50" >
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                CUSTOMER
+              {translations.dashboard.home.recentBookings.columns.customer}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ROUTE
+              {translations.dashboard.home.recentBookings.columns.route}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                DATE
+              {translations.dashboard.home.recentBookings.columns.date}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                AMOUNT
+              {translations.dashboard.home.recentBookings.columns.amount}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                STATUS
+              {translations.dashboard.home.recentBookings.columns.status}
               </th>
             </tr>
           </thead>

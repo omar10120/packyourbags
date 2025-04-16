@@ -7,6 +7,7 @@ import {
 } from '@heroicons/react/24/outline'
 import toast, { Toaster } from 'react-hot-toast'
 import ConfirmDialogAdmin from '@/components/ConfirmDialogAdmin'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface User {
   id: string
@@ -19,6 +20,8 @@ interface User {
 }
 
 export default function UsersPage() {
+  const { language, translations } = useLanguage()
+  const t = translations.dashboard.users // for shorter references
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -67,14 +70,14 @@ export default function UsersPage() {
 
       if (response.ok) {
         setUsers(users.filter(user => user.id !== userToDelete))
-        toast.success('User deleted successfully')
+        toast.success(t.delete.success)
       } else {
         const error = await response.json()
-        toast.error(error.message || 'Failed to delete user')
+        toast.error(error.message || t.delete.error)
       }
     } catch (error) {
       console.error('Error deleting user:', error)
-      toast.error('Failed to delete user')
+      toast.error(t.delete.error)
     } finally {
       setUserToDelete(null)
       setIsDeleteDialogOpen(false)
@@ -100,13 +103,13 @@ export default function UsersPage() {
   }
 
   return (
-    <div>
+    <div className={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className="flex justify-between items-center mb-6 text-black">
-        <h1 className="text-2xl font-semibold text-gray-800">Users Management</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">{t.title}</h1>
         <div className="relative">
           <input
             type="text"
-            placeholder="Search users..."
+            placeholder={t.search.placeholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
@@ -116,26 +119,26 @@ export default function UsersPage() {
       </div>
 
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-gray-200" dir='ltr'>
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                User
+                {t.columns.user}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Email
+                {t.columns.email}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Role
+                {t.columns.role}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
+                {t.columns.status}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Joined
+                {t.columns.joined}
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
+                {t.columns.actions}
               </th>
             </tr>
           </thead>
@@ -144,7 +147,7 @@ export default function UsersPage() {
               <tr key={user.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                  <div className="text-sm text-gray-500">{user.phone || 'No phone'}</div>
+                  <div className="text-sm text-gray-500">{user.phone || t.columns.noPhone}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{user.email}</div>
@@ -164,7 +167,7 @@ export default function UsersPage() {
                       ? 'bg-green-100 text-green-800'
                       : 'bg-yellow-100 text-yellow-800'
                   }`}>
-                    {user.emailVerified ? 'Verified' : 'Pending'}
+                    {user.emailVerified ? t.status.verified : t.status.pending}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -188,10 +191,10 @@ export default function UsersPage() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleDeleteUser}
-        title="Delete User"
-        message="Are you sure you want to delete this user? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t.delete.title}
+        message={t.delete.message}
+        confirmText={t.delete.confirm}
+        cancelText={t.delete.cancel}
       />
     </div>
   )

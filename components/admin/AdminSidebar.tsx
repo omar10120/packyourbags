@@ -10,36 +10,35 @@ import {
   ChartBarIcon,
   TruckIcon,
   MapIcon,
-  
+  BuildingOfficeIcon
 } from '@heroicons/react/24/outline'
-import BusesPage from '@/app/admin/buses/page'
+import { useLanguage } from '@/context/LanguageContext'
 
-// Add to imports
-
-
-
-const menuItems = [
-  { href: '/admin', icon: HomeIcon, label: 'Dashboard' },
-  { href: '/admin/users', icon: UsersIcon, label: 'Users' },
-  { href: '/admin/bookings', icon: TicketIcon, label: 'Bookings' },
-  { href: '/admin/trips', icon: CalendarIcon, label: 'Trips' },
-  { href: '/admin/buses', icon: TruckIcon, label: 'Buses' },  
-  { href: '/admin/routes', icon: MapIcon, label: 'Routes' }, 
-  { href: '/admin/cities', icon: MapIcon, label: 'Cities' }, 
-  { href: '/admin/reports', icon: ChartBarIcon, label: 'Reports' },
-  { href: '/admin/settings', icon: CogIcon, label: 'Settings' }
+const getMenuItems = (t: any) => [
+  { href: '/admin', icon: HomeIcon, label: t.dashboard },
+  { href: '/admin/users', icon: UsersIcon, label: t.users },
+  { href: '/admin/bookings', icon: TicketIcon, label: t.bookings },
+  { href: '/admin/trips', icon: CalendarIcon, label: t.trips },
+  { href: '/admin/buses', icon: TruckIcon, label: t.buses },  
+  { href: '/admin/routes', icon: MapIcon, label: t.routes }, 
+  { href: '/admin/cities', icon: BuildingOfficeIcon, label: t.cities }, 
+  { href: '/admin/reports', icon: ChartBarIcon, label: t.reports },
+  { href: '/admin/settings', icon: CogIcon, label: t.settings }
 ]
 
 export default function AdminSidebar() {
   const pathname = usePathname()
+  const { language, translations } = useLanguage()
+  const t = translations.dashboard.sidebar
+  const menuItems = getMenuItems(t)
 
   return (
     <div className="hidden md:flex flex-col w-64 bg-gray-800">
       <div className="flex items-center justify-center h-16 bg-gray-900">
-        <span className="text-white text-lg font-semibold">Admin Panel</span>
+        <span className="text-white text-lg font-semibold">{t.title}</span>
       </div>
       <div className="flex flex-col flex-1 overflow-y-auto">
-        <nav className="flex-1 px-2 py-4 space-y-1">
+        <nav className={`flex-1 px-2 py-4 space-y-1 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
           {menuItems.map((item) => {
             const Icon = item.icon
             return (
@@ -52,7 +51,7 @@ export default function AdminSidebar() {
                     : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                 }`}
               >
-                <Icon className="h-5 w-5 mr-3" />
+                <Icon className={`h-5 w-5 ${language === 'ar' ? 'ml-3' : 'mr-3'}`} />
                 {item.label}
               </Link>
             )

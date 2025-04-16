@@ -1,14 +1,15 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import toast, { Toaster } from 'react-hot-toast'
 import { 
   PencilIcon, 
   TrashIcon, 
   PlusIcon,
   MagnifyingGlassIcon 
 } from '@heroicons/react/24/outline'
+import toast, { Toaster } from 'react-hot-toast'
 import ConfirmDialogAdmin from '@/components/ConfirmDialogAdmin'
+import { useLanguage } from '@/context/LanguageContext'
 import EditDialog from '@/components/admin/EditRouteDialog'
 
 interface Route {
@@ -32,6 +33,8 @@ interface Route {
 
 export default function RoutesPage() {
   const router = useRouter()
+  const { language, translations } = useLanguage()
+  const t = translations.dashboard.routes
   const [routes, setRoutes] = useState<Route[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -69,7 +72,7 @@ export default function RoutesPage() {
 
     try {
       const token = localStorage.getItem('token')
-        const response = await fetch(`/api/admin/routes/${routeToDelete}`, {
+      const response = await fetch(`/api/admin/routes/${routeToDelete}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -79,13 +82,13 @@ export default function RoutesPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to delete route')
+        throw new Error(data.error || t.delete.error)
       }
 
       setRoutes(routes.filter(route => route.id !== routeToDelete))
-      toast.success('Route deleted successfully')
+      toast.success(t.delete.success)
     } catch (error: any) {
-      toast.error(error.message || 'Failed to delete route')
+      toast.error(error.message || t.delete.error)
     } finally {
       setRouteToDelete(null)
       setIsDeleteDialogOpen(false)
@@ -109,32 +112,25 @@ export default function RoutesPage() {
   
   // Update the JSX to include EditDialog and modify the edit button
   return (
-    <div>
+    <div className={language === 'ar' ? 'rtl' : 'ltr'}>
       <Toaster />
       <ConfirmDialogAdmin
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleDeleteRoute}
-        title="Delete Route"
-        message="Are you sure you want to delete this route? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-      />
-      <EditDialog
-        isOpen={isEditDialogOpen}
-        onClose={() => setIsEditDialogOpen(false)}
-        route={selectedRoute}
-        onUpdate={fetchRoutes}
+        title={t.delete.title}
+        message={t.delete.message}
+        confirmText={t.delete.confirm}
+        cancelText={t.delete.cancel}
       />
 
       <div className="flex justify-between items-center mb-6 text-black">
-        
-        <h1 className="text-2xl font-semibold text-gray-800">Route Management</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">{t.title}</h1>
         <div className="flex items-center space-x-4">
           <div className="relative">
             <input
               type="text"
-              placeholder="Search routes..."
+              placeholder={t.search.placeholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
@@ -146,29 +142,29 @@ export default function RoutesPage() {
             className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
           >
             <PlusIcon className="h-5 w-5" />
-            <span>Add Route</span>
+            <span>{t.addButton}</span>
           </button>
         </div>
       </div>
 
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-gray-200" dir="ltr">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                From
+                {t.columns.from}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                To
+                {t.columns.to}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Distance (km)
+                {t.columns.distance}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Active Trips
+                {t.columns.activeTrips}
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
+                {t.columns.actions}
               </th>
             </tr>
           </thead>
@@ -205,7 +201,6 @@ export default function RoutesPage() {
             ))}
           </tbody>
         </table>
-
       </div>
     </div>
   )

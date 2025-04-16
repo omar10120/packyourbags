@@ -80,5 +80,34 @@ export interface Translations {
       confirm: string
       cancel: string
     }
+  },
+  dashboard: {
+    home: {
+      title: string
+      summary: {
+        totalBookings: string
+        activeTrips: string
+        totalRevenue: string
+        totalCustomers: string
+      }
+      recentBookings: {
+        title: string
+        columns: {
+          bookingId: string
+          customer: string
+          route: string
+          date: string
+          status: string
+          amount: string
+        }
+        noBookings: string
+      }
+      stats: {
+        title: string
+        daily: string
+        weekly: string
+        monthly: string
+      }
+    }
   }
 }

@@ -279,6 +279,399 @@ export const ar = {
         }
       }
     },
- 
+    dashboard: {
+      sidebar: {
+        title: 'لوحة التحكم',
+        dashboard: 'الرئيسية',
+        users: 'المستخدمين',
+        bookings: 'الحجوزات',
+        trips: 'الرحلات',
+        buses: 'الحافلات',
+        routes: 'المسارات',
+        cities: 'المدن',
+        reports: 'التقارير',
+        settings: 'الإعدادات'
+      },
+      home: {
+        title: 'واجهة لوحة التحكم',
+        summary: {
+          totalBookings: 'مجموع المقاعد',
+          activeTrips: 'الرحلات المفعلة',
+          totalRevenue: 'إجمالي الإيرادات',
+          totalCustomers: 'مجموع العملاء'
+        },
+        recentBookings: {
+          title: ' الحجوزات الأخيرة',
+          columns: {
+            bookingId: 'رقم الحجز',
+            customer: 'عميل',
+            route: 'طريق',
+            date: 'تاريخ',
+            status: 'الحالة',
+            amount: 'المجموع'
+          },
+          noBookings: 'لا يوجد حجوزات ماخرة'
+        },
+        stats: {
+          title: 'إحصائيات',
+          daily: 'يومي',
+          weekly: 'اسبوعي',
+          monthly: 'شهري'
+        }
+      },
+      users: {
+        title: 'إدارة المستخدمين',
+        search: {
+          placeholder: 'البحث عن المستخدمين...'
+        },
+        columns: {
+          user: 'المستخدم',
+          email: 'البريد الإلكتروني',
+          role: 'الدور',
+          status: 'الحالة',
+          joined: 'تاريخ التسجيل',
+          actions: 'إجراءات',
+          noPhone: 'لا يوجد هاتف'
+        },
+        status: {
+          verified: 'تم التحقق',
+          pending: 'قيد الانتظار'
+        },
+        delete: {
+          title: 'حذف المستخدم',
+          message: 'هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.',
+          confirm: 'حذف',
+          cancel: 'إلغاء',
+          success: 'تم حذف المستخدم بنجاح',
+          error: 'فشل حذف المستخدم'
+        }
+      },
+      trips: {
+        title: 'إدارة الرحلات',
+        search: {
+          placeholder: 'البحث عن الرحلات...'
+        },
+        addButton: 'إضافة رحلة',
+        columns: {
+          route: 'المسار',
+          bus: 'الحافلة',
+          schedule: 'الجدول',
+          price: 'السعر',
+          status: 'الحالة',
+          actions: 'إجراءات',
+          capacity: 'السعة'
+        },
+        status: {
+          scheduled: 'مجدولة',
+          'in-progress': 'قيد التنفيذ',
+          completed: 'مكتملة',
+          cancelled: 'ملغاة'
+        },
+        delete: {
+          confirm: 'هل أنت متأكد من حذف هذه الرحلة؟',
+          success: 'تم حذف الرحلة بنجاح',
+          error: 'فشل حذف الرحلة'
+        },
+        form: {
+          title: {
+            new: 'إنشاء رحلة جديدة',
+            edit: 'تعديل الرحلة'
+          },
+          labels: {
+            route: 'المسار',
+            bus: 'الحافلة',
+            departureTime: 'وقت المغادرة',
+            arrivalTime: 'وقت الوصول',
+            price: 'السعر',
+            status: 'الحالة'
+          },
+          placeholders: {
+            selectRoute: 'اختر المسار',
+            selectBus: 'اختر الحافلة',
+            busCapacity: 'السعة'
+          },
+          buttons: {
+            create: 'إنشاء الرحلة',
+            creating: 'جاري الإنشاء...',
+            update: 'تحديث الرحلة',
+            updating: 'جاري التحديث...',
+            cancel: 'إلغاء'
+          },
+          errors: {
+            createFailed: 'فشل إنشاء الرحلة',
+            updateFailed: 'فشل تحديث الرحلة',
+            loadFailed: 'فشل تحميل تفاصيل الرحلة'
+          },
+          success: {
+            created: 'تم إنشاء الرحلة بنجاح',
+            updated: 'تم تحديث الرحلة بنجاح'
+          },
+          status: 'تعديل  ',
+        }
+      },
+      routes: {
+        title: 'إدارة المسارات',
+        search: {
+          placeholder: 'البحث عن المسارات...'
+        },
+        addButton: 'إضافة مسار',
+        columns: {
+          from: 'من',
+          to: 'إلى',
+          distance: 'المسافة (كم)',
+          activeTrips: 'الرحلات النشطة',
+          actions: 'إجراءات'
+        },
+        delete: {
+          title: 'حذف المسار',
+          message: 'هل أنت متأكد من حذف هذا المسار؟ لا يمكن التراجع عن هذا الإجراء.',
+          confirm: 'حذف',
+          cancel: 'إلغاء',
+          success: 'تم حذف المسار بنجاح',
+          error: 'فشل حذف المسار'
+        },
+        form: {
+          title: {
+            new: 'إضافة مسار جديد',
+            edit: 'تعديل المسار'
+          },
+          labels: {
+            departureCity: 'مدينة المغادرة',
+            arrivalCity: 'مدينة الوصول',
+            distance: 'المسافة (كم)'
+          },
+          placeholders: {
+            selectDeparture: 'اختر مدينة المغادرة',
+            selectArrival: 'اختر مدينة الوصول',
+            distance: '350.50'
+          },
+          buttons: {
+            create: 'إنشاء المسار',
+            creating: 'جاري الإنشاء...',
+            update: 'تحديث المسار',
+            updating: 'جاري التحديث...',
+            cancel: 'إلغاء'
+          },
+          errors: {
+            createFailed: 'فشل إنشاء المسار',
+            updateFailed: 'فشل تحديث المسار',
+            loadFailed: 'فشل تحميل المدن'
+          },
+          success: {
+            created: 'تم إنشاء المسار بنجاح',
+            updated: 'تم تحديث المسار بنجاح'
+          }
+        }
+      },
+      cities: {
+        title: 'إدارة المدن',
+        search: {
+          placeholder: 'البحث عن المدن...'
+        },
+        addButton: 'إضافة مدينة',
+        columns: {
+          nameEn: 'الاسم (إنجليزي)',
+          nameAr: 'الاسم (عربي)',
+          routes: 'المسارات',
+          actions: 'إجراءات'
+        },
+        delete: {
+          title: 'حذف المدينة',
+          message: 'هل أنت متأكد من حذف هذه المدينة؟ لا يمكن التراجع عن هذا الإجراء.',
+          confirm: 'حذف',
+          cancel: 'إلغاء',
+          success: 'تم حذف المدينة بنجاح',
+          error: 'فشل حذف المدينة'
+        },
+        form: {
+          title: {
+            new: 'إضافة مدينة جديدة',
+            edit: 'تعديل المدينة'
+          },
+          labels: {
+            nameEn: 'الاسم (إنجليزي)',
+            nameAr: 'الاسم (عربي)'
+          },
+          placeholders: {
+            nameEn: 'جدة',
+            nameAr: 'جدة'
+          },
+          buttons: {
+            create: 'إنشاء المدينة',
+            creating: 'جاري الإنشاء...',
+            update: 'تحديث المدينة',
+            updating: 'جاري التحديث...',
+            cancel: 'إلغاء'
+          },
+          errors: {
+            createFailed: 'فشل إنشاء المدينة',
+            updateFailed: 'فشل تحديث المدينة',
+            loadFailed: 'فشل تحميل المدن'
+          },
+          success: {
+            created: 'تم إنشاء المدينة بنجاح',
+            updated: 'تم تحديث المدينة بنجاح'
+          }
+        }
+      },
+      buses: {
+        title: 'إدارة الحافلات',
+        search: {
+          placeholder: 'البحث عن الحافلات...'
+        },
+        addButton: 'إضافة حافلة',
+        columns: {
+          plateNumber: 'رقم اللوحة',
+          model: 'الموديل',
+          capacity: 'السعة',
+          status: 'الحالة',
+          actions: 'إجراءات'
+        },
+        status: {
+          active: 'نشط',
+          maintenance: 'صيانة',
+          retired: 'متقاعد',
+          passenger_filling: 'تعبئة الركاب',
+          in_trip: 'في رحلة'
+        },
+        delete: {
+          title: 'حذف الحافلة',
+          message: 'هل أنت متأكد من حذف هذه الحافلة؟ لا يمكن التراجع عن هذا الإجراء.',
+          confirm: 'حذف',
+          cancel: 'إلغاء',
+          success: 'تم حذف الحافلة بنجاح',
+          error: 'فشل حذف الحافلة'
+        },
+        form: {
+          title: {
+            new: 'إضافة حافلة جديدة',
+            edit: 'تعديل الحافلة'
+          },
+          labels: {
+            plateNumber: 'رقم اللوحة',
+            model: 'الموديل',
+            capacity: 'السعة',
+            status: 'الحالة'
+          },
+          placeholders: {
+            plateNumber: 'ABC 123',
+            model: 'مرسيدس-بنز',
+            capacity: '٥٠'
+          },
+          buttons: {
+            create: 'إنشاء الحافلة',
+            creating: 'جاري الإنشاء...',
+            update: 'تحديث الحافلة',
+            updating: 'جاري التحديث...',
+            cancel: 'إلغاء'
+          },
+          errors: {
+            createFailed: 'فشل إنشاء الحافلة',
+            updateFailed: 'فشل تحديث الحافلة',
+            loadFailed : 'فشل التحميل'
+          },
+          success: {
+            created: 'تم إنشاء الحافلة بنجاح',
+            updated: 'تم تحديث الحافلة بنجاح'
+          },
+          status: {
+            Active:  'مفعل',
+            Maintenance: 'صيانة',
+            Retired: 'في الأرشيف',
+          }
+        }
+      },
+      bookings: {
+        title: 'إدارة الحجوزات',
+        search: {
+          placeholder: 'البحث في الحجوزات...'
+        },
+        columns: {
+          bookingId: 'رقم الحجز',
+          customer: 'العميل',
+          route: 'المسار',
+          seats: 'المقاعد',
+          status: 'الحالة',
+          amount: 'المبلغ',
+          actions: 'إجراءات'
+        },
+        status: {
+          confirmed: 'مؤكد',
+          completed: 'مكتمل',
+          cancelled: 'ملغي',
+          pending: 'قيد الانتظار'
+        },
+        delete: {
+          title: 'حذف الحجز',
+          message: 'هل أنت متأكد من حذف هذا الحجز؟ لا يمكن التراجع عن هذا الإجراء.',
+          confirm: 'حذف',
+          cancel: 'إلغاء',
+          success: 'تم حذف الحجز بنجاح',
+          error: 'فشل حذف الحجز'
+        },
+        errors: {
+          loadFailed: 'فشل تحميل الحجوزات'
+        },
+        blockSeats: {
+          title: 'حظر المقاعد',
+          selectTrip: 'اختر الرحلة',
+          tripPlaceholder: 'اختر رحلة...',
+          seatStatus: {
+            available: 'متاح',
+            selected: 'محدد',
+            blocked: 'محظور',
+            booked: 'محجوز'
+          },
+          buttons: {
+            blockSelected: 'حظر المقاعد المحددة'
+          },
+          errors: {
+            fetchTrips: 'فشل في جلب الرحلات',
+            fetchSeats: 'فشل في جلب المقاعد',
+            blockSeats: 'فشل في حظر المقاعد',
+            noSeatsSelected: 'الرجاء تحديد المقاعد للحظر'
+          },
+          success: {
+            seatsBlocked: 'تم حظر المقاعد بنجاح'
+          }
+        },
+      },
+      bookingDetails: {
+        title: 'معلومات العميل',
+        labels: {
+          name: 'الاسم',
+          email: 'البريد الإلكتروني',
+          phone: 'رقم الهاتف'
+        },
+        buttons: {
+          close: 'إغلاق'
+        }
+      },
+      editRoute: {
+        title: 'تعديل المسار',
+        labels: {
+          departureCity: 'مدينة المغادرة',
+          arrivalCity: 'مدينة الوصول',
+          distance: 'المسافة (كم)'
+        },
+        placeholders: {
+          selectDeparture: 'اختر مدينة المغادرة',
+          selectArrival: 'اختر مدينة الوصول'
+        },
+        buttons: {
+          cancel: 'إلغاء',
+          update: 'تحديث المسار',
+          updating: 'جاري التحديث...'
+        },
+        errors: {
+          fetchCities: 'فشل في جلب المدن',
+          updateRoute: 'فشل في تحديث المسار'
+        },
+        success: {
+          updated: 'تم تحديث المسار بنجاح'
+        }
+      }
+     
+    }
 }
 

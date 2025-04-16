@@ -250,5 +250,398 @@ export const en = {
         passwordLength: 'Password must be at least 6 characters long'
       }
     }
+  },
+  dashboard: {
+    sidebar: {
+      title: 'Admin Panel',
+      dashboard: 'Dashboard',
+      users: 'Users',
+      bookings: 'Bookings',
+      trips: 'Trips',
+      buses: 'Buses',
+      routes: 'Routes',
+      cities: 'Cities',
+      reports: 'Reports',
+      settings: 'Settings'
+    },
+    home: {
+      title: 'Dashboard Overview',
+      summary: {
+        
+        totalBookings: 'Total Bookings',
+        activeTrips: 'Active Trips',
+        totalRevenue: 'Total Revenue',
+        totalCustomers: 'Total Customers'
+      },
+      recentBookings: {
+        title: 'Recent Bookings',
+        columns: {
+          bookingId: 'Booking ID',
+          customer: 'Customer',
+          route: 'Route',
+          date: 'Date',
+          status: 'Status',
+          amount: 'Amount'
+        },
+        noBookings: 'No recent bookings'
+      },
+      stats: {
+        title: 'Statistics',
+        daily: 'Daily',
+        weekly: 'Weekly',
+        monthly: 'Monthly'
+      }
+    }, 
+    users: {
+      title: 'Users Management',
+      search: {
+        placeholder: 'Search users...'
+      },
+      columns: {
+        user: 'User',
+        email: 'Email',
+        role: 'Role',
+        status: 'Status',
+        joined: 'Joined',
+        actions: 'Actions',
+        noPhone: 'No phone'
+      },
+      status: {
+        verified: 'Verified',
+        pending: 'Pending'
+      },
+      delete: {
+        title: 'Delete User',
+        message: 'Are you sure you want to delete this user? This action cannot be undone.',
+        confirm: 'Delete',
+        cancel: 'Cancel',
+        success: 'User deleted successfully',
+        error: 'Failed to delete user'
+      }
+    },
+    trips: {
+      title: 'Trips Management',
+      search: {
+        placeholder: 'Search trips...'
+      },
+      addButton: 'Add Trip',
+      columns: {
+        route: 'Route',
+        bus: 'Bus',
+        schedule: 'Schedule',
+        price: 'Price',
+        status: 'Status',
+        actions: 'Actions',
+        capacity: 'Capacity'
+      },
+      status: {
+        scheduled: 'Scheduled',
+        'in-progress': 'In Progress',
+        completed: 'Completed',
+        cancelled: 'Cancelled'
+      },
+      delete: {
+        confirm: 'Are you sure you want to delete this trip?',
+        success: 'Trip deleted successfully',
+        error: 'Failed to delete trip'
+      },
+      form: {
+        title: {
+          new: 'Create New Trip',
+          edit: 'Edit Trip'
+        },
+        labels: {
+          route: 'Route',
+          bus: 'Bus',
+          departureTime: 'Departure Time',
+          arrivalTime: 'Arrival Time',
+          price: 'Price',
+          status: 'Status'
+        },
+        placeholders: {
+          selectRoute: 'Select a route',
+          selectBus: 'Select a bus',
+          busCapacity: 'Capacity'
+        },
+        buttons: {
+          create: 'Create Trip',
+          creating: 'Creating...',
+          update: 'Update Trip',
+          updating: 'Updating...',
+          cancel: 'Cancel'
+        },
+        errors: {
+          createFailed: 'Failed to create trip',
+          updateFailed: 'Failed to update trip',
+          loadFailed: 'Failed to load trip details'
+        },
+        success: {
+          created: 'Trip created successfully',
+          updated: 'Trip updated successfully'
+        },
+        status: 'edit form',
+      }
+    },
+    routes: {
+      title: 'Route Management',
+      search: {
+        placeholder: 'Search routes...'
+      },
+      addButton: 'Add Route',
+      columns: {
+        from: 'From',
+        to: 'To',
+        distance: 'Distance (km)',
+        activeTrips: 'Active Trips',
+        actions: 'Actions'
+      },
+      delete: {
+        title: 'Delete Route',
+        message: 'Are you sure you want to delete this route? This action cannot be undone.',
+        confirm: 'Delete',
+        cancel: 'Cancel',
+        success: 'Route deleted successfully',
+        error: 'Failed to delete route'
+      },
+      form: {
+        title: {
+          new: 'Add New Route',
+          edit: 'Edit Route'
+        },
+        labels: {
+          departureCity: 'Departure City',
+          arrivalCity: 'Arrival City',
+          distance: 'Distance (km)'
+        },
+        placeholders: {
+          selectDeparture: 'Select departure city',
+          selectArrival: 'Select arrival city',
+          distance: '350.50'
+        },
+        buttons: {
+          create: 'Create Route',
+          creating: 'Creating...',
+          update: 'Update Route',
+          updating: 'Updating...',
+          cancel: 'Cancel'
+        },
+        errors: {
+          createFailed: 'Failed to create route',
+          updateFailed: 'Failed to update route',
+          loadFailed: 'Failed to load cities'
+        },
+        success: {
+          created: 'Route created successfully',
+          updated: 'Route updated successfully'
+        }
+      }
+    },
+    cities: {
+      title: 'City Management',
+      search: {
+        placeholder: 'Search cities...'
+      },
+      addButton: 'Add City',
+      columns: {
+        nameEn: 'Name (English)',
+        nameAr: 'Name (Arabic)',
+        routes: 'Routes',
+        actions: 'Actions'
+      },
+      delete: {
+        title: 'Delete City',
+        message: 'Are you sure you want to delete this city? This action cannot be undone.',
+        confirm: 'Delete',
+        cancel: 'Cancel',
+        success: 'City deleted successfully',
+        error: 'Failed to delete city'
+      },
+      form: {
+        title: {
+          new: 'Add New City',
+          edit: 'Edit City'
+        },
+        labels: {
+          nameEn: 'Name (English)',
+          nameAr: 'Name (Arabic)'
+        },
+        placeholders: {
+          nameEn: 'Jeddah',
+          nameAr: 'جدة'
+        },
+        buttons: {
+          create: 'Create City',
+          creating: 'Creating...',
+          update: 'Update City',
+          updating: 'Updating...',
+          cancel: 'Cancel'
+        },
+        errors: {
+          createFailed: 'Failed to create city',
+          updateFailed: 'Failed to update city',
+          loadFailed: 'Failed to load cities'
+        },
+        success: {
+          created: 'City created successfully',
+          updated: 'City updated successfully'
+        }
+      }
+    },
+    buses: {
+      title: 'Bus Management',
+      search: {
+        placeholder: 'Search buses...'
+      },
+      addButton: 'Add Bus',
+      columns: {
+        plateNumber: 'Plate Number',
+        model: 'Model',
+        capacity: 'Capacity',
+        status: 'Status',
+        actions: 'Actions'
+      },
+      status: {
+        active: 'Active',
+        maintenance: 'Maintenance',
+        retired: 'Retired',
+        passenger_filling: 'Passenger Filling',
+        in_trip: 'In Trip'
+      },
+      delete: {
+        title: 'Delete Bus',
+        message: 'Are you sure you want to delete this bus? This action cannot be undone.',
+        confirm: 'Delete',
+        cancel: 'Cancel',
+        success: 'Bus deleted successfully',
+        error: 'Failed to delete bus'
+      },
+      form: {
+        title: {
+          new: 'Add New Bus',
+          edit: 'Edit Bus'
+        },
+        labels: {
+          plateNumber: 'Plate Number',
+          model: 'Model',
+          capacity: 'Capacity',
+          status: 'Status'
+        },
+        placeholders: {
+          plateNumber: 'ABC 123',
+          model: 'Mercedes-Benz',
+          capacity: '50'
+        },
+        buttons: {
+          create: 'Create Bus',
+          creating: 'Creating...',
+          update: 'Update Bus',
+          updating: 'Updating...',
+          cancel: 'Cancel'
+        },
+        errors: {
+          createFailed: 'Failed to create bus',
+          updateFailed: 'Failed to update bus',
+          loadFailed : 'Load Failed'
+        },
+        success: {
+          created: 'Bus created successfully',
+          updated: 'Bus updated successfully'
+        },status: {
+          Active:  'Active',
+          Maintenance: 'Maintenance',
+          Retired: 'Retired',
+        },
+      }
+    },
+    bookings: {
+      title: 'Bookings Management',
+      search: {
+        placeholder: 'Search bookings...'
+      },
+      columns: {
+        bookingId: 'Booking ID',
+        customer: 'Customer',
+        route: 'Route',
+        seats: 'Seats',
+        status: 'Status',
+        amount: 'Amount',
+        actions: 'Actions'
+      },
+      status: {
+        confirmed: 'Confirmed',
+        completed: 'Completed',
+        cancelled: 'Cancelled',
+        pending: 'Pending'
+      },
+      delete: {
+        title: 'Delete Booking',
+        message: 'Are you sure you want to delete this booking? This action cannot be undone.',
+        confirm: 'Delete',
+        cancel: 'Cancel',
+        success: 'Booking deleted successfully',
+        error: 'Failed to delete booking'
+      },
+      errors: {
+        loadFailed: 'Failed to load bookings'
+      },
+      blockSeats: {
+        title: 'Block Seats',
+        selectTrip: 'Select Trip',
+        tripPlaceholder: 'Select a trip...',
+        seatStatus: {
+          available: 'Available',
+          selected: 'Selected',
+          blocked: 'Blocked',
+          booked: 'Booked'
+        },
+        buttons: {
+          blockSelected: 'Block Selected Seats'
+        },
+        errors: {
+          fetchTrips: 'Failed to fetch trips',
+          fetchSeats: 'Failed to fetch seats',
+          blockSeats: 'Failed to block seats',
+          noSeatsSelected: 'Please select seats to block'
+        },
+        success: {
+          seatsBlocked: 'Seats blocked successfully'
+        }
+      }
+    },
+    bookingDetails: {
+      title: 'Customer Information',
+      labels: {
+        name: 'Name',
+        email: 'Email',
+        phone: 'Phone'
+      },
+      buttons: {
+        close: 'Close'
+      }
+    },
+    editRoute: {
+      title: 'Edit Route',
+      labels: {
+        departureCity: 'Departure City',
+        arrivalCity: 'Arrival City',
+        distance: 'Distance (km)'
+      },
+      placeholders: {
+        selectDeparture: 'Select departure city',
+        selectArrival: 'Select arrival city'
+      },
+      buttons: {
+        cancel: 'Cancel',
+        update: 'Update Route',
+        updating: 'Updating...'
+      },
+      errors: {
+        fetchCities: 'Failed to fetch cities',
+        updateRoute: 'Failed to update route'
+      },
+      success: {
+        updated: 'Route updated successfully'
+      }
+    }
   }
 }
