@@ -21,7 +21,7 @@ export async function GET() {
     return NextResponse.json(trips)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch trips' },
+      { error: 'Internal server error trips' },
       { status: 500 }
     )
   }

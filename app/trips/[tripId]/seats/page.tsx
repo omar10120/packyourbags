@@ -49,7 +49,7 @@ export default function SeatsPage({ params }: SeatsPageProps): ReactElement {
         }
       })
       if (!response.ok) {
-        throw new Error('Failed to fetch trip data')
+        throw new Error('Internal server error trip data')
       }
       const data = await response.json()
       setTripData(data)

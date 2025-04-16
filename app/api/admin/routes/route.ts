@@ -21,7 +21,7 @@ export async function GET() {
     return NextResponse.json(routes)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch routes' },
+      { error: 'Internal server error routes' },
       { status: 500 }
     )
   }

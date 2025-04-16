@@ -59,7 +59,7 @@ export default function BookingPage({ params }: BookingPageProps): ReactElement 
           }
         }
       )
-      if (!response.ok) throw new Error('Failed to fetch trip details')
+      if (!response.ok) throw new Error('Internal server error trip details')
       const data = await response.json()
       setTripDetails(data)
     } catch (err) {

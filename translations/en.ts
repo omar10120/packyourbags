@@ -598,8 +598,8 @@ export const en = {
           blockSelected: 'Block Selected Seats'
         },
         errors: {
-          fetchTrips: 'Failed to fetch trips',
-          fetchSeats: 'Failed to fetch seats',
+          fetchTrips: 'Internal server error trips',
+          fetchSeats: 'Internal server error seats',
           blockSeats: 'Failed to block seats',
           noSeatsSelected: 'Please select seats to block'
         },
@@ -636,7 +636,7 @@ export const en = {
         updating: 'Updating...'
       },
       errors: {
-        fetchCities: 'Failed to fetch cities',
+        fetchCities: 'Internal server error cities',
         updateRoute: 'Failed to update route'
       },
       success: {

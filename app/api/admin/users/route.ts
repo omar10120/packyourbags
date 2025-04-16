@@ -13,7 +13,7 @@ export async function GET() {
     return NextResponse.json(users)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch users' },
+      { error: 'Internal server error users' },
       { status: 500 }
     )
   }

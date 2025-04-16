@@ -53,7 +53,7 @@ export async function GET(
     return NextResponse.json(booking)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch booking' },
+      { error: 'Internal server error booking' },
       { status: 500 }
     )
   }

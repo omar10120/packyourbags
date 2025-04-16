@@ -30,7 +30,7 @@ export async function GET(
     return NextResponse.json(trip)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch trip' },
+      { error: 'Internal server error trip' },
       { status: 500 }
     )
   }

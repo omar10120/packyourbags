@@ -22,7 +22,7 @@ export async function GET(
     return NextResponse.json(bus)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch bus' },
+      { error: 'Internal server error bus' },
       { status: 500 }
     )
   }

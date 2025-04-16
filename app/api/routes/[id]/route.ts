@@ -30,7 +30,7 @@ export async function GET(
     return NextResponse.json(route)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch route' },
+      { error: 'Internal server error route' },
       { status: 500 }
     )
   }

@@ -13,7 +13,7 @@ export async function GET() {
     return NextResponse.json(buses)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch buses' },
+      { error: 'Internal server error buses' },
       { status: 500 }
     )
   }

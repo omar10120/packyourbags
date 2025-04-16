@@ -38,7 +38,7 @@ export async function GET(req: Request) {
       return NextResponse.json(cities)
     } catch (error) {
       return NextResponse.json(
-        { error: 'Failed to fetch cities' },
+        { error: 'Internal server error cities' },
         { status: 500 }
       )
     }

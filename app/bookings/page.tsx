@@ -84,7 +84,7 @@ export default function BookingsPage() {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to fetch bookings')
+        throw new Error('Internal server error bookings')
       }
 
       const apiBookings: ApiBooking[] = await response.json()
@@ -101,7 +101,7 @@ export default function BookingsPage() {
 
       setBookings(formattedBookings)
     } catch (error) {
-      console.error('Failed to fetch bookings:', error)
+      console.error('Internal server error bookings:', error)
     } finally {
       setLoading(false)
     }

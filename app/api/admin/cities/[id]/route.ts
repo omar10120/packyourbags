@@ -32,7 +32,7 @@ export async function GET(
     return NextResponse.json(city)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch city' },
+      { error: 'Internal server error city' },
       { status: 500 }
     )
   }

@@ -14,7 +14,7 @@ export async function GET(
     return NextResponse.json(seats)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch seats' },
+      { error: 'Internal server error seats' },
       { status: 500 }
     )
   }
