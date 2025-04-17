@@ -59,64 +59,143 @@ function VerifyCodeForm() {
     }
   }
 
+  const [code, setCode] = useState(['', '', '', '', '',''])
+
+
+  const handleCodeChange = (index: number, value: string) => {
+    if (value.length > 1) return
+    const newCode = [...code]
+    newCode[index] = value
+    setCode(newCode)
+    setVerificationCode(newCode.join(''))
+
+    // Auto-focus next input
+    if (value && index < 6) {
+      const nextInput = document.getElementById(`code-${index + 1}`)
+      nextInput?.focus()
+    }
+  }
+
+  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === 'Backspace' && !code[index] && index > 0) {
+      const prevInput = document.getElementById(`code-${index - 1}`)
+      prevInput?.focus()
+    }
+  }
+
+  const [resendLoading, setResendLoading] = useState(false)
+  const [resendSuccess, setResendSuccess] = useState(false)
+
+  const handleResendCode = async () => {
+    if (resendLoading || !email) return
+    
+    setResendLoading(true)
+    setError('')
+    setResendSuccess(false)
+
+    try {
+      const response = await fetch('/api/auth/verify-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || t.errors.resendFailed)
+      }
+
+      setResendSuccess(true)
+      // Reset code inputs
+      setCode(['', '', '', '', '', ''])
+      setVerificationCode('')
+      
+      // Hide success message after 3 seconds
+      setTimeout(() => setResendSuccess(false), 3000)
+    } catch (err: any) {
+      setError(err.message || t.errors.generic)
+    } finally {
+      setResendLoading(false)
+    }
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className={`max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg ${language === 'ar' ? 'rtl' : 'ltr'}`}>
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 py-12 px-4">
+      <div className={`max-w-md w-full bg-white p-10 rounded-3xl shadow-lg`} dir='ltr'>
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-8 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
             {t.title}
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            {t.subtitle}
+          <p className="text-center text-sm text-gray-600 mb-8">
+            {t.subtitle} <br />
+            <span className="font-medium">{email?.replace(/(.{2})(.*)(?=@)/g, '$1***')}</span>
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
+          <div className="flex justify-between mb-8 text-black px-2">
+            {[0, 1, 2, 3, 4, 5].map((index) => (
+              <input
+                key={index}
+                id={`code-${index}`}
+                type="text"
+                maxLength={1}
+                value={code[index]}
+                onChange={(e) => handleCodeChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                className="w-10 h-10 text-center text-lg font-semibold border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500"
+                required
+              />
+            ))}
+          </div>
+
           {error && (
-            <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded">
-              <p className="text-sm text-red-700">{error}</p>
+            <div className="text-center text-sm text-red-600 mb-4">
+              {error}
             </div>
           )}
 
           {success && (
-            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded">
-              <p className="text-sm text-green-700">{t.success}</p>
+            <div className="text-center text-sm text-green-600 mb-4">
+              {t.success.done}
             </div>
           )}
 
-          <div>
-            <label htmlFor="code" className="sr-only">
-              {t.placeholder}
-            </label>
-            <input
-              id="code"
-              type="text"
-              required
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder={t.placeholder}
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              dir="ltr"
-            />
-          </div>
+          <button
+            type="submit"
+            disabled={loading || success || code.some(c => !c)}
+            className="w-full py-3 px-4 text-white bg-blue-600 hover:bg-blue-700 rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? (
+              <div className="flex items-center justify-center">
+                <AuthLoader />
+                <span className={`${language === 'ar' ? 'mr-2' : 'ml-2'}`}>{t.buttons.verifying}</span>
+              </div>
+            ) : success ? (
+              t.buttons.verified
+            ) : (
+              t.buttons.verify
+            )}
+          </button>
 
-          <div>
+          <div className="text-center mt-4">
             <button
-              type="submit"
-              disabled={loading || success}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
+              type="button"
+              onClick={handleResendCode}
+              disabled={resendLoading}
+              className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? (
-                <>
-                  <AuthLoader />
-                  <span className={`${language === 'ar' ? 'mr-2' : 'ml-2'}`}>{t.buttons.verifying}</span>
-                </>
-              ) : success ? (
-                t.buttons.verified
-              ) : (
-                t.buttons.verify
-              )}
+              {resendLoading ? t.buttons.resending : t.buttons.resend}
             </button>
+            {resendSuccess && (
+              <p className="text-sm text-green-600 mt-2">{t.success.resend}</p>
+            )}
           </div>
         </form>
       </div>

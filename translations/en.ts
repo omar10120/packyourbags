@@ -231,19 +231,26 @@ export const en = {
       }
     },
     verifyCode: {
-      title: 'Verify Your Email',
-      subtitle: 'Please enter the verification code sent to your email',
+      title: 'Verify your code',
+      subtitle: 'We have sent a code to your email',
       placeholder: 'Enter verification code',
       buttons: {
-        verify: 'Verify Email',
+        verify: 'Verify',
         verifying: 'Verifying...',
-        verified: 'Verified!'
+        verified: 'Verified!',
+        resend: "Didn't receive code? Resend",
+        resending: "Resending..."
       },
       errors: {
         verificationFailed: 'Verification failed',
-        generic: 'An error occurred during verification'
+        generic: 'An error occurred',
+        resendFailed: "Failed to resend verification code"
       },
-      success: 'Email verified successfully! Redirecting to login...'
+      // 'Code verified successfully!'
+      success: {
+        done : 'Code verified successfully!',
+        resend: "New verification code sent successfully"
+      },
     },
     register: {
       title: 'Create your account',

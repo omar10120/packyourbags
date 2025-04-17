@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import crypto from 'crypto'
-import { sendVerificationEmail } from '@/utils/emailService'
+import { sendResetPassword } from '@/utils/resetPasswordService'
 
 export async function POST(req: Request) {
   try {
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     })
 
     // Send reset code email
-    const resetCode = await sendVerificationEmail(email, resetToken)
+    const resetCode = await sendResetPassword(email, resetToken)
 
     return NextResponse.json({
       message: 'Reset password code has been sent to your email'
