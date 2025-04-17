@@ -47,7 +47,7 @@ export async function POST(req: Request) {
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: {  email }
     })
 
     if (existingUser) {
@@ -56,6 +56,22 @@ export async function POST(req: Request) {
         { status: 400 }
       )
     }
+    
+    const existingName = await prisma.user.findFirst({
+      where: { 
+        name: {
+          equals: name.toLowerCase,
+        }
+      }
+    })
+
+    if (existingName) {
+      return NextResponse.json(
+        { error: 'Username already taken' },
+        { status: 400 }
+      )
+    }
+    
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
