@@ -52,7 +52,7 @@ export async function POST(req: Request) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'Email already registered' },
+        { error: 'Email already in use' },
         { status: 400 }
       )
     }
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
     const existingName = await prisma.user.findFirst({
       where: { 
         name: {
-          equals: name.toLowerCase,
+          equals: name.toLowerCase(),
         }
       }
     })
