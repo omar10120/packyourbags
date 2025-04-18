@@ -65,6 +65,8 @@ export async function POST(req: Request) {
       }
     })
 
+  
+
     if (existingName) {
       return NextResponse.json(
         { error: 'Username already taken' },

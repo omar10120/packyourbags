@@ -81,7 +81,7 @@ export const ar = {
       from: 'من',
       to: 'إلى',
       travelDate: 'تاريخ السفر',
-      selectedSeats: 'المقاعد المختارة',
+      selectedSeats: 'المقاعد المحجوزة',
       close: 'إغلاق'
     },
     confirmCancel: {
@@ -141,7 +141,7 @@ export const ar = {
           booked: 'محجوز',
           blocked: 'مقفل'
         },
-        selectedSeats: 'المقاعد المختارة',
+        selectedSeats: 'المقاعد المحجوزة',
         totalPrice: 'السعر الإجمالي',
         button: {
           continue: 'متابعة'

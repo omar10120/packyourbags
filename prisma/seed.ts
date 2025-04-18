@@ -12,7 +12,13 @@ async function main() {
   })
 
   if (!existingAdmin) {
-    const hashedPassword = await bcrypt.hash('admin123', 10)
+    // const hashedPassword = await bcrypt.hash('admin123', 10)
+    const adminpassword = process.env.ADMIN_PASSWORD || "defaultPassword";
+
+    
+    const hashedPassword = await bcrypt.hash(adminpassword, 10)
+
+    
     
     await prisma.user.create({
       data: {
