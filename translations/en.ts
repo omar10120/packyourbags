@@ -686,5 +686,12 @@ export const en = {
     results: 'Search Results',
     book: 'Book Now',
     noResults: 'No trips found for your search criteria'
+  },
+  errors: {
+    notFound: {
+      title: 'Page Not Found',
+      message: 'The page you are looking for might have been removed or is temporarily unavailable.',
+      backToHome: 'Back to Dashboard'
+    }
   }
 }

@@ -55,7 +55,7 @@ export default function NewBusPage() {
   return (
     <div className={`max-w-2xl mx-auto text-black ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <Toaster />
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">{t.title.new}</h1>
+      <h1 className="text-2xl font-semibold text-gray-800 max-sm:w-full mb-6">{t.title.new}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow">
         <div>

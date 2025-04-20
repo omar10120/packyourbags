@@ -110,7 +110,7 @@ export default function NewTripPage() {
   return (
     <div className={`max-w-2xl mx-auto text-black ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <Toaster />
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">{t.title.new}</h1>
+      <h1 className="text-2xl font-semibold text-gray-800 max-sm:w-full mb-6">{t.title.new}</h1>
 
       {error && (
         <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">

@@ -119,7 +119,7 @@ export default function AdminBlockSeats() {
   return (
     <div className={`p-6 text-black ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <Toaster />
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">{t.title}</h1>
+      <h1 className="text-2xl font-semibold text-gray-800 max-sm:w-full mb-6">{t.title}</h1>
 
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">
