@@ -713,6 +713,15 @@ export const ar = {
         message: 'الصفحة التي تبحث عنها قد تكون حذفت أو غير متوفرة مؤقتاً',
         backToHome: 'العودة إلى لوحة التحكم'
       }
-    }
+    },
+    search: {  // <-- Make sure this exists in Arabic translations too
+      from: 'من',
+      to: 'إلى',
+      date: 'التاريخ',
+      submit: 'بحث',
+      searching: 'جاري البحث...',
+      placeholder: 'بحث...'
+    },
+
 }
 

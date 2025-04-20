@@ -156,6 +156,7 @@ export const en = {
     rights: "All rights reserved."
   },
   
+  
   auth: {
     login: {
       title: 'Welcome back',
@@ -685,7 +686,11 @@ export const en = {
     searching: 'Searching...',
     results: 'Search Results',
     book: 'Book Now',
-    noResults: 'No trips found for your search criteria'
+    noResults: 'No trips found for your search criteria',
+    date: 'Date',
+    submit: 'Search',
+    searching: 'Searching...',
+    placeholder: 'Search...'
   },
   errors: {
     notFound: {
