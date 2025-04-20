@@ -144,7 +144,7 @@ export default function CitiesPage() {
         </div>
       </div>
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="bg-white shadow-md rounded-lg overflow-scroll">
         <table className="min-w-full divide-y divide-gray-200" dir="ltr">
           <thead className="bg-gray-50">
             <tr>

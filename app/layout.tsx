@@ -4,7 +4,8 @@ import './globals.css'
 import { LanguageProvider } from '@/context/LanguageContext'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import { AuthProvider } from '@/contexts/AuthContext'
+import { AuthProvider } from '@/context/AuthContext'
+import UserOnlyGuard from '@/components/UserOnlyGuard'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,20 +15,26 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
+  children
+
+  
 }: {
   children: React.ReactNode
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
+
+    <AuthProvider>
+      
           <LanguageProvider>
             <Navbar />
             <main>{children}</main>
             <Footer />
           </LanguageProvider>
-        </AuthProvider>
+      
+    </AuthProvider>
+      
       </body>
     </html>
   )

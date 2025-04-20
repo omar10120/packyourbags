@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 import AuthLoader from '../components/AuthLoader'
 

@@ -1,19 +1,21 @@
 'use client'
 import { Suspense, useEffect, useState } from 'react'
 import TripsClient from './TripsClient'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import ProtectedRoute from '@/components/ProtectedRoute'
 
 export default function TripsPage() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated ,user } = useAuth()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     if (!isAuthenticated) {
       router.replace('/auth/login')
-    } else {
+    } else if(isAuthenticated || user?.role == 'ADMIN'){
+      router.replace('/admin')
+    }else{
       setIsLoading(false)
     }
   }, [isAuthenticated, router])

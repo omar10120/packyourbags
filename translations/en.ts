@@ -677,5 +677,14 @@ export const en = {
         updated: 'Route updated successfully'
       }
     }
+  },
+  search: {
+    from: 'From',
+    to: 'To',
+    submit: 'Search Trips',
+    searching: 'Searching...',
+    results: 'Search Results',
+    book: 'Book Now',
+    noResults: 'No trips found for your search criteria'
   }
 }

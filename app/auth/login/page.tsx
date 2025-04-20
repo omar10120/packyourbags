@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import { useLanguage } from '@/context/LanguageContext'
 
@@ -19,10 +19,16 @@ export default function LoginPage() {
   const [success, setSuccess] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const { language, translations } = useLanguage()
+  const {  user } = useAuth()
+
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/')
+      if(user?.role == 'ADMIN'){
+        router.push('/admin')
+      }else{
+        router.push('/')
+      }
     }
   }, [isAuthenticated, router])
 
@@ -52,9 +58,17 @@ export default function LoginPage() {
       setSuccess(true)
       
       // Delay redirect to show success state
-      setTimeout(() => {
-        router.push('/')
-      }, 1500)
+      if (user?.role !== 'ADMIN') {
+        setTimeout(() => {
+          router.push('/admin')
+        }, 1500)
+      }
+      // else{
+      //   setTimeout(() => {
+      //     router.push('/')
+      //   }, 1500)
+      // }
+     
     } catch (err: any) {
       setError(err.message)
     } finally {

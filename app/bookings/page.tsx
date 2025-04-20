@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useLanguage } from '@/context/LanguageContext'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import BookingModal from '@/components/BookingModal'
 import ConfirmDialog from '@/components/ConfirmDialog'
 
@@ -47,12 +47,13 @@ interface ApiBooking {
 export default function BookingsPage() {
   const router = useRouter()
   const { language, translations } = useLanguage()
-  const { isAuthenticated, checkAuth } = useAuth()
+  const { isAuthenticated,user, checkAuth } = useAuth()
   const [bookings, setBookings] = useState<Booking[]>([])
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   const [loading, setLoading] = useState(true)
+
 
   const [value1 , setvalue1 ] = useState('')
   const [value2 , setvalue2 ] = useState('')
@@ -61,6 +62,9 @@ export default function BookingsPage() {
     if (!checkAuth()) {
       router.push('/auth/login')
       return
+    }
+    if(checkAuth() || user?.role == 'ADMIN'){
+      router.push('/admin')
     }
     fetchBookings()
   }, [])
