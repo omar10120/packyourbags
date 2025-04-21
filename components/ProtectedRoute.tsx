@@ -15,7 +15,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     }
 
     
-     if(checkAuth() ||   user?.role == 'ADMIN')
+     if(checkAuth() &&   user?.role == 'ADMIN')
         router.push('/admin')
     
   }, [])

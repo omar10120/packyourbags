@@ -6,7 +6,8 @@ import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
 import BookingModal from '@/components/BookingModal'
 import ConfirmDialog from '@/components/ConfirmDialog'
-
+import ProtectedRoute from "@/components/ProtectedRoute"
+import UserOnlyGuard from '@/components/UserOnlyGuard'
 
 
 interface Booking {
@@ -49,7 +50,7 @@ interface Booking {
 export default function BookingsPage() {
   const router = useRouter()
   const { language, translations } = useLanguage()
-  const { isAuthenticated,user, checkAuth } = useAuth()
+  const { isAuthenticated,user, checkAuth  } = useAuth()
   const [bookings, setBookings] = useState<Booking[]>([])
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -65,9 +66,7 @@ export default function BookingsPage() {
       router.push('/auth/login')
       return
     }
-    if(checkAuth() || user?.role == 'ADMIN'){
-      router.push('/admin')
-    }
+ 
     fetchBookings()
   }, [])
 
@@ -152,11 +151,12 @@ export default function BookingsPage() {
     )
   }
 
-  return (
-    <div className={`min-h-screen bg-gray-50 py-12 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
+  const Content = () => (
+      <div className={`min-h-screen bg-gray-50 py-12 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <div className="max-w-7xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">
           {translations.bookings.title}
+          
         </h1>
 
         {bookings.length === 0 ? (
@@ -252,5 +252,12 @@ export default function BookingsPage() {
         message={translations.bookings.confirmCancel.message}
       />
     </div>
+  )
+  return (
+    <UserOnlyGuard>
+      <ProtectedRoute>
+        <Content />
+      </ProtectedRoute>
+    </UserOnlyGuard>
   )
 }

@@ -5,6 +5,8 @@ import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import ProtectedRoute from '@/components/ProtectedRoute'
 
+import UserOnlyGuard from '@/components/UserOnlyGuard'
+
 export default function TripsPage() {
   const { isAuthenticated ,user } = useAuth()
   const router = useRouter()
@@ -13,9 +15,7 @@ export default function TripsPage() {
   useEffect(() => {
     if (!isAuthenticated) {
       router.replace('/auth/login')
-    } else if(isAuthenticated || user?.role == 'ADMIN'){
-      router.replace('/admin')
-    }else{
+    } else{
       setIsLoading(false)
     }
   }, [isAuthenticated, router])
@@ -27,16 +27,22 @@ export default function TripsPage() {
       </div>
     )
   }
+  const Content  = () => (
 
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    }>
+      <TripsClient />
+    </Suspense>
+  )
   return (
+    
+   <UserOnlyGuard>
     <ProtectedRoute>
-      <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      }>
-        <TripsClient />
-      </Suspense>
+      <Content/>
     </ProtectedRoute>
+   </UserOnlyGuard>
   )
 }
