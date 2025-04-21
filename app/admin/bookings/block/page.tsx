@@ -134,7 +134,7 @@ export default function AdminBlockSeats() {
           <option value="">{t.tripPlaceholder}</option>
           {trips.map((trip) => (
             <option key={trip.id} value={trip.id}>
-              {trip.route.departureCity.name} → {trip.route.arrivalCity.name} ({new Date(trip.departureTime).toLocaleString(language === 'ar' ? 'ar-SA' : 'en-US')})
+              {trip.route.departureCity.name} → {trip.route.arrivalCity.name} ({new Date(trip.departureTime).toLocaleString(language === 'ar' ? 'en-US' : 'en-US')})
             </option>
           ))}
         </select>
@@ -155,8 +155,8 @@ export default function AdminBlockSeats() {
             ))}
           </div>
 
-          <div className="flex justify-between items-center">
-            <div className="flex gap-4">
+          <div className="flex justify-between items-center ">
+            <div className="flex gap-4 ">
               <div className="flex items-center">
                 <div className="w-4 h-4 bg-white border rounded mr-2"></div>
                 <span className="text-sm">{t.seatStatus.available}</span>

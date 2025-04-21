@@ -5,28 +5,53 @@ import toast, { Toaster } from 'react-hot-toast'
 import { 
   EyeIcon, 
   TrashIcon,
+  ArrowLeftIcon,
   MagnifyingGlassIcon 
 } from '@heroicons/react/24/outline'
 import ConfirmDialogAdmin from '@/components/ConfirmDialogAdmin'
 import { useLanguage } from '@/context/LanguageContext'
 
+// First, update the Booking interface to match the API response
 interface Booking {
   id: string
   userId: string
   tripId: string
-  seats: string[]
+  bookingDate: string
   status: 'confirmed' | 'completed' | 'cancelled' | 'pending'
-  totalPrice: number
-  createdAt: string
+  totalPrice: string | number
+  details: {
+    id: string
+    bookingId: string
+    seatId: string
+    price: string
+    seat: {
+      id: string
+      tripId: string
+      seatNumber: string
+      status: string
+    }
+  }[]
   user: {
     name: string
     email: string
+    phone: string
   }
   trip: {
-    departureCity: string
-    arrivalCity: string
+    id: string
     departureTime: string
     arrivalTime: string
+    departureCity: string
+    arrivalCity: string
+    route: {
+      departureCity: {
+        name: string
+        nameAr: string
+      }
+      arrivalCity: {
+        name: string
+        nameAr: string
+      }
+    }
   }
 }
 
@@ -68,6 +93,50 @@ export default function BookingsPage() {
   useEffect(() => {
     fetchBookings()
   }, [])
+
+  // Add new state for confirm dialog
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
+  const [bookingToConfirm, setBookingToConfirm] = useState<string | null>(null)
+  
+  // Modify the handleConfirmBooking to open dialog first
+  const handleConfirmClick = (bookingId: string) => {
+    setBookingToConfirm(bookingId)
+    setIsConfirmDialogOpen(true)
+  }
+  
+  // Move the actual confirmation logic to a new function
+  const handleConfirmBooking = async () => {
+    if (!bookingToConfirm) return
+  
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/admin/bookings/${bookingToConfirm}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: 'confirmed' })
+      })
+  
+      if (!response.ok) {
+        throw new Error('Failed to confirm booking')
+      }
+  
+      setBookings(bookings.map(booking => 
+        booking.id === bookingToConfirm 
+          ? { ...booking, status: 'confirmed' }
+          : booking
+      ))
+      toast.success('Booking confirmed successfully')
+    } catch (error: any) {
+      console.error('Confirmation error:', error)
+      toast.error(error.message || 'Failed to confirm booking')
+    } finally {
+      setBookingToConfirm(null)
+      setIsConfirmDialogOpen(false)
+    }
+  }
 
   const handleDeleteClick = (bookingId: string) => {
     setBookingToDelete(bookingId)
@@ -117,7 +186,7 @@ export default function BookingsPage() {
   )
 
   return (
-    <div className={language === 'ar' ? 'rtl' : 'ltr'}>
+    <div className={`min-h-screen bg-gray-50 p-4 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <Toaster />
       <ConfirmDialogAdmin
         isOpen={isDeleteDialogOpen}
@@ -128,96 +197,147 @@ export default function BookingsPage() {
         confirmText={t.delete.confirm}
         cancelText={t.delete.cancel}
       />
-      
+      <ConfirmDialogAdmin
+        isOpen={isConfirmDialogOpen}
+        onClose={() => setIsConfirmDialogOpen(false)}
+        onConfirm={handleConfirmBooking}
+        title="Confirm Booking"
+        message="Are you sure you want to confirm this booking?"
+        confirmText="Confirm"
+        cancelText="Cancel"
+      />
 
-      <div className="flex justify-between max-sm:flex-col max-sm:gap-4 items-center mb-6 text-black">
-        <h1 className="text-2xl font-semibold text-gray-800 max-sm:w-full max-sm:w-full">{t.title}</h1>
-        <div className="relative max-sm:w-full">
-          <input
-            type="text"
-            placeholder={t.search.placeholder}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-2 border max-sm:w-full border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
-          />
-          <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">{t.title}</h1>
+          
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <div className="relative w-full sm:w-64">
+              <input
+                type="text"
+                placeholder={t.search.placeholder}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-black"
+              />
+              <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+            </div>
+            
+            <button
+              onClick={() => router.push('/admin/bookings/block')}
+              className="w-full sm:w-auto px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 flex items-center justify-center gap-2 shadow-sm"
+            >
+              <span>{t.blockSeats.title}</span>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="bg-white shadow-md rounded-lg overflow-scroll">
-        <table className="min-w-full divide-y divide-gray-200" dir="ltr">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t.columns.bookingId}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t.columns.customer}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t.columns.route}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t.columns.seats}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t.columns.status}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t.columns.amount}
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {t.columns.actions}
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {filteredBookings.map((booking) => (
-              <tr key={booking.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {booking.id}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{booking.user.name}</div>
-                  <div className="text-sm text-gray-500">{booking.user.email}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {booking.trip.departureCity} → {booking.trip.arrivalCity}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    {new Date(booking.trip.departureTime).toLocaleString()}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {booking.seats.join(', ')}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(booking.status)}`}>
-                    {t.status[booking.status]}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {booking.totalPrice} SAR
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button
-                    onClick={() => router.push(`/admin/bookings/${booking.id}`)}
-                    className="text-indigo-600 hover:text-indigo-900"
-                  >
-                    <EyeIcon className="h-5 w-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteClick(booking.id)}
-                    className="text-red-600 hover:text-red-900 ml-4"
-                  >
-                    <TrashIcon className="h-5 w-5" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200" dir="ltr">
+              <thead className="bg-gray-50">
+                <tr>
+                  {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t.columns.bookingId}
+                  </th> */}
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t.columns.customer}
+                  </th>
+                  
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t.columns.seats}
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t.columns.route}
+                  </th>
+                  
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t.columns.status}
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t.columns.amount}
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t.columns.actions}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredBookings.map((booking) => (
+                  <tr key={booking.id} className="hover:bg-gray-50 transition-colors">
+                    {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {booking.id}
+                    </td> */}
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">{booking.user.name}</div>
+                      <div className="text-sm text-gray-500">{booking.user.email}</div>
+                    </td>     
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {booking.details?.map(detail => detail.seat.seatNumber).join(', ') || '-'}
+                    </td>
+                    
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        {booking.trip.route.departureCity.name} → {booking.trip.route.arrivalCity.name}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {new Date(booking.trip.departureTime).toLocaleString()}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(booking.status)}`}>
+                        {t.status[booking.status]}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {booking.totalPrice} SAR
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex justify-end gap-3">
+                        {/* <button
+                          onClick={() => router.push(`/admin/bookings/${booking.id}`)}
+                          className="text-indigo-600 hover:text-indigo-900 p-1 hover:bg-indigo-50 rounded-full transition-all"
+                        >
+                          <EyeIcon className="h-5 w-5" />
+                        </button> */}
+
+                        <button
+                          onClick={() => handleConfirmClick(booking.id)}
+                          className="group relative inline-flex items-center justify-center p-2 bg-green-50 hover:bg-green-100 text-green-600 hover:text-green-700 rounded-lg transition-all duration-200"
+                          disabled={booking.status === 'confirmed'}
+                          title={booking.status === 'confirmed' ? 'Already confirmed' : 'Confirm booking'}
+                        >
+                          <ArrowLeftIcon className="h-5 w-5" />
+                          <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                            {booking.status === 'confirmed' ? 'Already confirmed' : 'Confirm booking'}
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => handleDeleteClick(booking.id)}
+                          className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded-full transition-all"
+                        >
+                          <TrashIcon className="h-5 w-5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {loading && (
+          <div className="flex justify-center items-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+          </div>
+        )}
+
+        {!loading && filteredBookings.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-gray-500">{t.search.noResults}</p>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -52,26 +52,32 @@ export interface Translations {
     }
   }
   bookings: {
-    title: string
+    title: 'الحجوزات الخاصة بي',
+    noResults : 'لا يوجد نتيجة',
+    confirm :{
+      error : 'خطأ',
+      success : 'نجح'
+  },
     status: {
-      confirmed: string
-      completed: string
-      cancelled: string
-      pending: string
-    }
+      confirmed: 'تأكيد',
+      completed: 'مكتمل',
+      cancelled: 'ملغي',
+      pending: 'قيد الانتظار'
+    },
+
     noBookings: {
       title: string
       description: string
-      cta: string
-    }
+      cta:string
+    },
     bookingCard: {
-      bookingId: string
+      bookingId:string
       date: string
-      seats: string
+      seats:string
       price: string
-      viewDetails: string
+      viewDetails:string
       cancelBooking: string
-    }
+    },
     modal: {
       title: string
       from: string
@@ -86,6 +92,7 @@ export interface Translations {
       confirm: string
       cancel: string
     }
+
   },
   
   
@@ -281,6 +288,7 @@ export interface Translations {
       }
       recentBookings: {
         title: string
+        noResults : string
         columns: {
           bookingId: string
           customer: string

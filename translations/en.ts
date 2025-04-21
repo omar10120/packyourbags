@@ -602,10 +602,13 @@ export const en = {
         },
         bookings: {
           title: 'Bookings Management',
+          
           search: {
-            placeholder: 'Search bookings...'
+            placeholder: 'Search bookings...',
+            noResults : 'no results',
           },
           columns: {
+            
             bookingId: 'Booking ID',
             customer: 'Customer',
             route: 'Route',

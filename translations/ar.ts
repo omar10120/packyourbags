@@ -48,15 +48,10 @@ export const ar = {
   },
   
   brand: 'احزم حقائبك',
-  // hero: {
-  //   title: "احجز مقعدك في دقائق",
-  //   subtitle: "احجز مقعدك في دقائق مع نظام الحجز البسيط لدينا",
-  //   imageAlt: "حافلات حديثة",
-  //   exploreButton: "استكشف المسارات",
-  //   bookButton: "احجز الآن"
-  // },
   bookings: {
     title: 'الحجوزات الخاصة بي',
+    noResults : 'لا يوجد نتيجة',
+    confirm : 'تاكيد',
     status: {
       confirmed: 'تأكيد',
       completed: 'مكتمل',
@@ -632,7 +627,8 @@ export const ar = {
       bookings: {
         title: 'إدارة الحجوزات',
         search: {
-          placeholder: 'البحث في الحجوزات...'
+          placeholder: 'البحث في الحجوزات...',
+          noResults : 'لا يوجد نتائج',
         },
         columns: {
           bookingId: 'رقم الحجز',

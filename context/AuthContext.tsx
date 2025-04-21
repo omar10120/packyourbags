@@ -1,5 +1,6 @@
 'use client'
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { isTokenExpired } from '@/utils/auth'
 import { useRouter } from 'next/navigation'
 
 interface User {
@@ -32,6 +33,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     checkAuth()
+    // Check token expiration every minute
+    const checkTokenInterval = setInterval(() => {
+      const token = localStorage.getItem('token')
+      if (token && isTokenExpired(token)) {
+        // Token expired, logout user
+        logout()
+      }
+    }, 60000) // Check every minute
+
+    return () => clearInterval(checkTokenInterval)
   }, [])
 
   const checkAuth = () => {
@@ -70,9 +81,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('refreshToken')
-    localStorage.removeItem('user')
-    setIsAuthenticated(false)
     setUser(null)
+    setIsAuthenticated(false)
     router.push('/auth/login')
   }
 
