@@ -14,7 +14,7 @@ export default function StatsCard({ title, value, icon, color }: StatsCardProps)
         </div>
         <div className="ml-5">
           <p className="text-gray-500 text-sm">{title}</p>
-          <p className="text-2xl font-semibold text-gray-800">{value}</p>
+          <p className="text-2xl font-semibold text-gray-800 max-sm:w-full">{value}</p>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import bookSeat from "@/app/book-seat/page";
+// import bookSeat from "@/app/book-seat/page";
 
 export const ar = {
   nav: {
@@ -8,6 +8,7 @@ export const ar = {
     myBookings: 'الحجوزات',
     bookSeat : 'احجز مقعدك',
     dashboard : 'لوحة التحكم',
+    
   },
   home: {
     hero: {
@@ -45,14 +46,15 @@ export const ar = {
       title: "المسارات الشائعة"
     }
   },
+  
   brand: 'احزم حقائبك',
-  hero: {
-    title: "احجز مقعدك في دقائق",
-    subtitle: "احجز مقعدك في دقائق مع نظام الحجز البسيط لدينا",
-    imageAlt: "حافلات حديثة",
-    exploreButton: "استكشف المسارات",
-    bookButton: "احجز الآن"
-  },
+  // hero: {
+  //   title: "احجز مقعدك في دقائق",
+  //   subtitle: "احجز مقعدك في دقائق مع نظام الحجز البسيط لدينا",
+  //   imageAlt: "حافلات حديثة",
+  //   exploreButton: "استكشف المسارات",
+  //   bookButton: "احجز الآن"
+  // },
   bookings: {
     title: 'الحجوزات الخاصة بي',
     status: {
@@ -62,7 +64,6 @@ export const ar = {
       pending: 'قيد الانتظار'
     },
 
-    
     noBookings: {
       title: 'لا توجد حجوزات',
       description: 'لم تقم بأي حجوزات حتى الآن',
@@ -92,8 +93,10 @@ export const ar = {
     },
 
   },
+
    trips: {
       title: 'الرحلات المتاحة',
+      
       search: {
         placeholder: 'البحث عن الوجهات...',
         from: 'من',
@@ -155,7 +158,9 @@ export const ar = {
       hero: {
         title: "سافر براحة",
         subtitle: "احجز تذاكر الحافلة بسهولة وابدأ رحلتك اليوم",
-        imageAlt: "السفر بالحافلة"
+        imageAlt: "السفر بالحافلة",
+        exploreButton: "اكتشف المسارات",
+        bookButton: "احجز الان"
       },
       features: {
         easyBooking: {
@@ -313,7 +318,8 @@ export const ar = {
         }
       }
     },
-    dashboard: {
+    dashboard:
+    {
       sidebar: {
         title: 'لوحة التحكم',
         dashboard: 'الرئيسية',
@@ -383,7 +389,14 @@ export const ar = {
       trips: {
         title: 'إدارة الرحلات',
         search: {
-          placeholder: 'البحث عن الرحلات...'
+          placeholder: 'البحث عن الرحلات...',
+          from: 'من',
+          to: 'الى',
+          date: 'تاريخ',
+          search: 'البحث عن رحلة',
+          results: 'بحث عن نتائج',
+          book: 'احجز الآن',
+          noResults: 'لم يتم العثور على رحلات تتوافق مع معايير البحث الخاصة بك'
         },
         addButton: 'إضافة رحلة',
         columns: {
@@ -443,6 +456,7 @@ export const ar = {
           status: 'تعديل  ',
         }
       },
+
       routes: {
         title: 'إدارة المسارات',
         search: {
@@ -707,6 +721,18 @@ export const ar = {
       }
      
     },
+   
+    search: {  
+      from: 'من',
+      to: 'إلى',
+      date: 'التاريخ',
+      submit: 'بحث',
+      searching: 'جاري البحث...',
+      placeholder: 'بحث...',
+      results: 'نتائج البحث',
+      book: 'احجز الآن',
+      noResults: 'لم يتم العثور على رحلات تتوافق مع معايير البحث الخاصة بك',
+    },
     errors: {
       notFound: {
         title: 'الصفحة غير موجودة',
@@ -714,14 +740,5 @@ export const ar = {
         backToHome: 'العودة إلى لوحة التحكم'
       }
     },
-    search: {  // <-- Make sure this exists in Arabic translations too
-      from: 'من',
-      to: 'إلى',
-      date: 'التاريخ',
-      submit: 'بحث',
-      searching: 'جاري البحث...',
-      placeholder: 'بحث...'
-    },
-
 }
 

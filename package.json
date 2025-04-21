@@ -18,6 +18,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && prisma migrate deploy && prisma db seed && next build",
+
     "start": "next start",
     "seed": "npx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
     "prisma:seed": "prisma db seed",

@@ -7,6 +7,8 @@ import { useAuth } from '@/context/AuthContext'
 import BookingModal from '@/components/BookingModal'
 import ConfirmDialog from '@/components/ConfirmDialog'
 
+
+
 interface Booking {
   id: string
   from: string
@@ -17,7 +19,7 @@ interface Booking {
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled'  // Added 'pending' status
 }
 
-interface ApiBooking {
+  interface ApiBooking {
   id: string
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
   bookingDate: string

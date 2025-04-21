@@ -67,7 +67,7 @@ const [stats, setStats] = useState({
         />
         <StatsCard 
           title={translations.dashboard.home.summary.totalRevenue}
-          value={`$${stats.totalRevenue}`}
+          value={`$${stats.totalRevenue || 0} `}
           icon={<CurrencyDollarIcon className="h-6 w-6" />}
           color="bg-yellow-500"
         />

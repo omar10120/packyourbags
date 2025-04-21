@@ -22,9 +22,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
     }
 
-    if (request.nextUrl.pathname.startsWith('/api/admin') && role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
-    }
+    
 
     const requestHeaders = new Headers(request.headers)
     requestHeaders.set('userId', userId)

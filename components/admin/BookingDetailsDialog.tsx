@@ -51,7 +51,7 @@ export default function BookingDetailsDialog({ isOpen, onClose, booking }: Props
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={`w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 shadow-xl transition-all ${language === 'ar' ? 'rtl' : 'ltr'}`}>
+              <Dialog.Panel className={`w-full max-w-md transform overflow-scroll rounded-2xl bg-white p-6 shadow-xl transition-all ${language === 'ar' ? 'rtl' : 'ltr'}`}>
                 <Dialog.Title className="text-lg font-medium leading-6 text-gray-900 mb-4">
                   {t.title}
                 </Dialog.Title>
