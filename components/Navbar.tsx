@@ -117,7 +117,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          {!isAuthenticated &&(
+          {(isAuthenticated || !isAuthenticated ) && user?.role != 'ADMIN' && (
               <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
