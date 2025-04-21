@@ -254,10 +254,10 @@ export default function BookingsPage() {
     </div>
   )
   return (
-    <UserOnlyGuard>
+    // <UserOnlyGuard>
       <ProtectedRoute>
         <Content />
       </ProtectedRoute>
-    </UserOnlyGuard>
+    // </UserOnlyGuard>
   )
 }
