@@ -36,10 +36,11 @@ export default function BookSeat() {
     "المدينة → مكة"
   ]
 
+
   const Content = () => (
 
     
-    <div className={`min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 ${language === 'ar' ? 'rtl' : 'ltr'} text-black`}>
       {/* Hero Section */}
       <section className="relative h-[500px] flex items-center">
         <div className="absolute inset-0 z-0">

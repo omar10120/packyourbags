@@ -115,25 +115,25 @@ return (
         </h1>
         
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="mb-8">
-            <div className="flex items-center justify-center space-x-8 mb-4 ">
-              <div className="flex items-center ">
-                <div className="w-6 h-6 bg-white border border-gray-300 rounded mr-2 "></div>
-                <span className='px-4'>{translations.trips.seats.legend.available}</span>
+          <div className="mb-8  flex w-full justify-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-4 justify-items-start">
+                <div className="flex items-center">
+                  <div className="w-6 h-6 bg-white border border-gray-300 rounded"></div>
+                  <span className="ml-2">{translations.trips.seats.legend.available}</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-6 h-6 bg-blue-500 rounded"></div>
+                  <span className="ml-2">{translations.trips.seats.legend.selected}</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-6 h-6 bg-gray-300 rounded"></div>
+                  <span className="ml-2">{translations.trips.seats.legend.booked}</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-6 h-6 bg-red-300 rounded"></div>
+                  <span className="ml-2">{translations.trips.seats.legend.blocked}</span>
+                </div>
               </div>
-              <div className="flex items-center">
-                <div className="w-6 h-6 bg-blue-500 rounded mr-2"></div>
-                <span className='px-4'>{translations.trips.seats.legend.selected}</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-6 h-6 bg-gray-300 rounded mr-2"></div>
-                <span className='px-4'>{translations.trips.seats.legend.booked}</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-6 h-6 bg-red-300 rounded mr-2"></div>
-                <span className='px-4'>{translations.trips.seats.legend.blocked}</span>
-              </div>
-            </div>
           </div>
 
           <div className="grid grid-cols-4 gap-2 mb-8">
