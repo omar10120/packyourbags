@@ -303,7 +303,7 @@ export default function BookingsPage() {
 
                         <button
                           onClick={() => handleConfirmClick(booking.id)}
-                          className="group relative inline-flex items-center justify-center p-2 bg-green-50 hover:bg-green-100 text-green-600 hover:text-green-700 rounded-lg transition-all duration-200"
+                          className="group relative inline-flex items-center justify-center p-2 bg-green-50 hover:bg-green-100 text-green-600 hover:text-green-700 rounded-lg transition-all duration-200 cursor-pointer"
                           disabled={booking.status === 'confirmed'}
                           title={booking.status === 'confirmed' ? 'Already confirmed' : 'Confirm booking'}
                         >
@@ -314,7 +314,7 @@ export default function BookingsPage() {
                         </button>
                         <button
                           onClick={() => handleDeleteClick(booking.id)}
-                          className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded-full transition-all"
+                          className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded-full transition-all cursor-pointer"
                         >
                           <TrashIcon className="h-5 w-5" />
                         </button>
