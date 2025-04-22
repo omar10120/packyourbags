@@ -10,7 +10,7 @@ export const en = {
   },
   home: {
     hero: {
-      title: "Am'r for Bus Travel",
+      title: "Am'r For Tourism and Travel",
       subtitle: "Experience seamless journeys across cities with modern comfort and reliability",
       imageAlt: "Modern bus travel",
       exploreButton: "Explore Routes",
