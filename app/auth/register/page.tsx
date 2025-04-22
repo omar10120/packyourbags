@@ -173,7 +173,7 @@ export default function RegisterPage() {
           </button>
 
           <div className="text-center mt-4">
-            <Link href="/auth/login" className="text-indigo-600 hover:text-indigo-700 text-sm">
+            <Link href="/auth/login" className="text-indigo-600 hover:text-indigo-700 text-sm hover:underline">
               {translations.auth.register.haveAccount}
             </Link>
           </div>

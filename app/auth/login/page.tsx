@@ -173,9 +173,10 @@ export default function LoginPage() {
       
           <div className="flex flex-col md:flex-row items-center justify-between text-sm gap-2 md:gap-0">
               <div className='text-indigo-600 hover:text-indigo-700 '>
-                <span className='opacity-50'>{translations.auth.login.noAccount}</span>
+                <span className='opacity-50'>
+                  {translations.auth.login.noAccount}</span>
                 <Link href="/auth/register" >
-                  {translations.auth.login.register}
+                  <span className='hover:underline '>{translations.auth.login.register}</span>
                 </Link>
               </div>
             
