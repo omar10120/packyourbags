@@ -5,6 +5,11 @@ import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useLanguage } from '@/context/LanguageContext'
 
+// Add these imports at the top
+import LogoImage from '@/public/images/logo.png'
+import StoreIcon from '@/public/images/store.png'
+import Image from 'next/image'
+
 export default function RegisterPage() {
   const router = useRouter()
   const { login } = useAuth()
@@ -71,111 +76,117 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className={`min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 text-black  ${language === 'ar' ? 'rtl' : 'ltr'}`}>
-      <div className="max-w-md w-full space-y-8  ">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            {translations.auth.register.title}
-          </h2>
+    <div className="min-h-screen flex flex-col md:flex-row">
+      {/* Left Panel */}
+      <div className="w-full md:w-1/3 bg-white p-4 md:p-8 flex flex-col justify-center min-h-screen md:min-h-0">
+        <div className="mb-4 md:mb-8">
+          <Image src={LogoImage} alt="Logo" className="h-8 md:h-12 w-8 md:w-12" />
         </div>
+        <h2 className="text-xl md:text-2xl font-bold mb-2 text-gray-800">
+          {translations.auth.register.title}
+        </h2>
+
 
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-400 p-4">
-            <p className="text-red-700">{error}</p>
+          <div className="text-sm text-red-600 mb-4">
+            {error}
           </div>
         )}
 
-        <form className="mt-8 space-y-6 border-none" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4 border-none ">
-            <div >
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 my-4 " >
-                {translations.auth.register.fullName.label}
-              </label>
-              <input
-                id="fullName"
-                type="text"
-                required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder={translations.auth.register.fullName.placeholder}
-                value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 my-4">
-                {translations.auth.register.email.label}
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder={translations.auth.register.email.placeholder}
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 my-4">
-                {translations.auth.register.password.label}
-              </label>
-              <input
-                id="password"
-                type="password"
-                required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder={translations.auth.register.password.placeholder}
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              />
-            </div>
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 my-4">
-                {translations.auth.register.confirmPassword.label}
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder={translations.auth.register.confirmPassword.placeholder}
-                value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              />
-            </div>
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 my-4">
-                {translations.auth.register.phone.label}
-              </label>
-              <input
-                id="phone"
-                type="tel"
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder={translations.auth.register.phone.placeholder}
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4 text-black">
+          {/* Form fields with responsive spacing */}
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">
+              {translations.auth.register.fullName.label}
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.fullName}
+              onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+              placeholder={translations.auth.register.fullName.placeholder}
+              className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            />
           </div>
 
           <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed"
-            >
-              {isLoading ? translations.auth.register.button.creating : translations.auth.register.button.signup}
-            </button>
+            <label className="block text-sm text-gray-700 mb-1">
+              {translations.auth.register.email.label}
+            </label>
+            <input
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              placeholder={translations.auth.register.email.placeholder}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">
+              {translations.auth.register.password.label}
+            </label>
+            <input
+              type="password"
+              required
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              placeholder={translations.auth.register.password.placeholder}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">
+              {translations.auth.register.confirmPassword.label}
+            </label>
+            <input
+              type="password"
+              required
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+              placeholder={translations.auth.register.confirmPassword.placeholder}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">
+              {translations.auth.register.phone.label}
+            </label>
+            <input
+              type="tel"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              placeholder={translations.auth.register.phone.placeholder}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-indigo-600 text-white py-2 md:py-2.5 rounded-md hover:bg-indigo-700 transition-colors disabled:bg-indigo-400 text-sm md:text-base mt-4 md:mt-6"
+          >
+            {isLoading ? translations.auth.register.button.creating : translations.auth.register.button.signup}
+          </button>
+
+          <div className="text-center mt-4">
+            <Link href="/auth/login" className="text-indigo-600 hover:text-indigo-700 text-sm">
+              {translations.auth.register.haveAccount}
+            </Link>
           </div>
         </form>
+      </div>
 
-        <div className="text-center">
-          <Link 
-            href="/auth/login"
-            className="font-medium text-blue-600 hover:text-blue-500"
-          >
-            {translations.auth.register.haveAccount}
-          </Link>
+      {/* Right Panel */}
+      <div className="hidden md:flex w-full md:w-2/3 bg-gradient-to-br from-indigo-600 to-indigo-800 items-center justify-center">
+        <div className="text-center text-white p-4">
+          <div className="mb-6 md:mb-8">
+            <Image src={StoreIcon} alt="Store" className="h-16 md:h-24 w-16 md:w-24 mx-auto rounded-full" />
+          </div>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4">{(translations.auth.register.title).toUpperCase()}!</h1>
         </div>
       </div>
     </div>

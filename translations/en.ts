@@ -287,6 +287,7 @@ export const en = {
       },
     },
     register: {
+
       title: 'Create your account',
       fullName: {
         label: 'Full Name',

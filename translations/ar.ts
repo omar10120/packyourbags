@@ -310,6 +310,7 @@ export const ar = {
         },
       },
       register: {
+
         title: 'إنشاء حساب جديد',
         fullName: {
           label: 'الاسم الكامل',
