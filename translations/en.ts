@@ -208,9 +208,11 @@ export const en = {
         success: 'Success!'
       },
 
-      noAccount: "Don't have an account? Register",
+      noAccount: "Don't have an account? ",
+      register : 'Register Now',
       forgotPassword: 'Forgot password?',
-      successMessage: 'Login successful!...'
+      successMessage: 'Login successful!...',
+      backHome: 'Back to home page'
     },
     forgotPassword: {
       title: 'Forgot Password',

@@ -230,9 +230,11 @@ export const ar = {
           loading: 'جاري تسجيل الدخول...',
           success: 'تم بنجاح!'
         },
-        noAccount: 'ليس لديك حساب؟ سجل الآن',
+        noAccount: 'ليس لديك حساب؟ ',
+        register : 'سجل الآن',
         forgotPassword: 'نسيت كلمة المرور؟',
-        successMessage: 'تم تسجيل الدخول بنجاح! ...'
+        successMessage: 'تم تسجيل الدخول بنجاح! ...',
+        backHome: 'العودة الى الصفحة الرئيسية'
       },
       forgotPassword: {
         title: 'نسيت كلمة المرور',

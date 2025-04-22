@@ -8,7 +8,11 @@ import { useLanguage } from '@/context/LanguageContext'
 import LogoImage from '@/public/images/logo.png'
 import StoreIcon from '@/public/images/store-icon.png'
 import Image from 'next/image'
-
+import { 
+  
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from '@heroicons/react/24/outline'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -139,9 +143,9 @@ export default function LoginPage() {
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
                 {showPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-400" />
+                  <EyeSlashIcon className="h-4 w-4 text-gray-400" />
                 ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-400" />
+                  <EyeIcon className="h-4 w-4 text-gray-400" />
                 )}
               </button>
             </div>
@@ -154,7 +158,7 @@ export default function LoginPage() {
           >
             {loading ? (
               <div className="flex items-center justify-center">
-                <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                <svg className="animate-spin h-4 w-4 mr-2" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
@@ -168,15 +172,31 @@ export default function LoginPage() {
           </button>
       
           <div className="flex flex-col md:flex-row items-center justify-between text-sm gap-2 md:gap-0">
-            <Link href="/auth/register" className="text-indigo-600 hover:text-indigo-700">
-              {translations.auth.login.noAccount}
-            </Link>
+              <div className='text-indigo-600 hover:text-indigo-700 '>
+                <span className='opacity-50'>{translations.auth.login.noAccount}</span>
+                <Link href="/auth/register" >
+                  {translations.auth.login.register}
+                </Link>
+              </div>
+            
             <Link href="/auth/forgot-password" className="text-indigo-600 hover:text-indigo-700">
               {translations.auth.login.forgotPassword}
             </Link>
+            
           </div>
         </form>
+        <div className='w-full flex py-4'>
+            <Link href="/" className="text-indigo-600 hover:text-indigo-700 flex items-center gap-2">
+              {language === 'en'? 
+                <ArrowRightIcon className="h-4 w-4 text-indigo-700 " />
+                :
+                <ArrowLeftIcon className="h-4 w-4 text-indigo-700 " />
+              }
+              {translations.auth.login.backHome}
+            </Link>
+        </div>
       </div>
+      
       
       {/* Right Panel */}
       <div className="hidden md:flex w-full md:w-2/3 bg-gradient-to-br from-indigo-600 to-indigo-800 items-center justify-center">
