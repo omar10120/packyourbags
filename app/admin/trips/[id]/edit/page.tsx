@@ -236,8 +236,10 @@ export default function EditTripPage({ params }: PageProps) {
             onChange={(e) => setFormData({ ...formData, status: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           >
-            {Object.entries(t.status).map(([key, value]) => (
-              <option key={key} value={key}>{value}</option>
+            {Object.entries(t.status.options).map(([key, value]) => (
+              <>
+                <option key={key} value={key}>{value}</option>
+              </>
             ))}
           </select>
         </div>

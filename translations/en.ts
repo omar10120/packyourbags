@@ -1,3 +1,5 @@
+import ConfirmDialog from "@/components/ConfirmDialog";
+
 export const en = {
   nav: {
     home: 'Home',
@@ -34,6 +36,7 @@ export const en = {
       cancelled: 'Cancelled',
       pending: 'Pending',
     },
+
     noBookings: {
       title: 'No Bookings Found',
       description: "You haven't made any bookings yet.",
@@ -60,6 +63,32 @@ export const en = {
       message: 'Are you sure you want to cancel booking ? This action cannot be undone.',
       confirm: 'Confirm',
       cancel: 'Cancel'
+    },
+    ConfirmDialog:{
+      title: 'Complete Your Booking',
+      tripDetails: {
+        title: 'Trip Details',
+        from: 'From',
+        to: 'To',
+        departure: 'Departure',
+        arrival: 'Arrival',
+        selectedSeats: 'Selected Seats',
+        totalPrice: 'Total Price'
+      },
+      errors: {
+        loadFailed: 'Failed to load trip details',
+        loginRequired: 'Please login to continue',
+        bookingFailed: 'Booking failed',
+        default: 'Failed to create booking'
+      },
+      success: {
+        title: 'Booking Successful!',
+        redirect: 'Redirecting to your bookings...'
+      },
+      buttons: {
+        confirm: 'Confirm Booking',
+        processing: 'Processing...'
+      },
     }
   },
   
@@ -383,7 +412,7 @@ export const en = {
           },
           status: {
             scheduled: 'Scheduled',
-            'in-progress': 'In Progress',
+            'in_progress': 'In Progress',
             completed: 'Completed',
             cancelled: 'Cancelled'
           },
@@ -426,7 +455,16 @@ export const en = {
               created: 'Trip created successfully',
               updated: 'Trip updated successfully'
             },
-            status: 'edit form',
+            status: {
+              title:'edit form',
+              options:{
+                scheduled:  'scheduled',
+                in_progress: 'in progress',
+                completed: 'completed',
+                cancelled: 'cancelled',
+              }
+            },
+
           }
         },
         routes: {
@@ -554,7 +592,7 @@ export const en = {
           status: {
             active: 'Active',
             maintenance: 'Maintenance',
-            retired: 'Retired',
+            inactive: 'inactive',
             passenger_filling: 'Passenger Filling',
             in_trip: 'In Trip'
           },
@@ -597,10 +635,12 @@ export const en = {
             success: {
               created: 'Bus created successfully',
               updated: 'Bus updated successfully'
-            },status: {
-              Active:  'Active',
-              Maintenance: 'Maintenance',
-              Retired: 'Retired',
+            },
+            status: {
+              active:  'Active',
+              maintenance: 'Maintenance',
+              inactive: 'inactive',
+              
             },
           }
         },

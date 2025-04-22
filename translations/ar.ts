@@ -1,5 +1,7 @@
 // import bookSeat from "@/app/book-seat/page";
 
+import ConfirmDialog from "@/components/ConfirmDialog";
+
 export const ar = {
   nav: {
     
@@ -86,6 +88,33 @@ export const ar = {
       confirm: 'تأكيد',
       cancel: 'إلغاء'
     },
+
+    ConfirmDialog :{
+      title: 'إتمام الحجز',
+      tripDetails: {
+        title: 'تفاصيل الرحلة',
+        from: 'من',
+        to: 'إلى',
+        departure: 'وقت المغادرة',
+        arrival: 'وقت الوصول',
+        selectedSeats: 'المقاعد المختارة',
+        totalPrice: 'السعر الإجمالي'
+      },
+      errors: {
+        loadFailed: 'فشل تحميل تفاصيل الرحلة',
+        loginRequired: 'الرجاء تسجيل الدخول للمتابعة',
+        bookingFailed: 'فشل الحجز',
+        default: 'فشل إنشاء الحجز'
+      },
+      success: {
+        title: 'تم الحجز بنجاح!',
+        redirect: 'جاري التحويل إلى حجوزاتك...'
+      },
+      buttons: {
+        confirm: 'تأكيد الحجز',
+        processing: 'جاري المعالجة...'
+      }
+    }
 
   },
 
@@ -405,7 +434,7 @@ export const ar = {
         },
         status: {
           scheduled: 'مجدولة',
-          'in-progress': 'قيد التنفيذ',
+          'in_progress': 'قيد التنفيذ',
           completed: 'مكتملة',
           cancelled: 'ملغاة'
         },
@@ -448,7 +477,15 @@ export const ar = {
             created: 'تم إنشاء الرحلة بنجاح',
             updated: 'تم تحديث الرحلة بنجاح'
           },
-          status: 'تعديل  ',
+          status: {
+            title:'تعديل الواجهة',
+            options:{
+              scheduled:  'مُجدول',
+              in_progress: 'قيد التنفيذ',
+              completed: 'مُكتمل',
+              cancelled: 'ملغي',
+            }
+          },
         }
       },
 
@@ -577,7 +614,7 @@ export const ar = {
         status: {
           active: 'نشط',
           maintenance: 'صيانة',
-          retired: 'متقاعد',
+          inactive: 'متقاعد',
           passenger_filling: 'تعبئة الركاب',
           in_trip: 'في رحلة'
         },
@@ -622,9 +659,9 @@ export const ar = {
             updated: 'تم تحديث الحافلة بنجاح'
           },
           status: {
-            Active:  'مفعل',
-            Maintenance: 'صيانة',
-            Retired: 'في الأرشيف',
+            active:  'مفعل',
+            maintenance: 'صيانة',
+            inactive: 'في الأرشيف',
           }
         }
       },
@@ -661,7 +698,7 @@ export const ar = {
           loadFailed: 'فشل تحميل الحجوزات'
         },
         blockSeats: {
-          title: 'حظر المقاعد',
+          title: 'حظر مقاعد',
           selectTrip: 'اختر الرحلة',
           tripPlaceholder: 'اختر رحلة...',
           seatStatus: {
@@ -671,16 +708,16 @@ export const ar = {
             booked: 'محجوز'
           },
           buttons: {
-            blockSelected: 'حظر المقاعد المحددة'
+            blockSelected: 'حظر مقاعد المحددة'
           },
           errors: {
             fetchTrips: 'فشل في جلب الرحلات',
             fetchSeats: 'فشل في جلب المقاعد',
-            blockSeats: 'فشل في حظر المقاعد',
+            blockSeats: 'فشل في حظر مقاعد',
             noSeatsSelected: 'الرجاء تحديد المقاعد للحظر'
           },
           success: {
-            seatsBlocked: 'تم حظر المقاعد بنجاح'
+            seatsBlocked: 'تم حظر مقاعد بنجاح'
           }
         },
       },

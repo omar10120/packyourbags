@@ -14,7 +14,7 @@ interface Bus {
   id: string
   plateNumber: string
   capacity: number
-  status: 'active' | 'maintenance' | 'retired' | 'passenger_filling' | 'in_trip'
+  status: 'active' | 'maintenance' | 'inactive' | 'passenger_filling' | 'in_trip'
 }
 
 export default function NewTripPage() {

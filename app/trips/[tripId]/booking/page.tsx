@@ -5,6 +5,7 @@ import { useLanguage } from '@/context/LanguageContext'
 import { useSearchParams, useRouter } from 'next/navigation'
 import toast, { Toaster } from 'react-hot-toast' // Add this import
 
+
 interface TripDetails {
   id: string
   route: {
@@ -43,7 +44,10 @@ export default function BookingPage({ params }: BookingPageProps): ReactElement 
   const [error, setError] = useState('')
   const [tripDetails, setTripDetails] = useState<TripDetails | null>(null)
   const selectedSeatNumbers = searchParams.get('seats')?.split(',') || []
-
+  
+  const { language, translations } = useLanguage()
+  const t = translations.bookings.ConfirmDialog
+  
   useEffect(() => {
     fetchTripDetails()
   }, [tripId])
@@ -103,8 +107,8 @@ export default function BookingPage({ params }: BookingPageProps): ReactElement 
       // Show success message
       toast.success(
         <div className="flex flex-col gap-1">
-          <span className="font-semibold">Booking Successful!</span>
-          <span className="text-sm">Redirecting to your bookings...</span>
+          <span className="font-semibold">{t.success.title}</span>
+          <span className="text-sm">{t.success.redirect}...</span>
         </div>,
         {
           duration: 3000,
@@ -138,7 +142,7 @@ export default function BookingPage({ params }: BookingPageProps): ReactElement 
     <div className="min-h-screen bg-gray-50 py-12">
       <Toaster />
       <div className="max-w-3xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Complete Your Booking</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">{t.title}</h1>
 
         {error && (
           <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
@@ -147,15 +151,15 @@ export default function BookingPage({ params }: BookingPageProps): ReactElement 
         )}
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4 text-black">Trip Details</h2>
+          <h2 className="text-xl font-semibold mb-4 text-black">{t.tripDetails.title}</h2>
           <div className="space-y-2 text-gray-600">
-            <p>From: {tripDetails?.route.departureCity.name}</p>
-            <p>To: {tripDetails?.route.arrivalCity.name}</p>
-            <p>Departure: {new Date(tripDetails?.departureTime).toLocaleString()}</p>
-            <p>Arrival: {new Date(tripDetails?.arrivalTime).toLocaleString()}</p>
-            <p>Selected Seats: {selectedSeatNumbers.join(', ')}</p>
+            <p>{t.tripDetails.from}: {tripDetails?.route.departureCity.name}</p>
+            <p>{t.tripDetails.to}: {tripDetails?.route.arrivalCity.name}</p>
+            <p>{t.tripDetails.departure}: {new Date(tripDetails?.departureTime).toLocaleString()}</p>
+            <p>{t.tripDetails.arrival}: {new Date(tripDetails?.arrivalTime).toLocaleString()}</p>
+            <p>{t.tripDetails.selectedSeats}: {selectedSeatNumbers.join(', ')}</p>
             <p className="text-lg font-semibold text-gray-900">
-              Total Price: ${Number(tripDetails?.price) * selectedSeatNumbers.length}
+            {t.tripDetails.totalPrice}: ${Number(tripDetails?.price) * selectedSeatNumbers.length}
             </p>
           </div>
         </div>
@@ -166,7 +170,7 @@ export default function BookingPage({ params }: BookingPageProps): ReactElement 
             disabled={isLoading}
             className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Processing...' : 'Confirm Booking'}
+            {isLoading ? `${t.buttons.processing}...` : `${t.buttons.confirm}`}
           </button>
         </div>  
       </div>

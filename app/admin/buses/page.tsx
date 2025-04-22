@@ -16,7 +16,7 @@ interface Bus {
   plateNumber: string
   capacity: number
   model: string
-  status: 'active' | 'maintenance' | 'retired' | 'passenger_filling' | 'in_trip'
+  status: 'active' | 'maintenance' | 'inactive' | 'passenger_filling' | 'in_trip'
 }
 
 export default function BusesPage() {
@@ -33,10 +33,12 @@ export default function BusesPage() {
     switch (status) {
       case 'active': return 'bg-green-100 text-green-800'
       case 'maintenance': return 'bg-yellow-100 text-yellow-800'
-      case 'retired': return 'bg-red-100 text-red-800'
+      case 'inactive': return 'bg-red-100 text-red-800'
       case 'passenger_filling': return 'bg-blue-100 text-blue-800'
       case 'in_trip': return 'bg-purple-100 text-purple-800'
       default: return 'bg-gray-100 text-gray-800'
+
+      
     }
   }
   if (!Array.isArray(buses)) return null

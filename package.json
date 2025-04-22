@@ -15,9 +15,9 @@
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.5.2"
   },
-  "scripts": {
+  "scripts": {  
     "dev": "next dev",
-    "build": "prisma generate && prisma migrate deploy && prisma db seed && next build",
+    "build": "next build",
 
     "start": "next start",
     "seed": "npx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",

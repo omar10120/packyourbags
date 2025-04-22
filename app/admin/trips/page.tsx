@@ -16,7 +16,7 @@ interface Trip {
   departureTime: string
   arrivalTime: string
   price: number
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled'
+  status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled'
   route: {
     departureCity: { name: string }
     arrivalCity: { name: string }
@@ -84,7 +84,7 @@ export default function TripsPage() {
   const getStatusColor = (status: Trip['status']) => {
     switch (status) {
       case 'scheduled': return 'bg-blue-100 text-blue-800'
-      case 'in-progress': return 'bg-yellow-100 text-yellow-800'
+      case 'in_progress': return 'bg-yellow-100 text-yellow-800'
       case 'completed': return 'bg-green-100 text-green-800'
       case 'cancelled': return 'bg-red-100 text-red-800'
       default: return 'bg-gray-100 text-gray-800'
@@ -173,10 +173,10 @@ export default function TripsPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">
-                    {new Date(trip.departureTime).toLocaleString(language === 'ar' ? 'ar-SA' : 'en-US')}
+                    {new Date(trip.departureTime).toLocaleString(language === 'ar' ? 'en-US' : 'en-US')}
                   </div>
                   <div className="text-sm text-gray-500">
-                    to {new Date(trip.arrivalTime).toLocaleString(language === 'ar' ? 'ar-SA' : 'en-US')}
+                    to {new Date(trip.arrivalTime).toLocaleString(language === 'ar' ? 'en-US' : 'en-US')}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -188,18 +188,22 @@ export default function TripsPage() {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button
-                    onClick={() => router.push(`/admin/trips/${trip.id}/edit`)}
-                    className="text-indigo-600 hover:text-indigo-900 cursor-pointer"
-                  >
-                    <PencilIcon className="h-5 w-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteTrip(trip.id)}
-                    className="text-red-600 hover:text-red-900 ml-4 cursor-pointer"
-                  >
-                    <TrashIcon className="h-5 w-5" />
-                  </button>
+                  {t.status[trip.status]!= 'Completed' &&(
+                    <>
+                        <button
+                          onClick={() => router.push(`/admin/trips/${trip.id}/edit`)}
+                          className="text-indigo-600 hover:text-indigo-900 cursor-pointer"
+                          >
+                          <PencilIcon className="h-5 w-5" />
+                        </button>
+                      <button
+                      onClick={() => handleDeleteTrip(trip.id)}
+                      className="text-red-600 hover:text-red-900 ml-4 cursor-pointer"
+                      >
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}

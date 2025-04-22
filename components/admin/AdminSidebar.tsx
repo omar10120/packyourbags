@@ -78,11 +78,9 @@ export default function AdminSidebar() {
         fixed md:static inset-y-0 ${language == 'ar'? 'right-0': 'left-0'}  z-40
         transform ${isSidebarOpen ? 'translate-x-0' : language == 'ar'? 'translate-x-full':'-translate-x-full'}
         md:translate-x-0 transition-transform duration-300 ease-in-out
-        flex flex-col w-64 bg-gray-800 
-      `}
-     
-      >
-        <div className="flex items-center justify-between h-16 bg-gray-900 px-4">
+        flex flex-col w-64 bg-gray-800  
+      `}>
+        <div className="flex items-center justify-between h-16 bg-gray-900 px-4 ">
           <span className="text-white text-lg font-semibold">{t.title}</span>
           <button
             onClick={toggleSidebar}
