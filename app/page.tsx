@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useLanguage } from "@/context/LanguageContext"
 import Link from "next/link"
 import UserOnlyGuard from '@/components/UserOnlyGuard'
+import busHero from '@/public/images/bus-hero.png'
 
 export default function Home() {
   const { language, translations } = useLanguage()
@@ -17,7 +18,7 @@ export default function Home() {
         <section className="relative h-screen flex items-center">
           <div className="absolute inset-0 z-0">
             <Image
-              src="/images/bus-hero.jpg"
+              src={busHero}
               alt={translations.home.hero.imageAlt}
               fill
               className="object-cover brightness-50"
