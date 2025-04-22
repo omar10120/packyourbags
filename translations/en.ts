@@ -431,6 +431,10 @@ export const en = {
         },
         routes: {
           title: 'Route Management',
+          edit:{
+            success : 'success',
+            error : 'error'
+          },
           search: {
             placeholder: 'Search routes...'
           },

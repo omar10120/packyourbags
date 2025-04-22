@@ -454,6 +454,10 @@ export const ar = {
 
       routes: {
         title: 'إدارة المسارات',
+        edit:{
+          success : 'تم التحديث بنجاح',
+          error : 'خطأ'
+        },
         search: {
           placeholder: 'البحث عن المسارات...'
         },

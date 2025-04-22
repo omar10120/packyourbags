@@ -177,13 +177,13 @@ export default function CitiesPage() {
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button
                     onClick={() => router.push(`/admin/cities/${city.id}/edit`)}
-                    className="text-indigo-600 hover:text-indigo-900"
+                    className="text-indigo-600 hover:text-indigo-900 cursor-pointer"
                   >
                     <PencilIcon className="h-5 w-5" />
                   </button>
                   <button
                     onClick={() => handleDeleteClick(city.id)}
-                    className="text-red-600 hover:text-red-900 ml-4"
+                    className="text-red-600 hover:text-red-900 ml-4 cursor-pointer"
                   >
                     <TrashIcon className="h-5 w-5" />
                   </button>

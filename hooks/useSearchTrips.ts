@@ -35,7 +35,7 @@ export const useSearchTrips = () => {
         setDepartureCities(Array.from(uniqueDepartureCities.values()))
         setArrivalCities(Array.from(uniqueArrivalCities.values()))
       } catch (err) {
-        setError('Failed to fetch cities')
+        setError('Internal server error cities')
       }
     }
 
@@ -53,7 +53,7 @@ export const useSearchTrips = () => {
       const data = await response.json()
       return data
     } catch (err) {
-      setError('Failed to fetch trips')
+      setError('Internal server error trips')
       return []
     } finally {
       setLoading(false)
