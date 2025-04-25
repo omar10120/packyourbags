@@ -5,6 +5,7 @@ import SearchForm from "@/components/SearchForm"
 import { useLanguage } from "@/context/LanguageContext"
 import ProtectedRoute from "@/components/ProtectedRoute"
 import UserOnlyGuard from '@/components/UserOnlyGuard'
+import busHero from '@/public/images/bus-hero.jpg'
 
 export default function BookSeat() {
   const { language, translations } = useLanguage()
@@ -45,7 +46,7 @@ export default function BookSeat() {
       <section className="relative h-[500px] flex items-center">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/bus-hero.jpg"
+            src={busHero}
             alt={translations.bookSeat.hero.imageAlt}
             fill
             className="object-cover brightness-50"

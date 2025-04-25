@@ -33,6 +33,7 @@ export default function SeatsPage({ params }: SeatsPageProps): ReactElement {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([])
   const [tripData, setTripData] = useState<TripData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [loadingProgress, setLoadingProgress] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export default function SeatsPage({ params }: SeatsPageProps): ReactElement {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center gap-2 justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     )
@@ -71,7 +72,7 @@ export default function SeatsPage({ params }: SeatsPageProps): ReactElement {
 
   if (error || !tripData) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center gap-2 justify-center">
         <div className="text-red-600">{error || translations.trips.seats.errors.loadFailed}</div>
       </div>
     )
@@ -86,14 +87,18 @@ export default function SeatsPage({ params }: SeatsPageProps): ReactElement {
   }
 
   const handleContinue = () => {
+    setLoadingProgress(true);
     if (selectedSeats.length > 0) {
       router.push(`/trips/${tripId}/booking?seats=${selectedSeats.join(',')}`)
+
     }
+
+    // setLoadingProgress(false);
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center gap-2 justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     )
@@ -101,7 +106,7 @@ export default function SeatsPage({ params }: SeatsPageProps): ReactElement {
 
   if (error || !tripData) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center gap-2 justify-center">
         <div className="text-red-600">{error || 'Failed to load seats'}</div>
       </div>
     )
@@ -116,20 +121,20 @@ return (
         
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="mb-8  flex w-full justify-center">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-4 justify-items-start">
-                <div className="flex items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-4 justify-items-start ">
+                <div className="flex items-center gap-2 ">
                   <div className="w-6 h-6 bg-white border border-gray-300 rounded"></div>
                   <span className="ml-2">{translations.trips.seats.legend.available}</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-blue-500 rounded"></div>
                   <span className="ml-2">{translations.trips.seats.legend.selected}</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-gray-300 rounded"></div>
                   <span className="ml-2">{translations.trips.seats.legend.booked}</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-red-300 rounded"></div>
                   <span className="ml-2">{translations.trips.seats.legend.blocked}</span>
                 </div>
@@ -161,10 +166,15 @@ return (
               </div>
               <button
                 onClick={handleContinue}
-                disabled={selectedSeats.length === 0}
+                disabled={selectedSeats.length === 0 || loadingProgress}
                 className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
               >
-                {translations.trips.seats.button.continue}
+                {loadingProgress? 
+                    translations.trips.seats.button.progress
+                :
+                  translations.trips.seats.button.continue
+                }
+                
               </button>
             </div>
           </div>

@@ -98,6 +98,7 @@ export const en = {
     filters: {
       title: 'Filters',
       titlePage: 'Avilable Trips',
+      NoTrips: 'No trips found for your search criteria.',
       sortBy: 'Sort By',
       priceRange: 'Price Range',
       min: 'Min',
@@ -145,7 +146,8 @@ export const en = {
       selectedSeats: 'Selected Seats',
       totalPrice: 'Total Price',
       button: {
-        continue: 'Continue'
+        continue: 'Continue',
+        progress : 'progress...',
       },
       errors: {
         loadFailed: 'Failed to load seats'

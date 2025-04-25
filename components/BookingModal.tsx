@@ -25,7 +25,7 @@ const BookingModal = ({ booking, isOpen, onClose, onCancelBooking }: BookingModa
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in text-black">
-      <div className={`bg-white rounded-2xl w-full max-w-2xl mx-4 overflow-scroll shadow-xl transform transition-all animate-slide-up ${language === 'ar' ? 'rtl' : 'ltr'}`}>
+      <div className={`bg-white rounded-2xl w-full max-w-2xl mx-4 overflow-hidden shadow-xl transform transition-all animate-slide-up ${language === 'ar' ? 'rtl' : 'ltr'}`}>
         <div className="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
           <h3 className="text-xl font-semibold">{translations.bookings.modal.title}</h3>
           <button onClick={onClose} className="text-white hover:text-gray-200 transition-colors">

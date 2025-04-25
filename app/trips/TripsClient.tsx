@@ -156,7 +156,8 @@ export default function TripsClient(): ReactElement {
 
             {filteredTrips.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-600">No trips found for your search criteria.</p>
+                {/* <p className="text-gray-600">No trips found for your search criteria.</p> */}
+                <p className="text-gray-600">{translations.trips.filters.NoTrips}</p>
               </div>
             )}
           </>

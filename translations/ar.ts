@@ -131,6 +131,7 @@ export const ar = {
       filters: {
         title: 'التصفية',
         titlePage: 'الرحلات المتوفرة',
+        NoTrips: 'لم يتم العثور على رحلات تتوافق مع معايير البحث الخاصة بك.',
         sortBy: 'ترتيب حسب',
         priceRange: 'نطاق السعر',
         min: 'الحد الأدنى',
@@ -171,7 +172,8 @@ export const ar = {
         selectedSeats: 'المقاعد المحجوزة',
         totalPrice: 'السعر الإجمالي',
         button: {
-          continue: 'متابعة'
+          continue: 'متابعة',
+          progress : '...قيد المعالجة',
         },
         errors: {
           loadFailed: 'فشل تحميل المقاعد'

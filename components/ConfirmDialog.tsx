@@ -18,7 +18,7 @@ const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message }: ConfirmDi
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-      <div className={`bg-white rounded-xl w-full max-w-md mx-4 overflow-scroll shadow-xl animate-fade-in ${language === 'ar' ? 'rtl' : 'ltr'}`}>
+      <div className={`bg-white rounded-xl w-full max-w-md mx-4 overflow-hidden shadow-xl animate-fade-in ${language === 'ar' ? 'rtl' : 'ltr'}`}>
         <div className="p-6">
           <div className="flex items-center justify-center mb-4">
             <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
