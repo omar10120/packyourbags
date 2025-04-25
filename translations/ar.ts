@@ -428,6 +428,7 @@ export const ar = {
           noResults: 'لم يتم العثور على رحلات تتوافق مع معايير البحث الخاصة بك'
         },
         addButton: 'إضافة رحلة',
+        processing: 'جاري المعالجة...',
         columns: {
           route: 'المسار',
           bus: 'الحافلة',

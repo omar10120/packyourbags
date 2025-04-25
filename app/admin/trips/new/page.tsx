@@ -24,6 +24,8 @@ export default function NewTripPage() {
   const [routes, setRoutes] = useState<Route[]>([])
   const [buses, setBuses] = useState<Bus[]>([])
   const [loading, setLoading] = useState(false)
+  const [loadingProgress, setloadingProgress] = useState(false)
+  const [loadingProgressCansel, setloadingProgressCansel] = useState(false)
   const [error, setError] = useState('')
 
   const [formData, setFormData] = useState({
@@ -201,8 +203,12 @@ export default function NewTripPage() {
         <div className="flex justify-end space-x-4">
           <button
             type="button"
-            onClick={() => router.back()}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            onClick={() => {
+              router.back()
+              setloadingProgressCansel(true)
+            }}
+            disabled={loadingProgressCansel}
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             {t.buttons.cancel}
           </button>

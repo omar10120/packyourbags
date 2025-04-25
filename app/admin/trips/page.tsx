@@ -32,6 +32,7 @@ export default function TripsPage() {
   const t = translations.dashboard.trips
   const [trips, setTrips] = useState<Trip[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadingProgress, setLoadingProgress] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')  
   const router = useRouter()
 
@@ -126,11 +127,19 @@ export default function TripsPage() {
             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
           </div>
           <button
-            onClick={() => router.push('/admin/trips/new')}
-            className="flex items-center space-x-2 px-4 max-sm:px-2 py-2 max-sm:py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            disabled={loadingProgress}
+            onClick=
+            {() => {
+                router.push('/admin/trips/new')
+                setLoadingProgress(true)
+              }}
+            
+            className="flex items-center space-x-2 px-4 max-sm:px-2 py-2 max-sm:py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             <PlusIcon className="h-5 w-5" />
-            <span>{t.addButton}</span>
+            <span>
+              {loadingProgress ? t.processing: t.addButton}
+            </span>
           </button>
         </div>
       </div>

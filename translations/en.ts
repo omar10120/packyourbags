@@ -406,6 +406,7 @@ export const en = {
               noResults: 'No trips found for your search criteria'
           },
           addButton: 'Add Trip',
+          processing: 'Processing...',
           columns: {
             route: 'Route',
             bus: 'Bus',
