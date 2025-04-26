@@ -5,7 +5,7 @@ import SearchForm from "@/components/SearchForm"
 import { useLanguage } from "@/context/LanguageContext"
 import ProtectedRoute from "@/components/ProtectedRoute"
 import UserOnlyGuard from '@/components/UserOnlyGuard'
-import busHero from '@/public/images/bus-hero.jpg'
+import busHero from '@/public/images/bus-hero.png'
 
 export default function BookSeat() {
   const { language, translations } = useLanguage()
