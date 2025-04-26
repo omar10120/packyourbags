@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import toast, { Toaster } from 'react-hot-toast'
+import { useSocket } from '@/context/SocketContext'
+
 import { 
   EyeIcon, 
   TrashIcon,
@@ -64,6 +66,7 @@ export default function BookingsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [bookingToDelete, setBookingToDelete] = useState<string | null>(null)
+  const { socket, connected } = useSocket();
 
   const fetchBookings = async () => {
     try {
@@ -93,6 +96,21 @@ export default function BookingsPage() {
   useEffect(() => {
     fetchBookings()
   }, [])
+  
+  useEffect(() => {
+    if (!socket) return
+  
+    const handleNewBooking = (newBooking: Booking) => {
+      setBookings(prev => [newBooking, ...prev])
+      toast.success('New booking received!')
+    }
+  
+    socket.on('newBooking', handleNewBooking)
+  
+    return () => {
+      socket.off('newBooking', handleNewBooking)
+    }
+  }, [socket])
 
   // Add new state for confirm dialog
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)

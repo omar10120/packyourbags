@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { AuthProvider } from '@/context/AuthContext'
 import UserOnlyGuard from '@/components/UserOnlyGuard'
+import { SocketProvider } from '@/context/SocketContext';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,16 +25,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-
-    <AuthProvider>
-      
-          <LanguageProvider>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-          </LanguageProvider>
-      
-    </AuthProvider>
+      <SocketProvider>
+        <AuthProvider>
+          
+              <LanguageProvider>
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+              </LanguageProvider>
+          
+        </AuthProvider>
+      </SocketProvider>
       
       </body>
     </html>

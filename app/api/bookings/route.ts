@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { Decimal } from '@prisma/client/runtime/library'
 import { headers } from 'next/headers'
+import { getIO } from '@/lib/socket-server' // <--- correct import
 
 export async function POST(req: Request) {
   try {
@@ -63,7 +64,13 @@ export async function POST(req: Request) {
         where: { id: { in: seatIds } },
         data: { status: 'booked' }
       })
-
+      try {
+        const io = getIO();
+        io.emit('newBooking', booking);
+        console.log('Socket emitted new booking');
+      } catch (error) {
+        console.log('Socket emit failed', error);
+      }
       return booking
     })
 
