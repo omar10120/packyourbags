@@ -681,6 +681,14 @@ export const en = {
             success: 'Booking deleted successfully',
             error: 'Failed to delete booking'
           },
+          confirm: {
+            title: 'Confirm your reservation',
+            message: 'Are you sure you want to confirm this reservation?',
+            confirm: 'confirm',
+            cancel: 'Cancel',
+            success: 'The reservation was successfully confirmed',
+            error: 'Failed to confirm the reservation'
+            },
           errors: {
             loadFailed: 'Failed to load bookings'
           },
@@ -706,7 +714,10 @@ export const en = {
             success: {
               seatsBlocked: 'Seats blocked successfully'
             }
-          }
+          },
+          toastMsg:{  
+            success: 'Booking confirmed successfully',
+          },
         },
         bookingDetails: {
           title: 'Customer Information',

@@ -673,6 +673,7 @@ export const ar = {
       },
       bookings: {
         title: 'إدارة الحجوزات',
+       
         search: {
           placeholder: 'البحث في الحجوزات...',
           noResults : 'لا يوجد نتائج',
@@ -700,8 +701,19 @@ export const ar = {
           success: 'تم حذف الحجز بنجاح',
           error: 'فشل حذف الحجز'
         },
+        confirm: {
+          title: 'تأكيد الحجز',
+          message: 'هل أنت متأكد من تأكيد هذا الحجز؟.',
+          confirm: 'تأكيد',
+          cancel: 'إلغاء',
+          success: 'تم التأكيد الحجز بنجاح',
+          error: 'فشل تأكيد الحجز'
+        },
         errors: {
           loadFailed: 'فشل تحميل الحجوزات'
+        },
+        toastMsg:{  
+          success: 'تم تأكيد الحجز بنجاح',
         },
         blockSeats: {
           title: 'حظر مقاعد',
@@ -726,6 +738,7 @@ export const ar = {
             seatsBlocked: 'تم حظر مقاعد بنجاح'
           }
         },
+        
       },
       bookingDetails: {
         title: 'معلومات العميل',

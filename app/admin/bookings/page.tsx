@@ -120,7 +120,7 @@ export default function BookingsPage() {
       })
   
       if (!response.ok) {
-        throw new Error('Failed to confirm booking')
+        throw new Error(t.confirm.error)
       }
   
       setBookings(bookings.map(booking => 
@@ -128,7 +128,7 @@ export default function BookingsPage() {
           ? { ...booking, status: 'confirmed' }
           : booking
       ))
-      toast.success('Booking confirmed successfully')
+      toast.success(t.toastMsg.success)
     } catch (error: any) {
       console.error('Confirmation error:', error)
       toast.error(error.message || 'Failed to confirm booking')
@@ -201,10 +201,10 @@ export default function BookingsPage() {
         isOpen={isConfirmDialogOpen}
         onClose={() => setIsConfirmDialogOpen(false)}
         onConfirm={handleConfirmBooking}
-        title="Confirm Booking"
-        message="Are you sure you want to confirm this booking?"
-        confirmText="Confirm"
-        cancelText="Cancel"
+        title={t.confirm.title}
+        message={t.confirm.message}
+        confirmText={t.confirm.confirm}
+        cancelText={t.confirm.cancel}
       />
 
       <div className="max-w-7xl mx-auto">
