@@ -43,23 +43,29 @@ export default function TripsClient(): ReactElement {
     fetchTrips()
   }, [from, to, date])
 
-  const fetchTrips = async () => {
+  const fetchTrips = async (minPrice?: number, maxPrice?: number, timeRange?: string) => {
     setLoading(true)
     try {
       const queryParams = new URLSearchParams()
       if (from) queryParams.append('from', from)
       if (to) queryParams.append('to', to)
       if (date) queryParams.append('date', date)
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/trips?${queryParams.toString()}`,{
+      if (minPrice) queryParams.append('minPrice', minPrice.toString())
+      if (maxPrice) queryParams.append('maxPrice', maxPrice.toString())
+      if (timeRange) queryParams.append('timeRange', timeRange)
+
+      const token = localStorage.getItem('token')
+      const url = queryParams.toString() ? `/api/trips?${queryParams.toString()}` : '/api/trips'
+      
+      const response = await fetch(url, {
         headers: {
-          'Content-Type': 'application/json',
-           'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         }
       })
-      const data: ApiTrip[] = await response.json()
+      const data = await response.json()
+      const trips: ApiTrip[] = data.trips
 
-      const formattedTrips: Trip[] = data.map(trip => ({
+      const formattedTrips: Trip[] = trips.map(trip => ({
         id: trip.id,
         departureCity: language === 'ar' ? trip.route.departureCity.nameAr : trip.route.departureCity.name,
         destinationCity: language === 'ar' ? trip.route.arrivalCity.nameAr : trip.route.arrivalCity.name,
