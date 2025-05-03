@@ -46,7 +46,7 @@ export const config = {
     '/api/buses/:path*',
     '/api/cities/:path*',
     '/api/routes/:path*',
-    '/api/trips/:path*',
+    // '/api/trips/:path*',
     '/api/admin/:path*',
     '/api/admin/'
   ]
