@@ -8,10 +8,20 @@ export async function GET(req: Request) {
     const from = searchParams.get('from')
     const to = searchParams.get('to')
     const date = searchParams.get('date')
+    
+    
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    const limitSeat = parseInt(searchParams.get('limitSeat') || '1')
+    
+    const skip = (page - 1) * limit
+
 
     const trips = await prisma.trip.findMany({
+      skip,
+      take: limit,
       where: {
-        status :'scheduled',
+        status: 'scheduled',
         AND: [
           {
             route: {
@@ -41,8 +51,46 @@ export async function GET(req: Request) {
         seats: true
       }
     })
+    
+    const tripsWithLimitedSeats = trips.map(trip => ({
+      ...trip,
+      seats: trip.seats.slice(0, limitSeat)
+    }))
 
-    return NextResponse.json(trips)
+    const total = await prisma.trip.count({
+      where: {
+        status: 'scheduled',
+        AND: [
+          {
+            route: {
+              departureCity: from ? {
+                name: { contains: from }
+              } : undefined,
+              arrivalCity: to ? {
+                name: { contains: to }
+              } : undefined
+            }
+          },
+          date ? {
+            departureTime: {
+              gte: new Date(date),
+              lt: new Date(new Date(date).setDate(new Date(date).getDate() + 1))
+            }
+          } : {}
+        ]
+      }
+    })
+    
+    return NextResponse.json({
+      trips : tripsWithLimitedSeats,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      }
+    })
+    
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error trips' },
