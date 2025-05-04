@@ -300,18 +300,28 @@ export default function BookingsPage() {
                         >
                           <EyeIcon className="h-5 w-5" />
                         </button> */}
+                      {/* {booking.status === 'pending' && ( */}
 
-                        <button
-                          onClick={() => handleConfirmClick(booking.id)}
-                          className="group relative inline-flex items-center justify-center p-2 bg-green-50 hover:bg-green-100 text-green-600 hover:text-green-700 rounded-lg transition-all duration-200 cursor-pointer"
-                          disabled={booking.status === 'confirmed'}
-                          title={booking.status === 'confirmed' ? 'Already confirmed' : 'Confirm booking'}
-                        >
-                          <ArrowLeftIcon className="h-5 w-5" />
-                          <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-                            {booking.status === 'confirmed' ? 'Already confirmed' : 'Confirm booking'}
-                          </span>
-                        </button>
+                          <button
+                            onClick={() => handleConfirmClick(booking.id)}
+                            className="group relative inline-flex items-center justify-center p-2 bg-green-50 hover:bg-green-100 text-green-600 hover:text-green-700 rounded-lg transition-all duration-200 cursor-pointer"
+                            disabled={booking.status === 'confirmed' || booking.status === 'cancelled'}
+                            title= {booking.status === 'confirmed' ?     
+                              t.statusAction.alreadConfiremd   : 
+                              booking.status === 'cancelled' ? t.statusAction.cancelled : 
+                              t.statusAction.confirm
+                              }
+                          >
+                            <ArrowLeftIcon className="h-5 w-5" />
+                            <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                              {booking.status === 'confirmed' ?     
+                              t.statusAction.alreadConfiremd  : 
+                              booking.status === 'cancelled' ? t.statusAction.cancelled : 
+                              t.statusAction.confirm
+                              }
+                            </span>
+                          </button>
+                        {/* )} */}
                         <button
                           onClick={() => handleDeleteClick(booking.id)}
                           className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded-full transition-all cursor-pointer"

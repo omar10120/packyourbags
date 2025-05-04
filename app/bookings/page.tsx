@@ -190,7 +190,8 @@ export default function BookingsPage() {
                   </div> */}
                   
                   <span className={`px-3 py-1 rounded-full text-sm font-medium  ${
-                    booking.status === 'pending' || booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                    booking.status === 'confirmed' ? 'bg-green-100 text-green-800 ' :
+                    booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
                     booking.status === 'cancelled' ? 'bg-red-100 text-red-800' 
                     :
            

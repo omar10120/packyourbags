@@ -673,6 +673,11 @@ export const en = {
             cancelled: 'Cancelled',
             pending: 'Pending'
           },
+          statusAction : {
+            cancelled : "It's Cancelled",
+            alreadConfiremd : 'Already Confirmed',
+            confirm : 'Confirm Booking ',
+          },
           delete: {
             title: 'Delete Booking',
             message: 'Are you sure you want to delete this booking? This action cannot be undone.',

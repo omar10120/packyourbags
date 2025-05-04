@@ -66,6 +66,7 @@ export default function SearchForm() {
 
       const trips = await response.json()
       localStorage.setItem('searchResults', JSON.stringify(trips))
+      
       router.push('/search-results')
     } catch (error) {
       console.error('Search failed:', error)

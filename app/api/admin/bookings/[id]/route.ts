@@ -36,7 +36,7 @@ export async function PUT(
         await Promise.all(
           updatedBooking.details.map(detail =>
             tx.seat.update({
-              where: { id: detail.seatId },
+              where: { id: detail.seatId  },
               data: { status: 'booked' }
             })
           )
@@ -50,6 +50,7 @@ export async function PUT(
             })
           )
         )
+      
       }
 
       return updatedBooking

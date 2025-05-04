@@ -693,6 +693,11 @@ export const ar = {
           cancelled: 'ملغي',
           pending: 'قيد الانتظار'
         },
+        statusAction : {
+          cancelled : "ملغاة",
+          alreadConfiremd : 'مؤكدة',
+          confirm : 'تأكيد الحجز',
+        },
         delete: {
           title: 'حذف الحجز',
           message: 'هل أنت متأكد من حذف هذا الحجز؟ لا يمكن التراجع عن هذا الإجراء.',
